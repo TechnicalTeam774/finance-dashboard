@@ -1,0 +1,20 @@
+{
+  "name": "mizan",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ميزان — إدارة مالية: مصروفات، دخل، ديون وجمعيات",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/make-www.mjs"
+  },
+  "dependencies": {
+    "@capacitor-firebase/authentication": "8.5.2",
+    "@capacitor/android": "8.5.3",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3",
+    "esbuild": "0.28.2"
+  }
+}

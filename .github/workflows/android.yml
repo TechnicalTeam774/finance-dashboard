@@ -1,0 +1,120 @@
+# ميزان: بيبني أبلكيشن أندرويد موقّع (APK) ويحطه في Releases.
+# بيشتغل من Actions > Build Mizan APK > Run workflow.
+# محتاج مرة واحدة 3 أسرار في Settings > Secrets and variables > Actions:
+#   KEYSTORE_B64 و KEYSTORE_PASSWORD (مفتاح التوقيع)، و GOOGLE_SERVICES_JSON (دخول جوجل).
+name: Build Mizan APK
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  android:
+    name: Android APK (Releases)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Check the secrets
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          missing=""
+          [ -z "$KEYSTORE_B64" ] && missing="$missing KEYSTORE_B64"
+          [ -z "$KEYSTORE_PASSWORD" ] && missing="$missing KEYSTORE_PASSWORD"
+          [ -z "$GOOGLE_SERVICES_JSON" ] && missing="$missing GOOGLE_SERVICES_JSON"
+          if [ -n "$missing" ]; then
+            echo "::error title=Secrets missing::Add these in Settings > Secrets and variables > Actions:$missing. Then run this workflow again."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v6
+
+      - name: Read the app version
+        id: ver
+        run: |
+          V=$(node -e "process.stdout.write(require('./version.json').version)")
+          case "$V" in
+            [0-9]*.[0-9]*.[0-9]*) ;;
+            *) echo "::error title=Bad version::version.json has '$V'"; exit 1 ;;
+          esac
+          echo "v=$V" >> "$GITHUB_OUTPUT"
+          echo "Building ميزان $V (versionCode ${GITHUB_RUN_NUMBER})"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - run: npm ci
+      - name: Build the web part
+        run: npm run build
+
+      - name: Create the Android project
+        env:
+          MIZAN_VERSION: ${{ steps.ver.outputs.v }}
+        run: |
+          npx cap add android
+          node scripts/patch-android.mjs
+          npx cap sync android
+
+      - name: Unpack the signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          PASS=$(printf '%s' "$KEYSTORE_PASSWORD" | tr -d '[:space:]')
+          echo "::add-mask::$PASS"
+          printf '%s' "$KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > "$RUNNER_TEMP/mizan.p12"
+          if ! keytool -list -storetype PKCS12 -keystore "$RUNNER_TEMP/mizan.p12" -storepass "$PASS" -alias mizan > /dev/null 2>&1; then
+            echo "::error title=Signing key not readable::KEYSTORE_B64 or KEYSTORE_PASSWORD does not match the key file."
+            exit 1
+          fi
+          echo "MIZAN_KEYSTORE=$RUNNER_TEMP/mizan.p12" >> "$GITHUB_ENV"
+          echo "MIZAN_STORE_PASSWORD=$PASS" >> "$GITHUB_ENV"
+
+      - name: Add the Firebase file
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          printf '%s' "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
+          SHA1=$(keytool -list -v -storetype PKCS12 -keystore "$MIZAN_KEYSTORE" -storepass "$MIZAN_STORE_PASSWORD" -alias mizan | grep -m1 'SHA1:' | awk '{print $2}')
+          node scripts/check-google-services.mjs android/app/google-services.json "$SHA1"
+
+      - name: Build the signed APK
+        working-directory: android
+        env:
+          MIZAN_VERSION: ${{ steps.ver.outputs.v }}
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --stacktrace
+          cp app/build/outputs/apk/release/app-release.apk "$GITHUB_WORKSPACE/mizan-${{ steps.ver.outputs.v }}.apk"
+
+      - name: Write the release notes
+        run: |
+          cat > RELEASE_NOTES.md <<'EOF'
+          **التثبيت على أندرويد:** نزّل الملف من **Assets** تحت، وافتحه من الموبايل.
+          - أول مرة: الموبايل هيطلب إذن «تثبيت تطبيقات غير معروفة» للمتصفح أو مدير الملفات، اسمح بيه.
+          - تحديث: ثبّت الملف الجديد فوق القديم من غير ما تمسح الأبلكيشن، وبياناتك بتفضل زي ما هي.
+          - لو كنت مثبّت نسخة قديمة من ميزان كانت بتفتح بشريط عنوان فوق، امسحها الأول — دي كانت نسخة متصفح، مش أبلكيشن.
+          EOF
+
+      - name: Publish the Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v${{ steps.ver.outputs.v }}
+          name: ميزان ${{ steps.ver.outputs.v }}
+          make_latest: true
+          fail_on_unmatched_files: true
+          body_path: RELEASE_NOTES.md
+          files: mizan-${{ steps.ver.outputs.v }}.apk

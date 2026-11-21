@@ -1062,9 +1062,34 @@ const mkC=()=>Math.random().toString(36).slice(2,6).toUpperCase()+"-"+Math.rando
 function mkCode(){const c=mkC();const f=document.getElementById("syncF");if(f)f.value=c;startCode(c);paint();toast(t("tCode"))}
 function joinCode(){const f=document.getElementById("syncF");const c=f?f.value.trim():"";if(!c)return;startCode(c);paint();toast(t("syncWait"))}
 function offCode(){stopCode();paint()}
+function isNative(){return !!(window.MizanNative&&window.MizanNative.isNative&&window.MizanNative.isNative())}
 function gIn(){
  if(!auth){toast(t("gFail"),1);return}
  if(sync.busy)return;sync.busy=true;toast(t("gWait"));
+ const quiet=()=>{const el=document.getElementById("toast");if(el)el.className="";};
+ const fail=err=>{
+  sync.busy=false;
+  const c=(err&&err.code)||"";
+  const m=(err&&err.message)||"";
+  // The user backing out of the account picker is not an error worth shouting about.
+  if(c==="auth/popup-closed-by-user"||c==="auth/cancelled-popup-request"||/cancel|12501/i.test(m)){quiet();return}
+  if(c==="auth/popup-blocked"){toast(t("gBlocked"),1);return}
+  if(c==="auth/unauthorized-domain"){toast(t("gDomain"),1);return}
+  console.error(err);toast(t("gFail")+(c?" ("+c+")":""),1);
+ };
+ // In the Android app there is no browser window to pop up. The Capacitor plugin
+ // shows Android's own account picker and hands back an ID token; the JS SDK then
+ // signs in with it, so auth state lands in the same place the rest of the app reads.
+ if(isNative()){
+  window.MizanNative.googleIdToken()
+   .then(tok=>{
+    if(!tok)throw new Error("no-id-token");
+    return auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(tok));
+   })
+   .then(()=>{sync.busy=false})
+   .catch(fail);
+  return;
+ }
  const p=new firebase.auth.GoogleAuthProvider();
  p.setCustomParameters({prompt:"select_account"});
  // Popup only. signInWithRedirect silently loses its result when the app is
@@ -1072,18 +1097,12 @@ function gIn(){
  // so falling back to it would strand the user instead of signing them in.
  auth.signInWithPopup(p)
   .then(()=>{sync.busy=false})
-  .catch(err=>{
-   sync.busy=false;
-   const c=(err&&err.code)||"";
-   if(c==="auth/popup-closed-by-user"||c==="auth/cancelled-popup-request"){
-    const el=document.getElementById("toast");if(el)el.className="";return}
-   if(c==="auth/popup-blocked"){toast(t("gBlocked"),1);return}
-   if(c==="auth/unauthorized-domain"){toast(t("gDomain"),1);return}
-   console.error(err);toast(t("gFail")+" ("+c+")",1);
-  })}
+  .catch(fail)}
 function gOut(){if(!auth)return;
  if(unsub){unsub();unsub=null}
  sync.status="off";
+ // Sign out of the native plugin too, or Android keeps offering the same account.
+ if(isNative()&&window.MizanNative.signOut)window.MizanNative.signOut();
  auth.signOut().then(()=>{sync.user=null;render()})}
 
 /* ============ Install ============ */
@@ -1118,7 +1137,9 @@ Object.assign(window,{go,shiftM,openAdd,closeAdd,setKind,moreCats,pickC,useC,kp,
   const c=lsG(K.sync,"");if(c)startCode(c);
  }
 
- if("serviceWorker" in navigator){
+ // The Android build has no service worker: its files are already local, and the
+ // cache would make every update take two launches to show up.
+ if("serviceWorker" in navigator&&!isNative()){
   window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
  }
  try{const q=new URLSearchParams(location.search);
