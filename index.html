@@ -202,6 +202,10 @@ color:var(--text);display:flex;align-items:center;justify-content:center;cursor:
 .seg button{flex:1;border:none;background:transparent;color:var(--sub);border-radius:9px;padding:9px;
 font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
 .seg button.on{background:linear-gradient(145deg,var(--acc),var(--acc2));color:var(--ink)}
+.seg.four button{font-size:12px;padding:9px 2px}
+.upd-notes{margin:4px 0 14px;padding-inline-start:18px;font-size:12.5px;line-height:1.75;color:var(--sub)}
+.upd-notes li{margin-bottom:3px}
+.upd-ic{font-size:34px;text-align:center;margin-bottom:4px}
 .seg.ex button.on{background:linear-gradient(145deg,var(--red),color-mix(in srgb,var(--red) 72%,#000));color:#fff}
 .seg.in button.on{background:linear-gradient(145deg,var(--grn),color-mix(in srgb,var(--grn) 72%,#000));color:#fff}
 
@@ -254,7 +258,9 @@ color:var(--sub);padding:5px 2px;cursor:pointer;font-family:inherit;min-height:5
 background:color-mix(in srgb,var(--acc) 13%,transparent)}
 .tab:active{transform:scale(.92)}
 
-#toast{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom));inset-inline-start:50%;
+/* left, not inset-inline-start: translateX is physical, so pairing it with a
+   logical offset throws the toast off-centre and off-screen in RTL. */
+#toast{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom));left:50%;
 transform:translateX(-50%) translateY(8px);background:linear-gradient(165deg,var(--pa),var(--pb));
 border:1px solid var(--grn);border-radius:13px;padding:11px 16px;display:flex;align-items:center;gap:9px;
 font-size:12.5px;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:80;max-width:88%;opacity:0;pointer-events:none;
@@ -300,6 +306,7 @@ transition:opacity .22s,transform .22s}
 <button class="fab" id="fab" onclick="openAdd()" aria-label="إضافة"></button>
 <div id="toast"></div>
 <div id="sheetHost"></div>
+<div id="modalHost"></div>
 
 <script>
 /* ============ Firebase ============ */
@@ -308,6 +315,18 @@ projectId:"the-root-8558e",storageBucket:"the-root-8558e.firebasestorage.app",me
 appId:"1:147347678300:web:b3fd9d3fc8640d11483299"};
 const FB_ON=firebaseConfig.apiKey!=="YOUR_API_KEY";
 const K={data:"mizan_data_v1",lang:"mizan_lang",theme:"mizan_theme",cur:"mizan_currency",sync:"mizan_sync_code"};
+/* Keep APP_VER equal to version.json — the Android workflow fails the build if they drift. */
+const APP_VER="1.1.0";
+const CHANGES={"1.1.0":[
+ "ميزان بقى أبلكيشن أندرويد حقيقي، مش صفحة في المتصفح",
+ "تبويب «المحفظة» الجديد: ديون وجمعيات وادخار واستثمار، كل واحد لوحده",
+ "الجمعيات: بيحسبلك دفعت كام ولسه كام ودورك إمتى وصافي موقفك",
+ "الادخار: حدّد هدف ومبلغ شهري، والتطبيق يقولك هتوصل بعد كام شهر",
+ "الاستثمار: سجّل المبلغ والقيمة الحالية وشوف الربح لكل بند وللمحفظة كلها",
+ "كارت «صافي وضعك» في الرئيسية بيجمع الأصول ناقص الديون",
+ "التنبيهات كانت بتظهر ناحية على الشاشة — اتظبطت",
+ "التطبيق بقى يبلّغك بالتحديثات الجديدة من جواه"
+]};
 
 /* ============ Icons ============ */
 const I={
@@ -374,8 +393,29 @@ const THEMES=[{id:"midnight",ar:"ليلي ذهبي",en:"Midnight",sw:["#15181B",
 /* ============ Strings ============ */
 const S={ar:{
 brand:"ميزان",local:"على الجهاز",cloud:"متزامن",signedIn:"محفوظ بحسابك",
-tHome:"الرئيسية",tLog:"السجل",tRep:"التقارير",tDebt:"الديون",tSet:"إعدادات",
-hHome:"نظرة عامة",hLog:"سجل الحركات",hRep:"التقارير",hDebt:"الديون والالتزامات",hSet:"الإعدادات",
+tHome:"الرئيسية",tLog:"السجل",tRep:"التقارير",tDebt:"المحفظة",tSet:"إعدادات",
+hHome:"نظرة عامة",hLog:"سجل الحركات",hRep:"التقارير",hDebt:"المحفظة",hSet:"الإعدادات",
+wDebt:"ديون",wGam:"جمعيات",wSav:"ادخار",wInv:"استثمار",
+netw:"صافي وضعك",netwHint:"الأصول ناقص الديون",assets:"أصول",liab:"ديون",
+gams:"جمعياتك",addGam:"إضافة جمعية",gamName:"اسم الجمعية",gamAmt:"القسط الشهري",
+gamMembers:"عدد الأعضاء",gamTurn:"ترتيب دورك",gamTurnN:n=>`دورك رقم ${n}`,gamStart:"أول شهر",gamPh:"جمعية الشغل…",
+noGams:"مفيش جمعيات مسجلة",gamHint:"سجّل جمعياتك عشان تعرف دفعت كام، ولسه كام، ودورك إمتى.",
+gamPaid:(a,b)=>`دفعت ${a} من ${b}`,gamTake:"هتقبض",gamTook:"قبضت",
+gamNow:"دورك الشهر ده 🎉",gamNext:"دورك الشهر الجاي",gamIn:n=>`دورك بعد ${n} شهر`,
+gamDone:"الجمعية خلصت",gamNet:"صافي موقفك",gamOf:(a,b)=>`قسط ${a} × ${b}`,
+savs:"أهداف الادخار",addSav:"إضافة هدف",savName:"اسم الهدف",savTarget:"المبلغ المطلوب",
+savNow:"المتوفر دلوقتي",savMonthly:"بتحوّش كام في الشهر",savPh:"الخطوبة، طوارئ، عربية…",
+noSavs:"مفيش أهداف ادخار",savHint:"حدّد هدف ومبلغ شهري، وميزان يحسبلك هتوصل إمتى.",
+savLeft:"فاضل",savIn:n=>`هتوصل بعد ${n} شهر`,savNoPace:"حدّد مبلغ شهري عشان أحسبلك المدة",
+savDone:"الهدف اتحقق 🎉",addAmt:"إضافة مبلغ",
+invs:"استثماراتك",addInv:"إضافة استثمار",invName:"الاسم",invIn:"المبلغ المستثمر",
+invNow:"القيمة الحالية",invPh:"ثندر، شهادات، دهب…",noInvs:"مفيش استثمارات مسجلة",
+invHint:"سجّل كل استثمار بمبلغه وقيمته الحالية، وميزان يحسبلك الربح.",
+profit:"ربح",loss:"خسارة",invTot:"إجمالي المحفظة",updVal:"تحديث القيمة",
+version:"الإصدار",updCheck:"فحص التحديثات",upToDate:"أنت على آخر إصدار",
+updTitle:"في تحديث جديد 🎉",updVer:v=>`الإصدار ${v}`,later:"بعدين",updNow:"حدّث دلوقتي",
+updGetApk:"نزّل التحديث",updApkHint:"هتتفتح صفحة التنزيل. ثبّت الملف فوق القديم من غير ما تمسح حاجة.",
+newIn:v=>`الجديد في ${v}`,letsGo:"يلا بينا",netErr:"مفيش اتصال بالنت",
 left:"المتبقي الشهر ده",income:"دخل",expense:"مصروف",today:"النهاردة",used:"اتصرف",
 advice:"نصايح وتنبيهات",budgets:"الميزانيات",noExp:"مفيش مصروفات الشهر ده",breakdown:"توزيع المصروفات",
 addExp:"تسجيل مصروف",addInc:"تسجيل دخل",editExp:"تعديل المصروف",editInc:"تعديل الدخل",
@@ -451,8 +491,29 @@ tCode:"الكود اتعمل ✓",tBadFile:"ملف غير صالح",tInstMenu:"�
 catPh:"كريدت كارد، قرض…",m6:"آخر 6 شهور"
 },en:{
 brand:"Mizan",local:"On device",cloud:"Synced",signedIn:"Saved to your account",
-tHome:"Home",tLog:"Log",tRep:"Reports",tDebt:"Debts",tSet:"Settings",
-hHome:"Overview",hLog:"Transactions",hRep:"Reports",hDebt:"Debts & Commitments",hSet:"Settings",
+tHome:"Home",tLog:"Log",tRep:"Reports",tDebt:"Wallet",tSet:"Settings",
+hHome:"Overview",hLog:"Transactions",hRep:"Reports",hDebt:"Wallet",hSet:"Settings",
+wDebt:"Debts",wGam:"Gameya",wSav:"Savings",wInv:"Investing",
+netw:"Your net position",netwHint:"Assets minus debts",assets:"Assets",liab:"Debts",
+gams:"Your Gameyas",addGam:"Add Gameya",gamName:"Gameya name",gamAmt:"Monthly contribution",
+gamMembers:"Members",gamTurn:"Your turn",gamTurnN:n=>`Turn #${n}`,gamStart:"First month",gamPh:"Work gameya…",
+noGams:"No gameyas recorded",gamHint:"Track a gameya to see what you have paid, what is left, and when your turn comes.",
+gamPaid:(a,b)=>`Paid ${a} of ${b}`,gamTake:"You will receive",gamTook:"You received",
+gamNow:"Your turn is this month 🎉",gamNext:"Your turn is next month",gamIn:n=>`Your turn in ${n} ${n===1?"month":"months"}`,
+gamDone:"Finished",gamNet:"Net position",gamOf:(a,b)=>`${a} × ${b}`,
+savs:"Savings Goals",addSav:"Add Goal",savName:"Goal name",savTarget:"Target amount",
+savNow:"Saved so far",savMonthly:"Monthly contribution",savPh:"Engagement, emergency, car…",
+noSavs:"No savings goals",savHint:"Set a target and a monthly amount, and Mizan works out when you get there.",
+savLeft:"left",savIn:n=>`${n} ${n===1?"month":"months"} to go`,savNoPace:"Set a monthly amount to see the timeline",
+savDone:"Goal reached 🎉",addAmt:"Add amount",
+invs:"Your Investments",addInv:"Add Investment",invName:"Name",invIn:"Amount invested",
+invNow:"Current value",invPh:"Thndr, certificates, gold…",noInvs:"No investments recorded",
+invHint:"Record each investment with what you put in and what it is worth now.",
+profit:"Profit",loss:"Loss",invTot:"Portfolio total",updVal:"Update value",
+version:"Version",updCheck:"Check for updates",upToDate:"You are on the latest version",
+updTitle:"Update available 🎉",updVer:v=>`Version ${v}`,later:"Later",updNow:"Update now",
+updGetApk:"Download update",updApkHint:"This opens the download page. Install the new file over the old one — nothing is lost.",
+newIn:v=>`What's new in ${v}`,letsGo:"Let's go",netErr:"No internet connection",
 left:"Left this month",income:"Income",expense:"Expense",today:"Today",used:"used",
 advice:"Insights & Alerts",budgets:"Budgets",noExp:"No expenses this month",breakdown:"Expense breakdown",
 addExp:"Add Expense",addInc:"Add Income",editExp:"Edit Expense",editInc:"Edit Income",
@@ -544,7 +605,7 @@ const cNm=c=>typeof c.name==="string"?c.name:(c.name[st.lang]||c.name.ar||c.name
 const lsG=(k,f)=>{try{const v=localStorage.getItem(k);return v===null?f:v}catch(e){return f}};
 const lsS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 // kind: "cat" | "item" — correct plural in either language
-function plN(n,kind){if(st.lang!=="ar"){const w=kind==="cat"?["category","categories"]:["item","items"];return n+" "+(n===1?w[0]:w[1]);}const f=kind==="cat"?["تصنيف","تصنيفين","تصنيفات"]:["بند","بندين","بنود"];if(n===1)return f[0]+" واحد";if(n===2)return f[1];if(n<=10)return n+" "+f[2];return n+" "+f[0]}
+function plN(n,kind){if(st.lang!=="ar"){const w=kind==="cat"?["category","categories"]:kind==="mem"?["member","members"]:["item","items"];return n+" "+(n===1?w[0]:w[1]);}const f=kind==="cat"?["تصنيف","تصنيفين","تصنيفات"]:kind==="mem"?["عضو","عضوين","أعضاء"]:["بند","بندين","بنود"];if(n===1)return f[0]+" واحد";if(n===2)return f[1];if(n<=10)return n+" "+f[2];return n+" "+f[0]}
 function txD(r){if(r.date)return r.date;if(r.createdAt)return dKey(new Date(r.createdAt));return (r.month||mKey())+"-01"}
 
 function migrate(){try{
@@ -556,6 +617,8 @@ migrate();
 
 function normalize(d){
  d.categories=d.categories||[];d.incomes=d.incomes||[];d.expenses=d.expenses||[];d.debts=d.debts||[];
+ // Added in 1.1.0 — an older backup or an older device's cloud copy has none of these.
+ d.gameyas=d.gameyas||[];d.savings=d.savings||[];d.invests=d.invests||[];
  const RM={cat_food:"c_food",cat_transport:"c_transport",cat_housing:"c_housing",cat_health:"c_health",
   cat_investment:"c_invest",cat_subscriptions:"c_subs",cat_entertainment:"c_fun",cat_shopping:"c_shop",
   cat_education:"c_edu",cat_family:"c_family",cat_other:"c_other"};
@@ -569,13 +632,13 @@ function normalize(d){
 }
 function loadData(){
  try{const raw=localStorage.getItem(K.data);if(raw)return normalize(JSON.parse(raw))}catch(e){}
- return {categories:JSON.parse(JSON.stringify(DEF)),incomes:[],expenses:[],debts:[]};
+ return {categories:JSON.parse(JSON.stringify(DEF)),incomes:[],expenses:[],debts:[],gameyas:[],savings:[],invests:[]};
 }
 
 /* ============ State ============ */
 const st={data:loadData(),month:mKey(),tab:"home",
  lang:lsG(K.lang,"ar")==="en"?"en":"ar",theme:lsG(K.theme,"midnight"),currency:lsG(K.cur,""),
- filter:"all",booted:false};
+ filter:"all",wtab:"debt",booted:false};
 if(!st.currency)st.currency=st.lang==="ar"?"ج.م":"EGP";
 
 let db=null,auth=null,unsub=null,remote=false,timer=null,prompt_=null;
@@ -644,6 +707,46 @@ function payoff(bal,rate,pay){
  const n=Math.ceil(-Math.log(1-(bal*rate)/pay)/Math.log(1+rate));
  let b=bal,ti=0;for(let i=0;i<n&&i<600;i++){const it=b*rate;ti+=it;b=b+it-pay;if(b<0)b=0}
  return{n,interest:ti,ok:true}}
+
+/* ============ Wallet maths ============ */
+// Whole months from one YYYY-MM key to another; negative when the first is later.
+function mDiff(a,b){const[y1,m1]=a.split("-").map(Number),[y2,m2]=b.split("-").map(Number);return (y2-y1)*12+(m2-m1)}
+// A gameya is a fixed circle: everyone pays the same instalment every month, and each
+// member takes the whole pot once. Before your turn the money you have put in is savings
+// you will get back; after it, what is left to pay is a debt. net is that, asset-positive.
+function gamOf(g){
+ const members=Math.max(1,Math.round(Number(g.members)||1));
+ const amt=Number(g.amount)||0;
+ const turn=Math.min(members,Math.max(1,Math.round(Number(g.turn)||1)));
+ const start=g.start||mKey();
+ const elapsed=mDiff(start,mKey());
+ const paidN=Math.max(0,Math.min(members,elapsed+1));
+ const paid=amt*paidN,total=amt*members;
+ const turnIn=(turn-1)-elapsed;
+ const took=turnIn<0;
+ return{members,amt,turn,start,paidN,paid,total,turnIn,took,
+  done:paidN>=members&&took,net:paid-(took?total:0)};
+}
+function savOf(s){
+ const target=Number(s.target)||0,now=Number(s.saved)||0,per=Number(s.monthly)||0;
+ const left=Math.max(0,target-now);
+ return{target,now,per,left,pct:target>0?Math.min(100,(now/target)*100):0,
+  months:left>0?(per>0?Math.ceil(left/per):null):0,done:target>0&&now>=target};
+}
+function invOf(i){
+ const put=Number(i.amount)||0,now=Number(i.value)||0,diff=now-put;
+ return{put,now,diff,pct:put>0?(diff/put)*100:0};
+}
+function netWorth(){
+ const d=st.data;
+ const debts=(d.debts||[]).reduce((s,x)=>s+(Number(x.balance)||0),0);
+ const gam=(d.gameyas||[]).reduce((s,g)=>s+gamOf(g).net,0);
+ const sav=(d.savings||[]).reduce((s,x)=>s+(Number(x.saved)||0),0);
+ const inv=(d.invests||[]).reduce((s,x)=>s+(Number(x.value)||0),0);
+ const assets=sav+inv+Math.max(0,gam),liab=debts+Math.max(0,-gam);
+ return{debts,gam,sav,inv,assets,liab,net:assets-liab,
+  any:debts>0||gam!==0||sav>0||inv>0};
+}
 
 /* ============ Insights ============ */
 function insights(){
@@ -785,6 +888,7 @@ function vHome(){
    </div></div>
   ${plan>0?ring(pct,pct>100):""}
  </div>
+ ${nwCard()}
  <div class="card wide"><div class="ch">${I.bulb}${t("advice")}</div>
   ${ins.length?ins.map(x=>`<div class="ins ${x.lv}"><span class="ic">${x.ic}</span>
    <div><div class="t">${esc(x.t)}</div><div class="b">${esc(x.b)}</div></div></div>`).join("")
@@ -850,11 +954,37 @@ function vRep(){
   <button class="btn ghost" onclick="expCSV()">${I.dl}${mLab(st.month)}</button><div style="height:8px"></div>
   <button class="btn ghost" onclick="expCSV(true)">${I.dl}${t("allMonths")}</button></div></div>`}
 
+/* ============ Wallet ============ */
+function setW(x){st.wtab=x;paint();const m=document.getElementById("main");if(m)m.scrollTop=0}
+function nwCard(link){
+ const cur=esc(st.currency),n=netWorth();
+ if(!n.any)return "";
+ const line=(lab,val,tone,to)=>`<div class="row${to?" tap":""}" style="--tone:${tone}"${to?` onclick="go('debt');setW('${to}')"`:""}>
+  <div class="rico">${({debt:"💳",gam:"🤝",sav:"🏦",inv:"📈"})[to]||"•"}</div>
+  <div class="rmain"><div class="rt">${lab}</div></div>
+  <div class="ra" style="color:${tone}">${val<0?"−":""}${fmt(Math.abs(val))}</div></div>`;
+ return `<div class="hero" style="display:block">
+  <div class="hmeta"><div class="hlab">${t("netw")}</div>
+   <div class="hval" style="color:${n.net>=0?"var(--grn)":"var(--red)"};margin-bottom:2px">${n.net<0?"−":""}${fmt(Math.abs(n.net))} <small>${cur}</small></div>
+   <div class="hlab" style="opacity:.75">${t("netwHint")}</div></div>
+  <div style="margin-top:12px;border-top:1px solid var(--line2)">
+  ${n.sav>0?line(t("wSav"),n.sav,"var(--grn)","sav"):""}
+  ${n.inv>0?line(t("wInv"),n.inv,"var(--grn)","inv"):""}
+  ${n.gam!==0?line(t("wGam"),n.gam,n.gam>=0?"var(--grn)":"var(--red)","gam"):""}
+  ${n.debts>0?line(t("wDebt"),-n.debts,"var(--red)","debt"):""}
+  </div></div>`;
+}
 function vDebt(){
- const cur=esc(st.currency),ds=st.data.debts||[],tot=ds.reduce((s,d)=>s+Number(d.balance||0),0);
+ const body=({debt:wDebts,gam:wGams,sav:wSavs,inv:wInvs})[st.wtab]||wDebts;
+ const b=(id,l)=>`<button class="${st.wtab===id?"on":""}" onclick="setW('${id}')">${l}</button>`;
  return `<div class="sec">
- ${ds.length?`<div class="hero"><div class="hmeta"><div class="hlab">${t("debts")}</div>
-  <div class="hval" style="color:var(--red);margin-bottom:0">${fmt(tot)} <small>${cur}</small></div></div></div>`:""}
+ <div class="seg four">${b("debt",t("wDebt"))}${b("gam",t("wGam"))}${b("sav",t("wSav"))}${b("inv",t("wInv"))}</div>
+ ${nwCard()}${body()}</div>`;
+}
+
+function wDebts(){
+ const cur=esc(st.currency),ds=st.data.debts||[];
+ return `
  <div class="card wide"><div class="ch">${I.debt}${t("debts")}</div>
  ${ds.length?ds.map(d=>{const r=payoff(d.balance,(Number(d.rate)||0)/100,d.monthlyPay);
   const ex=payoff(d.balance,(Number(d.rate)||0)/100,(Number(d.monthlyPay)||0)+500);
@@ -874,7 +1004,91 @@ function vDebt(){
   <div class="frow"><div class="fld"><label class="fl">${t("balance")}</label><input id="dB" type="number" inputmode="decimal" placeholder="0"></div>
   <div class="fld"><label class="fl">${t("rate")}</label><input id="dR" type="number" inputmode="decimal" placeholder="2.5" step="any"></div></div>
   <div class="fld"><label class="fl">${t("mpay")}</label><input id="dP" type="number" inputmode="decimal" placeholder="0"></div>
-  <button class="btn" onclick="addDebt()">${I.plus}${t("save")}</button></div></div>`}
+  <button class="btn" onclick="addDebt()">${I.plus}${t("save")}</button></div>`}
+
+function wGams(){
+ const cur=esc(st.currency),gs=st.data.gameyas||[];
+ return `
+ <div class="card wide"><div class="ch">🤝${t("gams")}</div>
+ ${gs.length?gs.map(g=>{const o=gamOf(g);
+  const when=o.done?t("gamDone"):o.turnIn===0?t("gamNow"):o.turnIn===1?t("gamNext"):o.turnIn>1?t("gamIn",o.turnIn):(o.took?t("gamTook")+" "+fmt(o.total)+" "+cur:"");
+  const lv=o.done?"info":o.turnIn===0?"good":o.took?"warn":"info";
+  return `<div style="padding:12px 0;border-bottom:1px solid var(--line2)">
+   <div class="row" style="--tone:#5CA5A5;padding:0;border:none"><div class="rico">🤝</div>
+    <div class="rmain"><div class="rt">${esc(g.name)}</div>
+    <div class="rs">${t("gamOf",fmt(o.amt)+" "+cur,plN(o.members,"mem"))}</div></div>
+    <div class="ra" style="color:${o.net>=0?"var(--grn)":"var(--red)"}">${o.net<0?"−":""}${fmt(Math.abs(o.net))}</div>
+    <button class="ib" onclick="delGam('${g.id}')">${I.del}</button></div>
+   <div class="brow" style="margin-top:9px"><div class="btop">
+    <span class="bnm">${t("gamPaid",fmt(o.paid),fmt(o.total))}</span>
+    <span class="bamt">${o.paidN}/${o.members}</span></div>
+    <div class="track"><div class="fill" style="width:${Math.min(100,(o.paidN/o.members)*100)}%;background:#5CA5A5"></div></div></div>
+   ${when?`<div class="ins ${lv}" style="margin-top:9px"><span class="ic">${o.done?"✅":o.took?"💳":"📆"}</span>
+    <div><div class="t">${when}</div><div class="b">${t("gamTurnN",o.turn)} · ${o.took?`${t("gamNet")}: ${o.net<0?"−":""}${fmt(Math.abs(o.net))} ${cur}`:`${t("gamTake")} ${fmt(o.total)} ${cur}`}</div></div></div>`:""}
+   </div>`}).join("")
+  :`<div class="empty">${I.spark}<div>${t("noGams")}<br><span style="font-size:11px">${t("gamHint")}</span></div></div>`}</div>
+ <div class="card"><div class="ch">${I.plus}${t("addGam")}</div>
+  <div class="fld"><label class="fl">${t("gamName")}</label><input id="gN" placeholder="${t("gamPh")}"></div>
+  <div class="frow"><div class="fld"><label class="fl">${t("gamAmt")}</label><input id="gA" type="number" inputmode="decimal" placeholder="0"></div>
+  <div class="fld"><label class="fl">${t("gamMembers")}</label><input id="gM" type="number" inputmode="numeric" placeholder="10"></div></div>
+  <div class="frow"><div class="fld"><label class="fl">${t("gamTurn")}</label><input id="gT" type="number" inputmode="numeric" placeholder="1"></div>
+  <div class="fld"><label class="fl">${t("gamStart")}</label><input id="gS" type="month" value="${mKey()}"></div></div>
+  <button class="btn" onclick="addGam()">${I.plus}${t("save")}</button></div>`}
+
+function wSavs(){
+ const cur=esc(st.currency),ss=st.data.savings||[];
+ return `
+ <div class="card wide"><div class="ch">🏦${t("savs")}</div>
+ ${ss.length?ss.map(s=>{const o=savOf(s);
+  const when=o.done?t("savDone"):o.months!==null?t("savIn",o.months):t("savNoPace");
+  return `<div style="padding:12px 0;border-bottom:1px solid var(--line2)">
+   <div class="row" style="--tone:#4E8FB5;padding:0;border:none"><div class="rico">${esc(s.emoji||"🏦")}</div>
+    <div class="rmain"><div class="rt">${esc(s.name)}</div>
+    <div class="rs">${o.done?t("savDone"):`${fmt(o.left)} ${cur} ${t("savLeft")} · ${when}`}</div></div>
+    <div class="ra" style="color:var(--grn)">${fmt(o.now)}</div>
+    <button class="ib" onclick="delSav('${s.id}')">${I.del}</button></div>
+   <div class="brow" style="margin-top:9px"><div class="btop">
+    <span class="bnm">${fmt(o.now)} / ${fmt(o.target)} ${cur}</span>
+    <span class="bamt">${Math.round(o.pct)}%</span></div>
+    <div class="track"><div class="fill" style="width:${o.pct}%;background:${o.done?"var(--grn)":"#4E8FB5"}"></div></div></div>
+   <button class="btn ghost" style="margin-top:9px" onclick="addToSav('${s.id}')">${I.plus}${t("addAmt")}</button>
+   </div>`}).join("")
+  :`<div class="empty">${I.spark}<div>${t("noSavs")}<br><span style="font-size:11px">${t("savHint")}</span></div></div>`}</div>
+ <div class="card"><div class="ch">${I.plus}${t("addSav")}</div>
+  <div class="fld"><label class="fl">${t("savName")}</label><input id="sN" placeholder="${t("savPh")}"></div>
+  <div class="frow"><div class="fld"><label class="fl">${t("savTarget")}</label><input id="sT" type="number" inputmode="decimal" placeholder="0"></div>
+  <div class="fld"><label class="fl">${t("savNow")}</label><input id="sC" type="number" inputmode="decimal" placeholder="0"></div></div>
+  <div class="fld"><label class="fl">${t("savMonthly")}</label><input id="sP" type="number" inputmode="decimal" placeholder="0"></div>
+  <div class="fld"><select id="sE">${EMO.map(e=>`<option value="${e}">${e}</option>`).join("")}</select></div>
+  <button class="btn" onclick="addSav()">${I.plus}${t("save")}</button></div>`}
+
+function wInvs(){
+ const cur=esc(st.currency),is=st.data.invests||[];
+ const tot=is.reduce((a,i)=>a+invOf(i).now,0),put=is.reduce((a,i)=>a+invOf(i).put,0);
+ const d=tot-put;
+ return `
+ ${is.length?`<div class="card"><div class="ch">📈${t("invTot")}</div>
+  <div class="hrow" style="margin:0">
+   <div class="hcell"><div class="l">${t("invNow")}</div><div class="v">${fmt(tot)}</div></div>
+   <div class="hcell"><div class="l">${d>=0?t("profit"):t("loss")}</div>
+    <div class="v" style="color:${d>=0?"var(--grn)":"var(--red)"}">${d<0?"−":"+"}${fmt(Math.abs(d))}${put>0?` <small>${d>=0?"+":"−"}${Math.abs(Math.round((d/put)*100))}%</small>`:""}</div></div>
+  </div></div>`:""}
+ <div class="card wide"><div class="ch">📈${t("invs")}</div>
+ ${is.length?is.map(i=>{const o=invOf(i);
+  return `<div class="row" style="--tone:#5CA5A5"><div class="rico">${esc(i.emoji||"📈")}</div>
+   <div class="rmain"><div class="rt">${esc(i.name)}</div>
+   <div class="rs">${t("invIn")}: ${fmt(o.put)} ${cur}</div></div>
+   <div class="ra"><div>${fmt(o.now)}</div>
+    <div style="font-size:11px;color:${o.diff>=0?"var(--grn)":"var(--red)"}">${o.diff>=0?"▲":"▼"}${Math.abs(Math.round(o.pct))}%</div></div>
+   <button class="ib" onclick="updInv('${i.id}')" title="${t("updVal")}">${I.up}</button>
+   <button class="ib" onclick="delInv('${i.id}')">${I.del}</button></div>`}).join("")
+  :`<div class="empty">${I.spark}<div>${t("noInvs")}<br><span style="font-size:11px">${t("invHint")}</span></div></div>`}</div>
+ <div class="card"><div class="ch">${I.plus}${t("addInv")}</div>
+  <div class="fld"><label class="fl">${t("invName")}</label><input id="iN" placeholder="${t("invPh")}"></div>
+  <div class="frow"><div class="fld"><label class="fl">${t("invIn")}</label><input id="iA" type="number" inputmode="decimal" placeholder="0"></div>
+  <div class="fld"><label class="fl">${t("invNow")}</label><input id="iV" type="number" inputmode="decimal" placeholder="0"></div></div>
+  <div class="fld"><select id="iE">${EMO.map(e=>`<option value="${e}"${e==="📈"?" selected":""}>${e}</option>`).join("")}</select></div>
+  <button class="btn" onclick="addInv()">${I.plus}${t("save")}</button></div>`}
 
 function vSet(){
  const on=sync.status==="on",u=sync.user;
@@ -887,10 +1101,15 @@ function vSet(){
    <button class="btn ghost" onclick="gOut()">${I.out}${t("gOut")}</button>`
   :`<p class="note" style="margin-bottom:11px">${t("gHint")}</p>
     <button class="btn google" onclick="gIn()">${I.G}${t("gIn")}</button>`}</div>
- <div class="card"><div class="ch">${I.phone}${t("install")}</div>
+ ${isNative()
+  // Inside the Android app there is nothing to install — show the version and an update check instead.
+  ?`<div class="card"><div class="ch">${I.phone}${t("version")}</div>
+    <div class="sl">${I.ok}<span>${t("brand")} ${APP_VER}</span></div>
+    <button class="btn ghost" onclick="checkUpdate(true)">${I.dl}${t("updCheck")}</button></div>`
+  :`<div class="card"><div class="ch">${I.phone}${t("install")}</div>
   ${inst?`<div class="sl">${I.ok}<span>${t("installed")} ✓</span></div>`
    :`<p class="note" style="margin-bottom:11px">${t("instHint")}</p>
-     <button class="btn" onclick="doInstall()">${I.dl}${t("install")}</button>`}</div>
+     <button class="btn" onclick="doInstall()">${I.dl}${t("install")}</button>`}</div>`}
  <div class="card"><div class="ch">${I.pal}${t("theme")}</div>
   <div class="tgrid">${THEMES.map(h=>`<button class="tchip${st.theme===h.id?" on":""}" onclick="setTheme('${h.id}')">
    <span class="sw">${h.sw.map(c=>`<i style="background:${c}"></i>`).join("")}</span>
@@ -1019,6 +1238,36 @@ function addDebt(){const n=document.getElementById("dN").value.trim();if(!n)retu
   rate:Number(document.getElementById("dR").value)||0,monthlyPay:Number(document.getElementById("dP").value)||0,createdAt:Date.now()});
  save();paint();toast(t("sv"))}
 function delDebt(id){st.data.debts=st.data.debts.filter(d=>d.id!==id);save();paint()}
+const fNum=id=>{const e=document.getElementById(id);return e?Number(e.value)||0:0};
+const fStr=id=>{const e=document.getElementById(id);return e?e.value.trim():""};
+function addGam(){const n=fStr("gN");if(!n){toast(t("gamName"),1);return}
+ const members=Math.max(1,Math.round(fNum("gM")||1));
+ st.data.gameyas.push({id:uid("gam"),name:n,amount:fNum("gA"),members,
+  turn:Math.min(members,Math.max(1,Math.round(fNum("gT")||1))),
+  start:fStr("gS")||mKey(),createdAt:Date.now()});
+ save();paint();toast(t("sv"))}
+function delGam(id){st.data.gameyas=st.data.gameyas.filter(x=>x.id!==id);save();paint()}
+function addSav(){const n=fStr("sN");if(!n){toast(t("savName"),1);return}
+ const e=document.getElementById("sE");
+ st.data.savings.push({id:uid("sav"),name:n,target:fNum("sT"),saved:fNum("sC"),
+  monthly:fNum("sP"),emoji:e?e.value:"🏦",createdAt:Date.now()});
+ save();paint();toast(t("sv"))}
+function delSav(id){st.data.savings=st.data.savings.filter(x=>x.id!==id);save();paint()}
+function addToSav(id){const s=st.data.savings.find(x=>x.id===id);if(!s)return;
+ const v=prompt(t("addAmt"),"");if(v===null)return;
+ const n=Number(v);if(isNaN(n)||!n)return;
+ s.saved=Math.max(0,(Number(s.saved)||0)+n);save();paint();
+ toast(savOf(s).done?t("savDone"):t("sv"))}
+function addInv(){const n=fStr("iN");if(!n){toast(t("invName"),1);return}
+ const e=document.getElementById("iE"),put=fNum("iA"),vEl=document.getElementById("iV");
+ // An investment with no value typed yet is simply worth what went into it.
+ const val=vEl&&vEl.value!==""?Number(vEl.value)||0:put;
+ st.data.invests.push({id:uid("inv"),name:n,amount:put,value:val,emoji:e?e.value:"📈",createdAt:Date.now()});
+ save();paint();toast(t("sv"))}
+function delInv(id){st.data.invests=st.data.invests.filter(x=>x.id!==id);save();paint()}
+function updInv(id){const i=st.data.invests.find(x=>x.id===id);if(!i)return;
+ const v=prompt(t("invNow"),String(i.value||0));if(v===null)return;
+ const n=Number(v);if(isNaN(n)||n<0)return;i.value=n;save();paint();toast(t("upd"))}
 function setTheme(id){st.theme=id;lsS(K.theme,id);document.getElementById("root").setAttribute("data-theme",id);
  const m=document.querySelector('meta[name="theme-color"]');
  if(m)m.setAttribute("content",getComputedStyle(document.body).backgroundColor);paint()}
@@ -1054,7 +1303,7 @@ function impJSON(inp){const f=inp.files&&inp.files[0];if(!f)return;
   catch(e){alert(t("tBadFile"))}inp.value=""};
  r.readAsText(f)}
 function resetAll(){if(!confirm(t("resetAsk")))return;
- st.data={categories:JSON.parse(JSON.stringify(DEF)),incomes:[],expenses:[],debts:[]};
+ st.data={categories:JSON.parse(JSON.stringify(DEF)),incomes:[],expenses:[],debts:[],gameyas:[],savings:[],invests:[]};
  persist();render();toast(t("del"))}
 
 /* ============ Sync / Auth ============ */
@@ -1110,9 +1359,66 @@ window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();prompt_=e})
 function doInstall(){if(!prompt_){toast(t("tInstMenu"),1);return}
  prompt_.prompt();prompt_.userChoice.finally(()=>{prompt_=null})}
 
+/* ============ Updates ============
+ * version.json on the site carries the newest release. The Android app can't update
+ * itself, so it compares and offers the APK; the web build just reloads. */
+const UPD_URL="https://technicalteam774.github.io/finance-dashboard/version.json";
+const APK_PAGE="https://github.com/TechnicalTeam774/finance-dashboard/releases/latest";
+const verNum=v=>{const p=String(v||"0").split(".");return (+p[0]||0)*1e6+(+p[1]||0)*1e3+(+p[2]||0)};
+let updLast=0;
+function closeModal(){const h=document.getElementById("modalHost");
+ const s=h.querySelector(".sheet"),c=h.querySelector(".scrim");
+ if(s)s.classList.remove("on");if(c)c.classList.remove("on");
+ setTimeout(()=>{h.innerHTML=""},260)}
+function modal(inner){
+ const h=document.getElementById("modalHost");
+ h.innerHTML=`<div class="scrim" onclick="closeModal()"></div><div class="sheet"><div class="grab"></div>${inner}</div>`;
+ requestAnimationFrame(()=>{const s=h.querySelector(".sheet"),c=h.querySelector(".scrim");
+  if(s)s.classList.add("on");if(c)c.classList.add("on")});
+ return h}
+const notesHTML=l=>l&&l.length?`<ul class="upd-notes">${l.map(n=>`<li>${esc(n)}</li>`).join("")}</ul>`:"";
+function checkUpdate(manual){
+ if(typeof fetch!=="function"||location.protocol==="file:"){if(manual)toast(t("upToDate"));return}
+ updLast=Date.now();
+ fetch(UPD_URL+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(j=>{
+  if(!j||!j.version)return;
+  if(verNum(j.version)>verNum(APP_VER)){
+   // "Later" is respected for half a day, so the dialog isn't in the way every launch.
+   if(!manual&&st.data.updLater===j.version&&Date.now()-(st.data.updLaterAt||0)<12*3600000)return;
+   showUpdate(j);
+  }else if(manual)toast(t("upToDate"));
+ }).catch(()=>{if(manual)toast(t("netErr"),1)})}
+function showUpdate(j){
+ if(document.querySelector("#modalHost .sheet"))return;
+ const nat=isNative();
+ modal(`<div class="upd-ic">🎉</div>
+  <div class="stitle" style="justify-content:center">${t("updTitle")}</div>
+  <p class="note" style="text-align:center;margin-bottom:10px">${t("updVer",esc(j.version))}</p>
+  ${notesHTML(j.notes)}
+  <div class="frow"><button class="btn ghost" onclick="updLater('${esc(j.version)}')">${t("later")}</button>
+  <button class="btn" onclick="updGo('${esc(j.apk||APK_PAGE)}')">${t(nat?"updGetApk":"updNow")}</button></div>
+  ${nat?`<p class="note" style="margin-top:10px">${t("updApkHint")}</p>`:""}`)}
+function updLater(v){st.data.updLater=v;st.data.updLaterAt=Date.now();save();closeModal()}
+function updGo(url){closeModal();
+ if(isNative())window.open(url,"_system");else location.reload(true)}
+// Once per new version: what changed.
+function whatsNew(){
+ if(!st.data.seenVer){st.data.seenVer=APP_VER;save();return}
+ if(st.data.seenVer===APP_VER)return;
+ st.data.seenVer=APP_VER;save();
+ const n=CHANGES[APP_VER];if(!n||!n.length)return;
+ modal(`<div class="upd-ic">✨</div>
+  <div class="stitle" style="justify-content:center">${t("newIn",APP_VER)}</div>
+  ${notesHTML(n)}
+  <button class="btn" onclick="closeModal()">${t("letsGo")}</button>`)}
+document.addEventListener("visibilitychange",()=>{
+ if(document.visibilityState==="visible"&&Date.now()-updLast>6*3600000)checkUpdate(false)});
+Object.assign(window,{closeModal,updLater,updGo});
+
 Object.assign(window,{go,shiftM,openAdd,closeAdd,setKind,moreCats,pickC,useC,kp,saveTx,editTx,setF,
  delExp,delInc,delCat,addCat,editB,addDebt,delDebt,setTheme,setLang,setCur,
- expCSV,expJSON,impJSON,resetAll,mkCode,joinCode,offCode,gIn,gOut,doInstall,ad});
+ expCSV,expJSON,impJSON,resetAll,mkCode,joinCode,offCode,gIn,gOut,doInstall,ad,
+ setW,addGam,delGam,addSav,delSav,addToSav,addInv,delInv,updInv,checkUpdate});
 
 /* ============ Boot ============ */
 (function boot(){
@@ -1142,6 +1448,10 @@ Object.assign(window,{go,shiftM,openAdd,closeAdd,setKind,moreCats,pickC,useC,kp,
  if("serviceWorker" in navigator&&!isNative()){
   window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
  }
+ // What's new first; the update check waits so the two dialogs can't collide.
+ setTimeout(whatsNew,600);
+ setTimeout(()=>checkUpdate(false),3000);
+
  try{const q=new URLSearchParams(location.search);
   if(q.get("quick")==="expense")setTimeout(()=>openAdd("e"),300);
   if(q.get("quick")==="income")setTimeout(()=>openAdd("i"),300);

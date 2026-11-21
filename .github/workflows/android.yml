@@ -44,6 +44,14 @@ jobs:
             [0-9]*.[0-9]*.[0-9]*) ;;
             *) echo "::error title=Bad version::version.json has '$V'"; exit 1 ;;
           esac
+          A=$(node -e "
+            const m=require('fs').readFileSync('index.html','utf8').match(/const APP_VER=\"([\d.]+)\"/);
+            process.stdout.write(m ? m[1] : '');
+          ")
+          if [ "$A" != "$V" ]; then
+            echo "::error title=Version mismatch::index.html says APP_VER='$A' but version.json says '$V'. The app would never see its own update. Make them equal and run again."
+            exit 1
+          fi
           echo "v=$V" >> "$GITHUB_OUTPUT"
           echo "Building ميزان $V (versionCode ${GITHUB_RUN_NUMBER})"
 
