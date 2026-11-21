@@ -316,8 +316,8 @@ appId:"1:147347678300:web:b3fd9d3fc8640d11483299"};
 const FB_ON=firebaseConfig.apiKey!=="YOUR_API_KEY";
 const K={data:"mizan_data_v1",lang:"mizan_lang",theme:"mizan_theme",cur:"mizan_currency",sync:"mizan_sync_code"};
 /* Keep APP_VER equal to version.json — the Android workflow fails the build if they drift. */
-const APP_VER="1.1.0";
-const CHANGES={"1.1.0":[
+const APP_VER="1.2.0";
+const CHANGES={"1.2.0":[
  "ميزان بقى أبلكيشن أندرويد حقيقي، مش صفحة في المتصفح",
  "تبويب «المحفظة» الجديد: ديون وجمعيات وادخار واستثمار، كل واحد لوحده",
  "الجمعيات: بيحسبلك دفعت كام ولسه كام ودورك إمتى وصافي موقفك",
@@ -325,7 +325,9 @@ const CHANGES={"1.1.0":[
  "الاستثمار: سجّل المبلغ والقيمة الحالية وشوف الربح لكل بند وللمحفظة كلها",
  "كارت «صافي وضعك» في الرئيسية بيجمع الأصول ناقص الديون",
  "التنبيهات كانت بتظهر ناحية على الشاشة — اتظبطت",
- "التطبيق بقى يبلّغك بالتحديثات الجديدة من جواه"
+ "التطبيق بقى يبلّغك بالتحديثات الجديدة من جواه",
+ "زرار الرجوع: بيقفل الشاشة المفتوحة، وعلى الرئيسية ضغطتين يخرجوا",
+ "تحديث التطبيق بقى يتعمل من جيت هاب من غير ما تلمس أي كود"
 ]};
 
 /* ============ Icons ============ */
@@ -416,6 +418,7 @@ version:"الإصدار",updCheck:"فحص التحديثات",upToDate:"أنت �
 updTitle:"في تحديث جديد 🎉",updVer:v=>`الإصدار ${v}`,later:"بعدين",updNow:"حدّث دلوقتي",
 updGetApk:"نزّل التحديث",updApkHint:"هتتفتح صفحة التنزيل. ثبّت الملف فوق القديم من غير ما تمسح حاجة.",
 newIn:v=>`الجديد في ${v}`,letsGo:"يلا بينا",netErr:"مفيش اتصال بالنت",
+exitAsk:"اضغط رجوع تاني للخروج",
 left:"المتبقي الشهر ده",income:"دخل",expense:"مصروف",today:"النهاردة",used:"اتصرف",
 advice:"نصايح وتنبيهات",budgets:"الميزانيات",noExp:"مفيش مصروفات الشهر ده",breakdown:"توزيع المصروفات",
 addExp:"تسجيل مصروف",addInc:"تسجيل دخل",editExp:"تعديل المصروف",editInc:"تعديل الدخل",
@@ -514,6 +517,7 @@ version:"Version",updCheck:"Check for updates",upToDate:"You are on the latest v
 updTitle:"Update available 🎉",updVer:v=>`Version ${v}`,later:"Later",updNow:"Update now",
 updGetApk:"Download update",updApkHint:"This opens the download page. Install the new file over the old one — nothing is lost.",
 newIn:v=>`What's new in ${v}`,letsGo:"Let's go",netErr:"No internet connection",
+exitAsk:"Press back again to exit",
 left:"Left this month",income:"Income",expense:"Expense",today:"Today",used:"used",
 advice:"Insights & Alerts",budgets:"Budgets",noExp:"No expenses this month",breakdown:"Expense breakdown",
 addExp:"Add Expense",addInc:"Add Income",editExp:"Edit Expense",editInc:"Edit Income",
@@ -1401,11 +1405,14 @@ function showUpdate(j){
 function updLater(v){st.data.updLater=v;st.data.updLaterAt=Date.now();save();closeModal()}
 function updGo(url){closeModal();
  if(isNative())window.open(url,"_system");else location.reload(true)}
-// Once per new version: what changed.
+// Once per new version: what changed. Someone upgrading from a build older than
+// this flag has no seenVer either, so an existing ledger counts as an upgrade.
 function whatsNew(){
- if(!st.data.seenVer){st.data.seenVer=APP_VER;save();return}
  if(st.data.seenVer===APP_VER)return;
+ const fresh=!st.data.seenVer&&!(st.data.expenses.length||st.data.incomes.length
+  ||st.data.debts.length||st.data.gameyas.length||st.data.savings.length||st.data.invests.length);
  st.data.seenVer=APP_VER;save();
+ if(fresh)return;
  const n=CHANGES[APP_VER];if(!n||!n.length)return;
  modal(`<div class="upd-ic">✨</div>
   <div class="stitle" style="justify-content:center">${t("newIn",APP_VER)}</div>
@@ -1413,6 +1420,19 @@ function whatsNew(){
   <button class="btn" onclick="closeModal()">${t("letsGo")}</button>`)}
 document.addEventListener("visibilitychange",()=>{
  if(document.visibilityState==="visible"&&Date.now()-updLast>6*3600000)checkUpdate(false)});
+
+/* ============ Android back button ============
+ * native/entry.js calls this; returning false lets the app close. */
+let exitArmed=0;
+window.MizanBack=function(){
+ if(document.querySelector("#modalHost .sheet")){closeModal();return true}
+ if(document.getElementById("sheet")){closeAdd();return true}
+ if(st.tab!=="home"){go("home");return true}
+ // On the dashboard it takes two presses, so a stray back never drops the app.
+ const now=Date.now();
+ if(now-exitArmed<2500)return false;
+ exitArmed=now;toast(t("exitAsk"));return true;
+};
 Object.assign(window,{closeModal,updLater,updGo});
 
 Object.assign(window,{go,shiftM,openAdd,closeAdd,setKind,moreCats,pickC,useC,kp,saveTx,editTx,setF,

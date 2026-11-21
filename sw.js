@@ -1,5 +1,5 @@
 /* ميزان — service worker. Bump CACHE on every new index.html upload. */
-const CACHE = "mizan-v5";
+const CACHE = "mizan-v6";
 const SHELL = ["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png","./icon-maskable-512.png"];
 
 self.addEventListener("install", e => {

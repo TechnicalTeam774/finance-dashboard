@@ -1,0 +1,77 @@
+# تحديث ميزان من غير ما تلمس أي كود.
+#
+#   ١. ارفع ملف mizan-repo.zip على الريبو (Add file > Upload files)
+#   ٢. Actions > Apply update > Run workflow
+#
+# الـ workflow بيفك الضغط، يحط كل ملف في مكانه، يمسح الملف المضغوط،
+# ويبدأ بناء الأبلكيشن لوحده. مش بيلمس مجلد .github أبدًا.
+name: Apply update
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: apply-update
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Unpack the update
+        run: |
+          ZIP=$(find . -maxdepth 1 -name 'mizan-repo*.zip' -printf '%f\n' | sort -V | tail -n 1)
+          if [ -z "$ZIP" ]; then
+            echo "::error title=No update file::Upload mizan-repo.zip to the repository first, then run this again."
+            exit 1
+          fi
+          echo "Using $ZIP"
+          mkdir -p "$RUNNER_TEMP/new"
+          unzip -q "$ZIP" -d "$RUNNER_TEMP/new"
+          # The zip may hold the files at its root or inside one folder — accept either.
+          SRC=$(find "$RUNNER_TEMP/new" -maxdepth 2 -name index.html -printf '%h\n' | sort | head -n 1)
+          if [ -z "$SRC" ] || [ ! -f "$SRC/package.json" ]; then
+            echo "::error title=Unexpected file::$ZIP has no folder containing both index.html and package.json, so it is not a Mizan build."
+            exit 1
+          fi
+          echo "Source: $SRC"
+          echo "ZIP=$ZIP" >> "$GITHUB_ENV"
+          echo "SRC=$SRC" >> "$GITHUB_ENV"
+
+      - name: Check the version was raised
+        run: |
+          OLD=$(node -e "try{process.stdout.write(require('./version.json').version)}catch(e){process.stdout.write('0.0.0')}")
+          NEW=$(node -e "process.stdout.write(require('$SRC/version.json').version)")
+          num(){ echo "$1" | awk -F. '{print ($1*1000000)+($2*1000)+$3}'; }
+          if [ "$(num "$NEW")" -le "$(num "$OLD")" ]; then
+            echo "::error title=Version not raised::The update is $NEW and the repository is already on $OLD. Installed apps only notice a higher number."
+            exit 1
+          fi
+          echo "$OLD -> $NEW"
+
+      - name: Replace the app files
+        run: |
+          find . -mindepth 1 -maxdepth 1 ! -name .git ! -name .github -exec rm -rf {} +
+          (cd "$SRC" && find . -mindepth 1 -maxdepth 1 ! -name .github ! -name .git -exec cp -a {} "$GITHUB_WORKSPACE/" \;)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to change."
+          else
+            git diff --cached --stat | tail -n 1
+            git commit -q -m "Apply $ZIP"
+            git push
+          fi
+
+      - name: Start the app build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run android.yml --ref "${{ github.ref_name }}"
