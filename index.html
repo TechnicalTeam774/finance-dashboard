@@ -404,7 +404,51 @@ catAdd:"التصنيف اتضاف",addCat:"تصنيف جديد",catName:"اسم 
 needAmt:"اكتب المبلغ الأول",needCat:"اختار تصنيف",exported:"اتصدّر ✓",imported:"تم الاستيراد ✓",
 welcome:"أهلاً بيك في ميزان",welcomeB:"سجّل دخولك بجوجل عشان بياناتك تتحفظ وتلاقيها على أي جهاز، أو ابدأ على طول من غير تسجيل.",
 skip:"ابدأ من غير تسجيل",vs:"مقارنة بالشهر اللي فات",last6:"آخر 6 شهور",exportT:"تصدير",
-csvNote:"ملف CSV يفتح في إكسل أو جوجل شيتس على طول.",allMonths:"كل الشهور",wasT:"كان",newT:"جديد الشهر ده",more:"غيرهم"
+csvNote:"ملف CSV يفتح في إكسل أو جوجل شيتس على طول.",allMonths:"كل الشهور",wasT:"كان",newT:"جديد الشهر ده",more:"غيرهم",
+iEmpty:"ابدأ سجّل حركاتك وهظهرلك تحليل فوري",
+iSpentToday:(a,c)=>`صرفت النهاردة ${a} ${c}`,
+iAboveAvg:(avg,p)=>`ده أعلى من متوسطك اليومي (${avg}) بـ ${p}٪. لو اليوم ده اتكرر، الشهر هيتقفل بعجز.`,
+iFrugalT:(a,c)=>`يوم موفّر — ${a} ${c} بس`,
+iFrugalB:p=>`أقل من متوسطك اليومي بـ ${p}٪. كمّل كده.`,
+iNormalB:avg=>`متوسطك اليومي ${avg} — إنت في المعدل الطبيعي.`,
+iZeroT:"النهاردة لسه من غير مصاريف",
+iZeroB:"كل يوم من غير صرف بيقرّبك من هدفك.",
+iPaceBadT:(pr,c)=>`بالمعدل ده هتنهي الشهر بـ ${pr} ${c}`,
+iPaceBadB:(plan,diff,pd)=>`ده أعلى من خطتك (${plan}) بـ ${diff}. محتاج تقلّل حوالي ${pd} في اليوم.`,
+iPaceGoodT:"ماشي أحسن من الخطة",
+iPaceGoodB:(pr,plan,sv)=>`المتوقع تنهي الشهر بـ ${pr} بدل ${plan} — يعني توفير ${sv}.`,
+iDailyT:(pd,c)=>`متاح ليك ${pd} ${c} في اليوم`,
+iDailyB:(left,d)=>`فاضل ${left} على ${d} يوم لحد آخر الشهر.`,
+iBustT:"خلّصت ميزانية الشهر",
+iBustB:(ov,c,d)=>`تجاوزت بـ ${ov} ${c} وفاضل ${d} يوم. أي صرف زيادة هيطلع من مدخراتك.`,
+iOverT:n=>`تجاوزت الميزانية في ${n}`,
+iNearT:n=>`قربت تخلّص ميزانية ${n}`,
+iTopT:(nm,a,c)=>`أكتر بند: ${nm} — ${a} ${c}`,
+iTopB:(sh,hi)=>`بياخد ${sh}٪ من مصاريف الشهر.${hi?" نسبة عالية — لو عايز توفر، ابدأ من هنا.":""}`,
+iBigT:(a,c)=>`أكبر عملية: ${a} ${c}`,
+iBigB:(meta,sh)=>`${meta} · لوحدها ${sh}٪ من الشهر.`,
+iVsT:(up,m,p)=>`مصاريفك ${up?"أعلى":"أقل"} من ${m} بـ ${p}٪`,
+iVsB:(now,prev,c)=>`${now} مقابل ${prev} ${c}.`,
+iDropT:n=>`ما صرفتش في ${n} الشهر ده`,
+iWas:v=>`(كان ${v})`,
+iDefT:"بتصرف أكتر من دخلك",
+iDefB:(d,c)=>`العجز ${d} ${c} الشهر ده. ده بيتغطى من مدخرات أو ديون.`,
+iSaveHiT:p=>`بتوفّر ${p}٪ من دخلك`,
+iSaveHiB:(a,c)=>`${a} ${c} فايض. نسبة ممتازة — حافظ عليها.`,
+iSaveLoT:p=>`نسبة ادخارك ${p}٪ بس`,
+iSaveLoB:(a,c)=>`فايض ${a} ${c}. حاول توصلها 20٪ على الأقل.`,
+iBudT:"مجموع ميزانياتك أكبر من دخلك",
+iBudB:(bt,inc,c,df)=>`الميزانيات ${bt} والدخل ${inc} ${c} — فرق ${df}. حسبت خطتك على الدخل عشان الأرقام تبقى واقعية، لكن يستحسن تراجع الميزانيات.`,
+iDebtUpT:n=>`"${n}" رصيده بيزيد مش بينقص`,
+iDebtUpB:"الدفعة الشهرية أقل من الفايدة. لازم تزوّدها فوراً وإلا الدين هيكبر للأبد.",
+iDebtT:(tb,c)=>`إجمالي ديونك ${tb} ${c}`,
+iDebtB:(nm,n,it)=>`أغلاهم "${nm}" — هيخلص بعد ${n} شهر وهيكلفك ${it} فوايد. ابدأ بيه.`,
+dMonthly:(a,c,r)=>`${a} ${c} شهرياً · ${r}٪ فايدة`,
+dBoost:(n,sv)=>` لو زوّدت 500 شهرياً، هيخلص في ${n} شهر وتوفّر ${sv}.`,
+dRaise:"لازم تزوّد الدفعة الشهرية فوراً.",
+sLinked:"بياناتك متربطة بحسابك في جوجل — أي جهاز تدخل منه هيلاقيها.",
+tCode:"الكود اتعمل ✓",tBadFile:"ملف غير صالح",tInstMenu:"من قايمة المتصفح اختار «تثبيت التطبيق»",
+catPh:"كريدت كارد، قرض…",m6:"آخر 6 شهور"
 },en:{
 brand:"Mizan",local:"On device",cloud:"Synced",signedIn:"Saved to your account",
 tHome:"Home",tLog:"Log",tRep:"Reports",tDebt:"Debts",tSet:"Settings",
@@ -437,7 +481,51 @@ catAdd:"Category added",addCat:"New category",catName:"Category name",budget:"Mo
 needAmt:"Enter an amount first",needCat:"Pick a category",exported:"Exported ✓",imported:"Imported ✓",
 welcome:"Welcome to Mizan",welcomeB:"Sign in with Google so your data is saved and available on any device, or start right away without an account.",
 skip:"Start without signing in",vs:"vs. last month",last6:"Last 6 months",exportT:"Export",
-csvNote:"CSV opens directly in Excel or Google Sheets.",allMonths:"All months",wasT:"was",newT:"new this month",more:"more"
+csvNote:"CSV opens directly in Excel or Google Sheets.",allMonths:"All months",wasT:"was",newT:"new this month",more:"more",
+iEmpty:"Log a few transactions and your analysis shows up here",
+iSpentToday:(a,c)=>`You spent ${a} ${c} today`,
+iAboveAvg:(avg,p)=>`That is ${p}% above your daily average (${avg}). A few more days like this and the month closes in deficit.`,
+iFrugalT:(a,c)=>`A light day — only ${a} ${c}`,
+iFrugalB:p=>`${p}% below your daily average. Keep it up.`,
+iNormalB:avg=>`Your daily average is ${avg} — you are right on track.`,
+iZeroT:"Nothing spent today yet",
+iZeroB:"Every zero-spend day moves you closer to your goal.",
+iPaceBadT:(pr,c)=>`At this pace you will finish the month at ${pr} ${c}`,
+iPaceBadB:(plan,diff,pd)=>`That is ${diff} over your plan (${plan}). You would need to cut about ${pd} a day.`,
+iPaceGoodT:"Running ahead of plan",
+iPaceGoodB:(pr,plan,sv)=>`On track to finish at ${pr} instead of ${plan} — a saving of ${sv}.`,
+iDailyT:(pd,c)=>`You can spend ${pd} ${c} a day`,
+iDailyB:(left,d)=>`${left} left across ${d} days to month end.`,
+iBustT:"This month's budget is gone",
+iBustB:(ov,c,d)=>`You are ${ov} ${c} over with ${d} days to go. Anything more comes out of savings.`,
+iOverT:n=>`Over budget in ${n}`,
+iNearT:n=>`Close to the limit in ${n}`,
+iTopT:(nm,a,c)=>`Biggest category: ${nm} — ${a} ${c}`,
+iTopB:(sh,hi)=>`${sh}% of this month's spending.${hi?" That is high — start here if you want to save.":""}`,
+iBigT:(a,c)=>`Largest single expense: ${a} ${c}`,
+iBigB:(meta,sh)=>`${meta} · ${sh}% of the month on its own.`,
+iVsT:(up,m,p)=>`Your spending is ${up?"higher":"lower"} than ${m} by ${p}%`,
+iVsB:(now,prev,c)=>`${now} versus ${prev} ${c}.`,
+iDropT:n=>`Nothing spent on ${n} this month`,
+iWas:v=>`(was ${v})`,
+iDefT:"You are spending more than you earn",
+iDefB:(d,c)=>`A ${d} ${c} shortfall this month, covered from savings or debt.`,
+iSaveHiT:p=>`You are saving ${p}% of your income`,
+iSaveHiB:(a,c)=>`${a} ${c} left over. Excellent rate — hold onto it.`,
+iSaveLoT:p=>`Your savings rate is only ${p}%`,
+iSaveLoB:(a,c)=>`${a} ${c} left over. Aim for at least 20%.`,
+iBudT:"Your budgets add up to more than your income",
+iBudB:(bt,inc,c,df)=>`Budgets total ${bt} against ${inc} ${c} of income — a ${df} gap. The plan is measured against income so the figures stay realistic, but the budgets are worth revisiting.`,
+iDebtUpT:n=>`"${n}" is growing, not shrinking`,
+iDebtUpB:"The monthly payment is below the interest. Raise it now or the debt grows forever.",
+iDebtT:(tb,c)=>`Total debt ${tb} ${c}`,
+iDebtB:(nm,n,it)=>`The costliest is "${nm}" — ${n} months to clear, ${it} in interest. Start there.`,
+dMonthly:(a,c,r)=>`${a} ${c} a month · ${r}% interest`,
+dBoost:(n,sv)=>` Add 500 a month and it clears in ${n} months, saving ${sv}.`,
+dRaise:"Raise the monthly payment now.",
+sLinked:"Your data is tied to your Google account — any device you sign in on will find it.",
+tCode:"Code created",tBadFile:"Invalid file",tInstMenu:"Choose \"Install app\" from your browser menu",
+catPh:"Credit card, loan…",m6:"Last 6 months"
 }};
 const t=(k,...a)=>{const v=S[st.lang][k];return typeof v==="function"?v(...a):v};
 
@@ -455,8 +543,8 @@ const esc=s=>{const d=document.createElement("div");d.textContent=s==null?"":s;r
 const cNm=c=>typeof c.name==="string"?c.name:(c.name[st.lang]||c.name.ar||c.name.en);
 const lsG=(k,f)=>{try{const v=localStorage.getItem(k);return v===null?f:v}catch(e){return f}};
 const lsS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
-function plAr(n,one,two,few){if(st.lang!=="ar")return n+" "+(n===1?one:few);
- if(n===1)return one+" واحد";if(n===2)return two;if(n<=10)return n+" "+few;return n+" "+one}
+// kind: "cat" | "item" — correct plural in either language
+function plN(n,kind){if(st.lang!=="ar"){const w=kind==="cat"?["category","categories"]:["item","items"];return n+" "+(n===1?w[0]:w[1]);}const f=kind==="cat"?["تصنيف","تصنيفين","تصنيفات"]:["بند","بندين","بنود"];if(n===1)return f[0]+" واحد";if(n===2)return f[1];if(n<=10)return n+" "+f[2];return n+" "+f[0]}
 function txD(r){if(r.date)return r.date;if(r.createdAt)return dKey(new Date(r.createdAt));return (r.month||mKey())+"-01"}
 
 function migrate(){try{
@@ -569,59 +657,52 @@ function insights(){
   const past=ex.filter(e=>txD(e)<td),ds=new Set(past.map(txD));
   const avg=ds.size?past.reduce((s,e)=>s+Number(e.amount||0),0)/ds.size:0;
   if(ts>0&&avg>0){const d=((ts-avg)/avg)*100;
-   if(d>=50)out.push({lv:"danger",ic:"🔥",t:`صرفت النهاردة ${fmt(ts)} ${cur}`,
-    b:`ده أعلى من متوسطك اليومي (${fmt(avg)}) بـ ${Math.round(d)}٪. لو اليوم ده اتكرر، الشهر هيتقفل بعجز.`});
-   else if(d<=-40)out.push({lv:"good",ic:"👏",t:`يوم موفّر — ${fmt(ts)} ${cur} بس`,
-    b:`أقل من متوسطك اليومي بـ ${Math.round(-d)}٪. كمّل كده.`});
-   else out.push({lv:"info",ic:"📅",t:`صرفت النهاردة ${fmt(ts)} ${cur}`,b:`متوسطك اليومي ${fmt(avg)} — إنت في المعدل الطبيعي.`});
-  }else if(ts===0&&day>1)out.push({lv:"good",ic:"✨",t:"النهاردة لسه من غير مصاريف",b:"كل يوم من غير صرف بيقرّبك من هدفك."});
+   if(d>=50)out.push({lv:"danger",ic:"🔥",t:t("iSpentToday",fmt(ts),cur),b:t("iAboveAvg",fmt(avg),Math.round(d))});
+   else if(d<=-40)out.push({lv:"good",ic:"👏",t:t("iFrugalT",fmt(ts),cur),b:t("iFrugalB",Math.round(-d))});
+   else out.push({lv:"info",ic:"📅",t:t("iSpentToday",fmt(ts),cur),b:t("iNormalB",fmt(avg))});
+  }else if(ts===0&&day>1)out.push({lv:"good",ic:"✨",t:t("iZeroT"),b:t("iZeroB")});
  }
  if(plan>0&&day>2&&tE>0){const pr=(tE/day)*dim;
-  if(pr>plan*1.1)out.push({lv:"danger",ic:"📈",t:`بالمعدل ده هتنهي الشهر بـ ${fmt(pr)} ${cur}`,
-   b:`ده أعلى من خطتك (${fmt(plan)}) بـ ${fmt(pr-plan)}. محتاج تقلّل حوالي ${fmt((pr-plan)/Math.max(1,dim-day))} في اليوم.`});
-  else if(pr<plan*.85)out.push({lv:"good",ic:"🎯",t:"ماشي أحسن من الخطة",
-   b:`المتوقع تنهي الشهر بـ ${fmt(pr)} بدل ${fmt(plan)} — يعني توفير ${fmt(plan-pr)}.`});
+  if(pr>plan*1.1)out.push({lv:"danger",ic:"📈",t:t("iPaceBadT",fmt(pr),cur),
+   b:t("iPaceBadB",fmt(plan),fmt(pr-plan),fmt((pr-plan)/Math.max(1,dim-day)))});
+  else if(pr<plan*.85)out.push({lv:"good",ic:"🎯",t:t("iPaceGoodT"),b:t("iPaceGoodB",fmt(pr),fmt(plan),fmt(plan-pr))});
  }
  if(plan>0&&isCur&&day<dim){const left=plan-tE,pd=left/(dim-day+1);
-  if(left>0)out.push({lv:"info",ic:"🧮",t:`متاح ليك ${fmt(pd)} ${cur} في اليوم`,b:`فاضل ${fmt(left)} على ${dim-day+1} يوم لحد آخر الشهر.`});
-  else out.push({lv:"danger",ic:"⛔",t:"خلّصت ميزانية الشهر",
-   b:`تجاوزت بـ ${fmt(-left)} ${cur} وفاضل ${dim-day+1} يوم. أي صرف زيادة هيطلع من مدخراتك.`});
+  if(left>0)out.push({lv:"info",ic:"🧮",t:t("iDailyT",fmt(pd),cur),b:t("iDailyB",fmt(left),dim-day+1)});
+  else out.push({lv:"danger",ic:"⛔",t:t("iBustT"),b:t("iBustB",fmt(-left),cur,dim-day+1)});
  }
  const over=cs.filter(c=>c.budget>0&&c.spent>c.budget).sort((a,b)=>(b.spent-b.budget)-(a.spent-a.budget));
  const near=cs.filter(c=>c.budget>0&&c.spent<=c.budget&&c.pct>=80);
- if(over.length)out.push({lv:"danger",ic:"⚠️",t:`تجاوزت الميزانية في ${plAr(over.length,"تصنيف","تصنيفين","تصنيفات")}`,
-  b:over.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${fmt(c.spent)} من ${fmt(c.budget)}`).join(" · ")});
- if(near.length)out.push({lv:"warn",ic:"🔔",t:`قربت تخلّص ميزانية ${plAr(near.length,"تصنيف","تصنيفين","تصنيفات")}`,
-  b:near.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${Math.round(c.pct)}٪`).join(" · ")});
+ if(over.length)out.push({lv:"danger",ic:"⚠️",t:t("iOverT",plN(over.length,"cat")),
+  b:over.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${fmt(c.spent)} / ${fmt(c.budget)}`).join(" · ")});
+ if(near.length)out.push({lv:"warn",ic:"🔔",t:t("iNearT",plN(near.length,"cat")),
+  b:near.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${Math.round(c.pct)}%`).join(" · ")});
  const top=cs.filter(c=>c.spent>0).sort((a,b)=>b.spent-a.spent)[0];
  if(top&&tE>0){const sh=Math.round((top.spent/tE)*100);
-  out.push({lv:sh>45?"warn":"info",ic:top.emoji,t:`أكتر بند: ${cNm(top)} — ${fmt(top.spent)} ${cur}`,
-   b:`بياخد ${sh}٪ من مصاريف الشهر.${sh>45?" نسبة عالية — لو عايز توفر، ابدأ من هنا.":""}`})}
+  out.push({lv:sh>45?"warn":"info",ic:top.emoji,t:t("iTopT",cNm(top),fmt(top.spent),cur),b:t("iTopB",sh,sh>45)})}
  const big=[...ex].sort((a,b)=>b.amount-a.amount)[0];
  if(big&&tE>0&&big.amount>tE*.25){const c=byId(big.categoryId);
-  out.push({lv:"info",ic:"💸",t:`أكبر عملية: ${fmt(big.amount)} ${cur}`,
-   b:`${c?c.emoji+" "+cNm(c):""}${big.note?" — "+big.note:""} · لوحدها ${Math.round(big.amount/tE*100)}٪ من الشهر.`})}
+  const meta=`${c?c.emoji+" "+cNm(c):""}${big.note?" — "+big.note:""}`;
+  out.push({lv:"info",ic:"💸",t:t("iBigT",fmt(big.amount),cur),b:t("iBigB",meta,Math.round(big.amount/tE*100))})}
  const pm=mSft(st.month,-1),pe=sum(expOf(pm));
  if(pe>0&&tE>0){const d=((tE-pe)/pe)*100;
   if(Math.abs(d)>=12)out.push({lv:d>0?"warn":"good",ic:d>0?"⬆️":"⬇️",
-   t:`مصاريفك ${d>0?"أعلى":"أقل"} من ${mLab(pm)} بـ ${Math.abs(Math.round(d))}٪`,b:`${fmt(tE)} مقابل ${fmt(pe)} ${cur}.`})}
+   t:t("iVsT",d>0,mLab(pm),Math.abs(Math.round(d))),b:t("iVsB",fmt(tE),fmt(pe),cur)})}
  const pcs=catSpend(pm),drop=pcs.filter(p=>p.spent>0&&!cs.find(c=>c.id===p.id&&c.spent>0));
- if(drop.length)out.push({lv:"good",ic:"🚫",t:`ما صرفتش في ${plAr(drop.length,"بند","بندين","بنود")} الشهر ده`,
-  b:drop.slice(0,4).map(c=>`${c.emoji} ${cNm(c)} (كان ${fmt(c.spent)})`).join(" · ")});
+ if(drop.length)out.push({lv:"good",ic:"🚫",t:t("iDropT",plN(drop.length,"item")),
+  b:drop.slice(0,4).map(c=>`${c.emoji} ${cNm(c)} ${t("iWas",fmt(c.spent))}`).join(" · ")});
  if(tI>0){const r=((tI-tE)/tI)*100;
-  if(r<0)out.push({lv:"danger",ic:"🩸",t:"بتصرف أكتر من دخلك",b:`العجز ${fmt(tE-tI)} ${cur} الشهر ده. ده بيتغطى من مدخرات أو ديون.`});
-  else if(r>=25)out.push({lv:"good",ic:"🏆",t:`بتوفّر ${Math.round(r)}٪ من دخلك`,b:`${fmt(tI-tE)} ${cur} فايض. نسبة ممتازة — حافظ عليها.`});
-  else if(r<10)out.push({lv:"warn",ic:"📉",t:`نسبة ادخارك ${Math.round(r)}٪ بس`,b:`فايض ${fmt(tI-tE)} ${cur}. حاول توصلها 20٪ على الأقل.`})}
- if(P.unrealistic)out.push({lv:"warn",ic:"🧾",t:`مجموع ميزانياتك أكبر من دخلك`,
-  b:`الميزانيات ${fmt(P.bt)} والدخل ${fmt(tI)} ${cur} — فرق ${fmt(P.bt-tI)}. حسبت خطتك على الدخل عشان الأرقام تبقى واقعية، لكن يستحسن تراجع الميزانيات.`});
+  if(r<0)out.push({lv:"danger",ic:"🩸",t:t("iDefT"),b:t("iDefB",fmt(tE-tI),cur)});
+  else if(r>=25)out.push({lv:"good",ic:"🏆",t:t("iSaveHiT",Math.round(r)),b:t("iSaveHiB",fmt(tI-tE),cur)});
+  else if(r<10)out.push({lv:"warn",ic:"📉",t:t("iSaveLoT",Math.round(r)),b:t("iSaveLoB",fmt(tI-tE),cur)})}
+ if(P.unrealistic)out.push({lv:"warn",ic:"🧾",t:t("iBudT"),b:t("iBudB",fmt(P.bt),fmt(tI),cur,fmt(P.bt-tI))});
  const ds2=st.data.debts||[];
  if(ds2.length){const tb=ds2.reduce((s,d)=>s+Number(d.balance||0),0);
   const w=ds2.map(d=>({...d,r:payoff(d.balance,(Number(d.rate)||0)/100,d.monthlyPay)}))
    .sort((a,b)=>(Number(b.rate)||0)-(Number(a.rate)||0))[0];
-  if(w&&!w.r.ok)out.push({lv:"danger",ic:"🆘",t:`"${w.name}" رصيده بيزيد مش بينقص`,
-   b:"الدفعة الشهرية أقل من الفايدة. لازم تزوّدها فوراً وإلا الدين هيكبر للأبد."});
-  else if(w&&isFinite(w.r.n)&&w.r.n>0)out.push({lv:"info",ic:"💳",t:`إجمالي ديونك ${fmt(tb)} ${cur}`,
-   b:`أغلاهم "${w.name}" — هيخلص بعد ${w.r.n} شهر وهيكلفك ${fmt(w.r.interest)} فوايد. ابدأ بيه.`})}
+  if(w&&!w.r.ok)out.push({lv:"danger",ic:"🆘",t:t("iDebtUpT",w.name),b:t("iDebtUpB")});
+  else if(w&&isFinite(w.r.n)&&w.r.n>0)out.push({lv:"info",ic:"💳",t:t("iDebtT",fmt(tb),cur),
+   b:t("iDebtB",w.name,w.r.n,fmt(w.r.interest))})}
  const ord={danger:0,warn:1,good:2,info:3};
  return out.sort((a,b)=>ord[a.lv]-ord[b.lv]);
 }
@@ -707,7 +788,7 @@ function vHome(){
  <div class="card wide"><div class="ch">${I.bulb}${t("advice")}</div>
   ${ins.length?ins.map(x=>`<div class="ins ${x.lv}"><span class="ic">${x.ic}</span>
    <div><div class="t">${esc(x.t)}</div><div class="b">${esc(x.b)}</div></div></div>`).join("")
-   :`<div class="empty">${I.spark}<div>ابدأ سجّل حركاتك وهظهرلك تحليل فوري</div></div>`}</div>
+   :`<div class="empty">${I.spark}<div>${t("iEmpty")}</div></div>`}</div>
  <div class="card"><div class="ch">${I.pie}${t("breakdown")}</div>
   ${pie.length?donut(pie)+`<div class="lgd">${pie.slice(0,6).map(d=>`<span><i style="background:${d.color}"></i>${d.emoji} ${esc(d.name)}</span>`).join("")}</div>`
    :`<div class="empty">${I.spark}<div>${t("noExp")}</div></div>`}</div>
@@ -780,16 +861,16 @@ function vDebt(){
   return `<div style="padding:12px 0;border-bottom:1px solid var(--line2)">
    <div class="row" style="--tone:var(--red);padding:0;border:none"><div class="rico">💳</div>
     <div class="rmain"><div class="rt">${esc(d.name)}</div>
-    <div class="rs">${fmt(d.monthlyPay)} ${cur} شهرياً · ${d.rate||0}٪ فايدة</div></div>
+    <div class="rs">${t("dMonthly",fmt(d.monthlyPay),cur,d.rate||0)}</div></div>
     <div class="ra" style="color:var(--red)">${fmt(d.balance)}</div>
     <button class="ib" onclick="delDebt('${d.id}')">${I.del}</button></div>
    <div class="ins ${r.ok?"info":"danger"}" style="margin-top:9px"><span class="ic">${r.ok?"📆":"🆘"}</span>
     <div>${r.ok?`<div class="t">${t("payIn")} ${r.n} ${t("months")}</div>
-     <div class="b">${t("totInt")}: ${fmt(r.interest)} ${cur}.${ex.ok&&ex.n<r.n?` لو زوّدت 500 شهرياً، هيخلص في ${ex.n} شهر وتوفّر ${fmt(r.interest-ex.interest)}.`:""}</div>`
-    :`<div class="t">${t("never")}</div><div class="b">لازم تزوّد الدفعة الشهرية فوراً.</div>`}</div></div></div>`}).join("")
+     <div class="b">${t("totInt")}: ${fmt(r.interest)} ${cur}.${ex.ok&&ex.n<r.n?t("dBoost",ex.n,fmt(r.interest-ex.interest)):""}</div>`
+    :`<div class="t">${t("never")}</div><div class="b">${t("dRaise")}</div>`}</div></div></div>`}).join("")
   :`<div class="empty">${I.spark}<div>${t("noDebts")}<br><span style="font-size:11px">${t("debtHint")}</span></div></div>`}</div>
  <div class="card"><div class="ch">${I.plus}${t("addDebt")}</div>
-  <div class="fld"><label class="fl">${t("debtName")}</label><input id="dN" placeholder="كريدت كارد، قرض…"></div>
+  <div class="fld"><label class="fl">${t("debtName")}</label><input id="dN" placeholder="${t('catPh')}"></div>
   <div class="frow"><div class="fld"><label class="fl">${t("balance")}</label><input id="dB" type="number" inputmode="decimal" placeholder="0"></div>
   <div class="fld"><label class="fl">${t("rate")}</label><input id="dR" type="number" inputmode="decimal" placeholder="2.5" step="any"></div></div>
   <div class="fld"><label class="fl">${t("mpay")}</label><input id="dP" type="number" inputmode="decimal" placeholder="0"></div>
@@ -821,7 +902,7 @@ function vSet(){
   <input value="${esc(st.currency)}" onchange="setCur(this.value)"></div></div>
  <div class="card"><div class="ch">${I.cloud}${t("sync")}</div>
   <div class="sl">${on?I.link:I.unlink}<span>${u?t("signedIn"):on?t("syncOn"):sync.status==="connecting"?t("syncWait"):sync.status==="error"?t("syncErr"):t("syncOff")}</span></div>
-  ${u?`<p class="note">بياناتك متربطة بحسابك في جوجل — أي جهاز تدخل منه هيلاقيها.</p>`
+  ${u?`<p class="note">${t("sLinked")}</p>`
    :`<p class="note" style="margin-bottom:10px">${t("codeDesc")}</p>
      <input id="syncF" placeholder="${t("codePh")}" value="${esc(sync.code||lsG(K.sync,""))}"><div style="height:8px"></div>
      <div class="frow"><button class="btn" onclick="mkCode()">${t("mkCode")}</button>
@@ -970,7 +1051,7 @@ function impJSON(inp){const f=inp.files&&inp.files[0];if(!f)return;
  if(!confirm(t("impAsk"))){inp.value="";return}
  const r=new FileReader();
  r.onload=()=>{try{st.data=normalize(JSON.parse(r.result));persist();render();toast(t("imported"))}
-  catch(e){alert("ملف غير صالح")}inp.value=""};
+  catch(e){alert(t("tBadFile"))}inp.value=""};
  r.readAsText(f)}
 function resetAll(){if(!confirm(t("resetAsk")))return;
  st.data={categories:JSON.parse(JSON.stringify(DEF)),incomes:[],expenses:[],debts:[]};
@@ -978,11 +1059,11 @@ function resetAll(){if(!confirm(t("resetAsk")))return;
 
 /* ============ Sync / Auth ============ */
 const mkC=()=>Math.random().toString(36).slice(2,6).toUpperCase()+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
-function mkCode(){const c=mkC();const f=document.getElementById("syncF");if(f)f.value=c;startCode(c);paint();toast("الكود اتعمل ✓")}
+function mkCode(){const c=mkC();const f=document.getElementById("syncF");if(f)f.value=c;startCode(c);paint();toast(t("tCode"))}
 function joinCode(){const f=document.getElementById("syncF");const c=f?f.value.trim():"";if(!c)return;startCode(c);paint();toast(t("syncWait"))}
 function offCode(){stopCode();paint()}
 function gIn(){
- if(!auth){toast("المزامنة مش متاحة",1);return}
+ if(!auth){toast(t("gFail"),1);return}
  if(sync.busy)return;sync.busy=true;toast(t("gWait"));
  const p=new firebase.auth.GoogleAuthProvider();
  p.setCustomParameters({prompt:"select_account"});
@@ -1007,7 +1088,7 @@ function gOut(){if(!auth)return;
 
 /* ============ Install ============ */
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();prompt_=e});
-function doInstall(){if(!prompt_){toast("من قايمة المتصفح اختار «تثبيت التطبيق»",1);return}
+function doInstall(){if(!prompt_){toast(t("tInstMenu"),1);return}
  prompt_.prompt();prompt_.userChoice.finally(()=>{prompt_=null})}
 
 Object.assign(window,{go,shiftM,openAdd,closeAdd,setKind,moreCats,pickC,useC,kp,saveTx,editTx,setF,
