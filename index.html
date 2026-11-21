@@ -393,6 +393,8 @@ instHint:"هيتثبت كأبلكيشن بأيقونة على شاشتك ويش�
 gIn:"الدخول بجوجل",gOut:"تسجيل الخروج",
 gHint:"ادخل بحسابك في جوجل، وبياناتك هتتحفظ وتتزامن لوحدها على أي جهاز تدخل منه.",
 gWait:"بيفتح جوجل…",gFail:"الدخول مانجحش — جرب تاني",
+gBlocked:"المتصفح منع نافذة جوجل. اسمح بالنوافذ المنبثقة للموقع ده وجرب تاني.",
+gDomain:"الدومين ده مش مسموح في إعدادات Firebase.",
 syncOn:"متصل ومتزامن",syncOff:"مش متصل — البيانات على الجهاز ده بس",syncWait:"بيوصّل…",syncErr:"خطأ في الاتصال",
 codeDesc:"بديل للدخول بجوجل: اعمل كود واكتبه على أجهزتك التانية.",
 mkCode:"إنشاء كود",join:"اتصال بالكود",off:"قطع الاتصال",codePh:"AB12-CD34",
@@ -424,6 +426,8 @@ instHint:"Installs with its own icon and works offline.",
 gIn:"Sign in with Google",gOut:"Sign out",
 gHint:"Sign in and your data is saved and synced to every device you use.",
 gWait:"Opening Google…",gFail:"Sign-in failed — try again",
+gBlocked:"Your browser blocked the Google window. Allow pop-ups for this site and try again.",
+gDomain:"This domain is not authorised in your Firebase settings.",
 syncOn:"Connected & syncing",syncOff:"Not connected — this device only",syncWait:"Connecting…",syncErr:"Connection error",
 codeDesc:"Alternative to Google: create a code and enter it on your other devices.",
 mkCode:"Generate code",join:"Connect",off:"Disconnect",codePh:"AB12-CD34",
@@ -982,14 +986,19 @@ function gIn(){
  if(sync.busy)return;sync.busy=true;toast(t("gWait"));
  const p=new firebase.auth.GoogleAuthProvider();
  p.setCustomParameters({prompt:"select_account"});
+ // Popup only. signInWithRedirect silently loses its result when the app is
+ // served from a different origin than authDomain (Chrome storage partitioning),
+ // so falling back to it would strand the user instead of signing them in.
  auth.signInWithPopup(p)
   .then(()=>{sync.busy=false})
   .catch(err=>{
    sync.busy=false;
-   const c=err&&err.code||"";
-   if(c.indexOf("popup")>-1||c.indexOf("operation-not-supported")>-1||c.indexOf("cancelled")>-1){
-    try{auth.signInWithRedirect(p)}catch(e){toast(t("gFail"),1)}
-   }else{console.error(err);toast(t("gFail")+" ("+c+")",1)}
+   const c=(err&&err.code)||"";
+   if(c==="auth/popup-closed-by-user"||c==="auth/cancelled-popup-request"){
+    const el=document.getElementById("toast");if(el)el.className="";return}
+   if(c==="auth/popup-blocked"){toast(t("gBlocked"),1);return}
+   if(c==="auth/unauthorized-domain"){toast(t("gDomain"),1);return}
+   console.error(err);toast(t("gFail")+" ("+c+")",1);
   })}
 function gOut(){if(!auth)return;
  if(unsub){unsub();unsub=null}
