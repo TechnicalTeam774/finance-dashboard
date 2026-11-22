@@ -244,6 +244,84 @@ font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all
 .soonbar{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(135deg,
  color-mix(in srgb,#4E8FB5 55%,transparent) 0 5px,transparent 5px 10px)}
 .soon{font-style:normal;color:#4E8FB5;font-size:10px}
+
+/* the one thing to do now */
+.focus{display:flex;gap:13px;padding:15px;border-radius:15px;margin-bottom:12px;
+ background:linear-gradient(145deg,color-mix(in srgb,var(--acc) 9%,var(--inset)),var(--inset));
+ border:1px solid color-mix(in srgb,var(--acc) 26%,var(--line2))}
+.focus.danger{background:linear-gradient(145deg,color-mix(in srgb,var(--red) 11%,var(--inset)),var(--inset));
+ border-color:color-mix(in srgb,var(--red) 32%,var(--line2))}
+.focus.warn{background:linear-gradient(145deg,color-mix(in srgb,var(--amb,#C98A4B) 11%,var(--inset)),var(--inset));
+ border-color:color-mix(in srgb,var(--amb,#C98A4B) 30%,var(--line2))}
+.focus.good{background:linear-gradient(145deg,color-mix(in srgb,var(--grn) 10%,var(--inset)),var(--inset));
+ border-color:color-mix(in srgb,var(--grn) 28%,var(--line2))}
+.fic{font-size:26px;line-height:1.1;flex:none}
+.fbody{flex:1;min-width:0}
+.ft{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:4px}
+.fb{font-size:12.5px;color:var(--sub);line-height:1.6}
+.fa{margin-top:11px;display:inline-flex;align-items:center;gap:6px;background:var(--acc);
+ color:var(--ink);border:none;font:inherit;font-size:12.5px;font-weight:700;
+ border-radius:10px;padding:9px 15px;cursor:pointer}
+.fa svg{width:13px;height:13px}
+.focus.danger .fa{background:var(--red);color:#fff}
+
+/* the rest, at a glance */
+.inslist{display:flex;flex-direction:column;gap:2px}
+.ins2{display:flex;align-items:center;gap:11px;padding:11px 10px;border-radius:11px;
+ border-inline-start:3px solid var(--line2);background:var(--inset)}
+.ins2[onclick]{cursor:pointer}
+.ins2[onclick]:hover{background:color-mix(in srgb,var(--acc) 7%,var(--inset))}
+.ins2.danger{border-inline-start-color:var(--red)}
+.ins2.warn{border-inline-start-color:#C98A4B}
+.ins2.good{border-inline-start-color:var(--grn)}
+.ins2 .ic{font-size:17px;flex:none}
+.i2m{flex:1;min-width:0;display:block}
+.i2m b{display:block;font-size:12.5px;font-weight:600;line-height:1.4}
+.i2m i{display:block;font-style:normal;font-size:11px;color:var(--sub);margin-top:2px;
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.i2a{color:var(--sub);flex:none;display:flex}
+.i2a svg{width:14px;height:14px}
+
+/* the plan */
+.pflow{display:flex;flex-direction:column;gap:1px;margin-bottom:12px}
+.pr{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2)}
+.pr:last-child{border-bottom:none}
+.pico{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+ font-size:14px;font-weight:700;flex:none}
+.pmain{flex:1;min-width:0}
+.pmain b{display:block;font-size:13px;font-weight:600}
+.pmain i{display:block;font-style:normal;font-size:10.5px;color:var(--sub);margin-top:1px}
+.pv{font-family:'JetBrains Mono',monospace;font-size:13.5px;font-weight:700}
+.pres{background:var(--inset);border:1px solid color-mix(in srgb,var(--acc) 24%,var(--line2));
+ border-radius:14px;padding:14px;text-align:center}
+.pres.bad{border-color:color-mix(in srgb,var(--red) 34%,var(--line2))}
+.pres .pl{font-size:11px;color:var(--sub)}
+.pres .pb{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;
+ letter-spacing:-.8px;margin:2px 0 3px;color:var(--acc)}
+.pres.bad .pb{color:var(--red)}
+.pres .pb small{font-size:11px;font-weight:400;color:var(--sub)}
+.pres .ps{font-size:11.5px;color:var(--sub)}
+.psplit{display:flex;gap:10px;margin-top:12px}
+.pcell{flex:1;min-width:0;background:var(--inset);border:1px solid var(--line2);
+ border-radius:12px;padding:10px 11px}
+.pcell .l{font-size:11px;color:var(--sub)}
+.pcell .v{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin:3px 0 7px}
+.pcell .v i{font-style:normal;font-size:10.5px;font-weight:400;color:var(--sub)}
+.rr{margin-bottom:12px}
+.rr:last-child{margin-bottom:0}
+.rtop{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-bottom:5px}
+.rp{font-family:'JetBrains Mono',monospace;font-weight:700}
+.rp i{font-style:normal;font-weight:400;color:var(--sub);font-size:10.5px}
+.rmark{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--txt);opacity:.5;border-radius:2px}
+.rnote{font-size:10.5px;color:var(--sub);margin-top:4px}
+
+.hrow .hcell{min-width:0}
+.hrow .hcell .v{font-size:clamp(11.5px,3.5vw,15px);letter-spacing:-.4px;white-space:nowrap}
+.ghint{min-height:0}
+.ghint:not(:empty){margin:-4px 0 10px}
+.gh{display:inline-block;font-size:11.5px;color:var(--sub);background:var(--inset);
+ border:1px solid var(--line2);border-radius:9px;padding:6px 11px}
+.gh.ok{color:var(--grn);border-color:color-mix(in srgb,var(--grn) 34%,var(--line2))}
 .upd-notes{margin:4px 0 14px;padding-inline-start:18px;font-size:12.5px;line-height:1.75;color:var(--sub)}
 .upd-notes li{margin-bottom:3px}
 .upd-ic{font-size:34px;text-align:center;margin-bottom:4px}
@@ -383,8 +461,18 @@ appId:"1:147347678300:web:b3fd9d3fc8640d11483299"};
 const FB_ON=firebaseConfig.apiKey!=="YOUR_API_KEY";
 const K={data:"mizan_data_v1",lang:"mizan_lang",theme:"mizan_theme",cur:"mizan_currency",sync:"mizan_sync_code"};
 /* Keep APP_VER equal to version.json — the Android workflow fails the build if they drift. */
-const APP_VER="1.4.0";
-const CHANGES={"1.4.0":[
+const APP_VER="1.5.0";
+const CHANGES={"1.5.0":[
+ "اكتب «قبض» وانت بتسجّل دخلك — التطبيق يعرف يوم قبضك ويحسب من اليوم ده، مش من أول الشهر",
+ "اكتب «جمعية» أو اسم الجمعية وهو يسجّلها قسط لوحده، من غير ما تروح لقسم تاني",
+ "بيلقط كمان الإيجار والنت والبنزين والأكل من اللي بتكتبه ويختار التصنيف",
+ "«خطة الشهر» الجديدة: الداخل ناقص الثوابت والديون والجمعيات والادخار = الباقي للمعيشة",
+ "تقسيم الباقي بين ضروريات ورفاهيات، ومقياس قاعدة ٥٠/٣٠/٢٠ على خطتك",
+ "ترتيب سداد الديون: مين الأول وبيخلص إمتى، وإيه اللي يتغيّر لو زوّدت القسط",
+ "النصايح اتعملت من أول وجديد: أهم حاجة في كارت كبير بزرار تنفيذ، والباقي مختصر",
+ "التقارير اتنقلت ليها الرسوم البيانية والميزانيات، والرئيسية بقت للخطة بس",
+ "قوايم الأيقونات بقى مكتوب عليها إنها أيقونة"
+],"1.4.0":[
  "الشاشة الرئيسية بقت تجاوب على سؤال واحد: متاح تصرف كام النهاردة",
  "«الثوابت»: الإيجار والنت والجيم وأقساط الجمعيات — بتتحجز الأول، وبتسجّلها بضغطة",
  "قسط الجمعية بقى بيظهر في الثوابت لوحده من غير ما تضيفه",
@@ -505,9 +593,27 @@ updTitle:"في تحديث جديد 🎉",updVer:v=>`الإصدار ${v}`,later:"
 updGetApk:"نزّل التحديث",updApkHint:"هتتفتح صفحة التنزيل. ثبّت الملف فوق القديم من غير ما تمسح حاجة.",
 newIn:v=>`الجديد في ${v}`,letsGo:"يلا بينا",netErr:"مفيش اتصال بالنت",
 exitAsk:"اضغط رجوع تاني للخروج",
+plan:"خطة الشهر",planNoInc:"سجّل دخلك الأول",
+planNoIncB:"اكتب «قبض» وأنت بتسجّل الدخل، والتطبيق يعرف يوم قبضك ويبني الخطة منه.",
+planIn:"الداخل",planDebt:"أقساط الديون",planSave:"ادخار",planLiving:"الباقي للمعيشة",
+planPerDay:(v,c,n)=>`${v} ${c} في اليوم على ${n} يوم`,
+planShort:(v,c)=>`التزاماتك أكبر من دخلك بـ ${v} ${c}`,
+cycleLab:(a,b)=>`${a} → ${b}`,sincePay:d=>`من يوم ${d}`,tillPay:n=>`${n} يوم للقبض`,
+needs:"ضروريات",wants:"رفاهيات",saveDebt:"ادخار وسداد",
+rule503020:"قاعدة ٥٠ / ٣٠ / ٢٠",ruleNote:"القاعدة بتقيس خطتك نفسها، مش اللي صرفته لحد دلوقتي.",
+ruleOver:n=>`أعلى بـ ${n} نقطة عن المفروض`,ruleUnder:n=>`أقل بـ ${n} نقطة — في مساحة`,ruleOk:"في النطاق الصح",
+payoffPlan:"ترتيب سداد الديون",doneBy:m=>`يخلص ${m}`,payMore:"محتاج قسط شهري عشان أحسبه",
+boostT:n=>`زوّد قسط «${n}» بـ ٥٠٠`,
+boostB:(n,v,c)=>`يخلص في ${n} شهر بدل ما هو، وتوفّر ${v} ${c} فوايد.`,boostA:"عدّل القسط",
+moreIns:n=>`شوف ${n} كمان`,less:"اعرض أقل",
+notePh:"اكتب الحاجة… (جمعية، إيجار، بنزين)",
+hSalary:"هيتسجّل كقبض، والخطة هتبدأ من النهاردة",
+hGam:(n,v)=>`قسط «${n}» — ${v}`,hFix:n=>`ثابت: ${n}`,hCat:n=>`تصنيف: ${n}`,
+svSal:d=>`اتسجّل. يوم قبضك بقى ${d}`,
+icon:"الأيقونة",
 today:"متاح تصرفه النهاردة",ofPerDay:(v,c)=>`من ${v} ${c} نصيب اليوم`,
 overPerDay:(v,c)=>`عدّيت نصيب اليوم (${v} ${c})`,
-leftMonth:"فاضل للشهر",daysLeft:"أيام فاضلة",reserved:"محجوز",
+leftMonth:"فاضل للشهر",leftCycle:"فاضل للقبضة",daysLeft:"أيام فاضلة",reserved:"محجوز",
 fixed:"الثوابت",addFixed:"إضافة ثابت",noFixed:"مفيش ثوابت مسجلة",
 fixedHint:"الإيجار، النت، الجيم، أقساط الجمعيات — أي حاجة بتطلع كل شهر مهما حصل. بنحجزها الأول عشان رقم «متاح تصرفه» يبقى صادق.",
 fixName:"الاسم",fixPh:"إيجار، نت، جيم…",fixAmt:"المبلغ الشهري",
@@ -644,9 +750,27 @@ updTitle:"Update available 🎉",updVer:v=>`Version ${v}`,later:"Later",updNow:"
 updGetApk:"Download update",updApkHint:"This opens the download page. Install the new file over the old one — nothing is lost.",
 newIn:v=>`What's new in ${v}`,letsGo:"Let's go",netErr:"No internet connection",
 exitAsk:"Press back again to exit",
+plan:"This month's plan",planNoInc:"Log your income first",
+planNoIncB:"Type \"salary\" when you log it and the app learns your payday and builds the plan from there.",
+planIn:"Coming in",planDebt:"Debt payments",planSave:"Savings",planLiving:"Left to live on",
+planPerDay:(v,c,n)=>`${v} ${c} a day over ${n} ${n===1?"day":"days"}`,
+planShort:(v,c)=>`Commitments exceed income by ${v} ${c}`,
+cycleLab:(a,b)=>`${a} → ${b}`,sincePay:d=>`since the ${d}th`,tillPay:n=>`${n} ${n===1?"day":"days"} to payday`,
+needs:"Needs",wants:"Wants",saveDebt:"Saving & debt",
+rule503020:"The 50 / 30 / 20 rule",ruleNote:"This measures the plan itself, not what has been spent so far.",
+ruleOver:n=>`${n} points above where it should sit`,ruleUnder:n=>`${n} points under — there is room`,ruleOk:"In range",
+payoffPlan:"Debt payoff order",doneBy:m=>`clear by ${m}`,payMore:"Set a monthly payment to work this out",
+boostT:n=>`Add 500 to "${n}"`,
+boostB:(n,v,c)=>`It clears in ${n} months instead, and saves ${v} ${c} of interest.`,boostA:"Change the payment",
+moreIns:n=>`Show ${n} more`,less:"Show less",
+notePh:"What was it… (gameya, rent, fuel)",
+hSalary:"Logged as salary — the plan starts today",
+hGam:(n,v)=>`"${n}" instalment — ${v}`,hFix:n=>`Commitment: ${n}`,hCat:n=>`Category: ${n}`,
+svSal:d=>`Logged. Your payday is now the ${d}th`,
+icon:"Icon",
 today:"Free to spend today",ofPerDay:(v,c)=>`of today's ${v} ${c} share`,
 overPerDay:(v,c)=>`Past today's share (${v} ${c})`,
-leftMonth:"Left this month",daysLeft:"Days left",reserved:"Reserved",
+leftMonth:"Left this month",leftCycle:"Left this cycle",daysLeft:"Days left",reserved:"Reserved",
 fixed:"Fixed commitments",addFixed:"Add commitment",noFixed:"No fixed commitments yet",
 fixedHint:"Rent, internet, the gym, gameya instalments — anything that leaves every month no matter what. Reserving them first is what keeps the daily figure honest.",
 fixName:"Name",fixPh:"Rent, internet, gym…",fixAmt:"Monthly amount",
@@ -767,6 +891,7 @@ const mKey=(d=new Date())=>d.getFullYear()+"-"+p2(d.getMonth()+1);
 const dKey=(d=new Date())=>d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate());
 const mLab=k=>{const[y,m]=k.split("-").map(Number);return MON[st.lang][m-1]+" "+y};
 const mSh=k=>{const[y,m]=k.split("-").map(Number);return MON[st.lang][m-1].slice(0,3)};
+const dLab=iso=>{const[y,m,d]=iso.split("-").map(Number);return d+" "+MON[st.lang][m-1]};
 const mSft=(k,d)=>{const[y,m]=k.split("-").map(Number);return mKey(new Date(y,m-1+d,1))};
 const dIn=k=>{const[y,m]=k.split("-").map(Number);return new Date(y,m,0).getDate()};
 const fmt=n=>Math.round(Number(n)||0).toLocaleString("en-US");
@@ -809,7 +934,7 @@ function loadData(){
 /* ============ State ============ */
 const st={data:loadData(),month:mKey(),tab:"home",
  lang:lsG(K.lang,"ar")==="en"?"en":"ar",theme:lsG(K.theme,"midnight"),currency:lsG(K.cur,""),
- filter:"all",wtab:"debt",booted:false};
+ filter:"all",wtab:"debt",allIns:false,booted:false};
 if(!st.currency)st.currency=st.lang==="ar"?"ج.م":"EGP";
 
 let db=null,auth=null,unsub=null,remote=false,timer=null,prompt_=null;
@@ -943,6 +1068,134 @@ function netWorth(){
   coverMonths:spend>0?liquid/spend:null,
   any:debts>0||gamOwed>0||sav>0||inv>0};
 }
+/* ============ The pay cycle ============
+ * A salary that lands on the 25th makes the 1st of the month meaningless: on the
+ * 24th you are broke and on the 26th you are rich, and a calendar month says both
+ * are the same. Once a salary is logged, every "what can I spend" figure runs from
+ * payday to the day before the next one. */
+function salaryDay(){
+ const s=(st.data.incomes||[]).filter(i=>i.salary)
+  .sort((a,b)=>txD(b).localeCompare(txD(a)))[0];
+ return s?Number(txD(s).slice(8,10))||0:0;
+}
+function cycle(){
+ const pd=salaryDay(),today=new Date(),isCur=st.month===mKey();
+ if(!pd||!isCur){
+  const dim=dIn(st.month);
+  const day=isCur?Math.min(dim,today.getDate()):dim;
+  return{pay:0,start:st.month+"-01",end:st.month+"-"+String(dim).padStart(2,"0"),
+   daysTotal:dim,daysIn:day,daysLeft:Math.max(1,dim-day+1),isCur};
+ }
+ const clamp=(y,m,d)=>{const last=new Date(y,m+1,0).getDate();return new Date(y,m,Math.min(d,last))};
+ const y=today.getFullYear(),m=today.getMonth();
+ const start=today.getDate()>=pd?clamp(y,m,pd):clamp(y,m-1,pd);
+ const nextPay=clamp(start.getFullYear(),start.getMonth()+1,pd);
+ const end=new Date(nextPay);end.setDate(end.getDate()-1);
+ const dayMs=86400000;
+ const mid=d=>Date.UTC(d.getFullYear(),d.getMonth(),d.getDate());
+ return{pay:pd,start:dKey(start),end:dKey(end),
+  daysTotal:Math.round((mid(end)-mid(start))/dayMs)+1,
+  daysIn:Math.round((mid(today)-mid(start))/dayMs)+1,
+  daysLeft:Math.max(1,Math.round((mid(end)-mid(today))/dayMs)+1),isCur:true};
+}
+const inCyc=(x,C)=>{const d=txD(x);return d>=C.start&&d<=C.end};
+const cycInc=C=>(st.data.incomes||[]).filter(i=>inCyc(i,C));
+const cycEx=C=>(st.data.expenses||[]).filter(e=>inCyc(e,C));
+
+/* ============ What each category is for ============
+ * The 50/30/20 split only means something if the app knows which spending is a
+ * need and which is a want. These are defaults; each one is changeable. */
+const KIND={c_food:"n",c_transport:"n",c_housing:"n",c_health:"n",c_edu:"n",c_family:"n",
+ c_fun:"w",c_shop:"w",c_subs:"w",c_other:"w",c_invest:"s",c_savings:"s",c_debt:"d"};
+function kindOf(c){return (c&&c.kind)||KIND[c&&c.id]||"w"}
+
+/* ============ The plan ============
+ * Income is handed out in order: what must be paid, then what is owed, then what
+ * is put away, and only what survives all three is free to live on. */
+function mPlan(){
+ const C=cycle(),useC=C.pay>0&&C.isCur;
+ const inc=useC?sum(cycInc(C)):sum(incOf());
+ const ex=useC?cycEx(C):expOf();
+ const F=fixedTotals();
+ const gamMonthly=(st.data.gameyas||[]).reduce((s,g)=>{const o=gamOf(g);return s+(o.done?0:o.amt)},0);
+ const fixOnly=Math.max(0,F.total-gamMonthly);
+ const debtPay=(st.data.debts||[]).reduce((s,d)=>s+(Number(d.monthlyPay)||0),0);
+ const savTarget=(st.data.savings||[]).reduce((s,x)=>s+(savOf(x).done?0:Number(x.monthly)||0),0);
+ const committed=F.total+debtPay+savTarget;
+ const living=inc-committed;
+
+ // Spending that is genuinely day-to-day: commitments already logged are not it.
+ const live=ex.filter(e=>{const c=byId(e.categoryId);const k=kindOf(c);
+  return !e.fixedId&&k!=="s"&&k!=="d"});
+ const spent=k=>live.filter(e=>kindOf(byId(e.categoryId))===k).reduce((s,e)=>s+(Number(e.amount)||0),0);
+ const needS=spent("n"),wantS=spent("w"),liveS=needS+wantS;
+
+ // Needs take the larger share of what is left, because they are not optional.
+ const needB=Math.max(0,living*.65),wantB=Math.max(0,living*.35);
+ const free=living-liveS;
+
+ // 50/30/20 is checked against the plan, not against spending so far: on day 3 of
+ // the cycle nobody has spent their month's wants yet, and a bar that says so is
+ // telling you about the date, not about your money.
+ const r={need:fixOnly+needB,want:wantB,save:savTarget+debtPay+gamMonthly};
+ const rp=k=>inc>0?(r[k]/inc)*100:0;
+
+ return{C,useC,inc,fixTotal:F.total,fixOnly,gamMonthly,debtPay,savTarget,committed,living,
+  needS,wantS,liveS,needB,wantB,free,
+  perDay:C.daysLeft>0?free/C.daysLeft:free,
+  rule:{need:rp("need"),want:rp("want"),save:rp("save"),
+   needAmt:r.need,wantAmt:r.want,saveAmt:r.save},
+  ok:living>=0};
+}
+// Which debt to attack first and what it buys: highest rate, because that is the
+// one charging the most for the delay.
+function debtPlan(){
+ const ds=(st.data.debts||[]).filter(d=>Number(d.balance)>0);
+ if(!ds.length)return null;
+ const rows=ds.map(d=>{
+  const r=payoff(d.balance,(Number(d.rate)||0)/100,d.monthlyPay);
+  return{d,r,end:r.ok&&isFinite(r.n)?mSft(mKey(),r.n):null};
+ }).sort((a,b)=>(Number(b.d.rate)||0)-(Number(a.d.rate)||0));
+ const first=rows[0];
+ const boost=first?payoff(first.d.balance,(Number(first.d.rate)||0)/100,(Number(first.d.monthlyPay)||0)+500):null;
+ return{rows,first,boost,
+  total:ds.reduce((s,d)=>s+Number(d.balance||0),0),
+  monthly:ds.reduce((s,d)=>s+(Number(d.monthlyPay)||0),0)};
+}
+
+/* ============ Reading what you typed ============
+ * Typing "جمعية الشغل" should file the instalment, not make you walk to another
+ * screen and do it again by hand. */
+const KW={sal:["قبض","مرتب","راتب","معاش","salary","payroll","wage"],
+ gam:["جمعية","جمعيه","جمعيات","gameya","gamiya","gam3ia"]};
+const CATKW={
+ c_food:["اكل","أكل","مطعم","سوبر","بقالة","كشري","فطار","غدا","عشا","قهوة","كافيه","food","lunch","dinner","coffee","grocery","restaurant"],
+ c_transport:["بنزين","مواصلات","اوبر","أوبر","كريم","تاكسي","مترو","قطر","سواق","uber","careem","taxi","metro","fuel","gas"],
+ c_housing:["ايجار","إيجار","كهربا","كهرباء","مياه","غاز","نت","انترنت","فاتورة","فواتير","rent","electric","water","internet","bill"],
+ c_health:["دكتور","صيدلية","دوا","دواء","علاج","تحاليل","مستشفى","doctor","pharmacy","clinic","medicine"],
+ c_fun:["سينما","خروجة","خروجات","رحلة","نتفلكس","ملاهي","cinema","movie","outing","netflix","trip"],
+ c_shop:["هدوم","ملابس","تسوق","جزمة","shopping","clothes","shoes"],
+ c_subs:["اشتراك","اشتراكات","subscription","spotify","يوتيوب"],
+ c_edu:["كورس","كتاب","تعليم","دورة","course","book","class"],
+ c_family:["عيلة","عائلة","هدية","مناسبة","فرح","عزا","family","gift","wedding"],
+ c_debt:["قسط","سداد","كريدت","فيزا","installment","credit","loan"]};
+function guess(text,kind){
+ const s=(text||"").trim().toLowerCase();if(!s)return{};
+ const has=a=>a.some(w=>s.includes(w.toLowerCase()));
+ if(kind==="i")return has(KW.sal)?{salary:true}:{};
+ const out={};
+ // A gameya named in the text beats the generic word; with one gameya running,
+ // the generic word is unambiguous anyway.
+ const g=(st.data.gameyas||[]).find(x=>x.name&&s.includes(String(x.name).toLowerCase()));
+ if(g)out.gamId=g.id;
+ else if(has(KW.gam)){const act=(st.data.gameyas||[]).filter(x=>!gamOf(x).done);
+  if(act.length===1)out.gamId=act[0].id}
+ const f=(st.data.fixed||[]).find(x=>x.name&&s.includes(String(x.name).toLowerCase()));
+ if(f)out.fixedId=f.id;
+ if(!out.gamId&&!out.fixedId)for(const k in CATKW)if(has(CATKW[k])){out.catId=k;break}
+ return out;
+}
+
 /* ============ Fixed commitments & the daily number ============
  * Everything that leaves the income whatever happens — rent, internet, a debt
  * payment, a gameya instalment — is reserved before any "you can spend X" figure
@@ -960,7 +1213,8 @@ function fixedList(){
 }
 function fixedOf(m){
  m=m||st.month;
- const ex=expOf(m);
+ const C=cycle();
+ const ex=(C.pay>0&&C.isCur&&m===st.month)?cycEx(C):expOf(m);
  return fixedList().map(f=>{
   const hit=ex.find(e=>e.fixedId===f.id);
   return Object.assign({},f,{paid:!!hit,paidAmount:hit?Number(hit.amount)||0:0,expId:hit?hit.id:null});
@@ -977,15 +1231,16 @@ function fixedTotals(m){
 // What is actually free to spend, per remaining day, with today's spending
 // measured against today's share rather than buried in the month's total.
 function daily(){
- const inc=sum(incOf()),exAll=sum(expOf());
- const isCur=st.month===mKey(),dim=dIn(st.month);
- const day=isCur?Math.min(dim,new Date().getDate()):dim;
- const daysLeft=Math.max(1,dim-day+1);
- const today=isCur?expOf().filter(e=>txD(e)===dKey()).reduce((s,e)=>s+Number(e.amount||0),0):0;
+ const C=cycle(),isCur=C.isCur,useC=C.pay>0&&isCur;
+ const inc=useC?sum(cycInc(C)):sum(incOf());
+ const rows=useC?cycEx(C):expOf();
+ const exAll=sum(rows);
+ const today=isCur?rows.filter(e=>txD(e)===dKey()).reduce((s,e)=>s+Number(e.amount||0),0):0;
  const due=fixedTotals().due;
+ const daysLeft=C.daysLeft;
  const potStart=inc-(exAll-today)-due;
  const perDay=potStart/daysLeft;
- return{inc,exAll,today,due,daysLeft,day,dim,isCur,perDay,
+ return{inc,exAll,today,due,daysLeft,day:C.daysIn,dim:C.daysTotal,isCur,useC,C,perDay,
   leftToday:perDay-today,pot:potStart-today};
 }
 // Days with something logged that stayed inside the daily share, counting back from
@@ -1221,21 +1476,99 @@ function fixCard(){
   </div>`).join("")}</div>
   <button class="btn ghost" style="margin-top:10px" onclick="newFixed()">${I.plus}${t("addFixed")}</button></div>`}
 
+function planCard(){
+ const cur=esc(st.currency),P=mPlan(),C=P.C;
+ if(P.inc<=0)return `<div class="card wide plan"><div class="ch">🎯${t("plan")}</div>
+  <div class="empty">${I.spark}<div>${t("planNoInc")}<br><span style="font-size:11px">${t("planNoIncB")}</span></div></div></div>`;
+ const row=(ic,lab,val,tone,sub)=>`<div class="pr">
+  <span class="pico" style="background:${tone}22;color:${tone}">${ic}</span>
+  <span class="pmain"><b>${lab}</b>${sub?`<i>${sub}</i>`:""}</span>
+  <span class="pv" style="color:${tone}">${val<0?"−":""}${fmt(Math.abs(val))}</span></div>`;
+ const bar=(lab,pct,target,tone)=>{const off=Math.round(pct-target);
+  return `<div class="rr"><div class="rtop"><span>${lab}</span>
+   <span class="rp">${Math.round(pct)}% <i>/ ${target}%</i></span></div>
+   <div class="track"><div class="fill" style="width:${Math.min(100,pct)}%;background:${tone}"></div>
+    <span class="rmark" style="inset-inline-start:${target}%"></span></div>
+   <div class="rnote">${off>4?t("ruleOver",Math.abs(off)):off<-4?t("ruleUnder",Math.abs(off)):t("ruleOk")}</div></div>`};
+ return `<div class="card wide plan"><div class="ch">🎯${t("plan")}
+   <span class="chn">${C.pay?t("cycleLab",dLab(C.start),dLab(C.end)):mLab(st.month)}</span></div>
+  <div class="pflow">
+   ${row("💰",t("planIn"),P.inc,"var(--grn)",C.pay?t("sincePay",C.pay):"")}
+   ${P.fixOnly>0?row("📌",t("fixed"),-P.fixOnly,"var(--sub)"):""}
+   ${P.gamMonthly>0?row("🤝",t("wGam"),-P.gamMonthly,"var(--sub)"):""}
+   ${P.debtPay>0?row("💳",t("planDebt"),-P.debtPay,"var(--sub)"):""}
+   ${P.savTarget>0?row("🏦",t("planSave"),-P.savTarget,"var(--sub)"):""}
+  </div>
+  <div class="pres ${P.ok?"":"bad"}">
+   <div class="pl">${t("planLiving")}</div>
+   <div class="pb">${fmt(P.living)} <small>${cur}</small></div>
+   <div class="ps">${P.ok?t("planPerDay",fmt(Math.max(0,P.perDay)),cur,C.daysLeft):t("planShort",fmt(-P.living),cur)}</div>
+  </div>
+  <div class="psplit">
+   <div class="pcell"><div class="l">🧺 ${t("needs")}</div>
+    <div class="v">${fmt(P.needS)} <i>/ ${fmt(P.needB)}</i></div>
+    <div class="track"><div class="fill" style="width:${P.needB>0?Math.min(100,(P.needS/P.needB)*100):0}%;background:${P.needS>P.needB?"var(--red)":"#6FA37B"}"></div></div></div>
+   <div class="pcell"><div class="l">✨ ${t("wants")}</div>
+    <div class="v">${fmt(P.wantS)} <i>/ ${fmt(P.wantB)}</i></div>
+    <div class="track"><div class="fill" style="width:${P.wantB>0?Math.min(100,(P.wantS/P.wantB)*100):0}%;background:${P.wantS>P.wantB?"var(--red)":"#C98A4B"}"></div></div></div>
+  </div>
+  <div class="sub-h">${t("rule503020")}</div>
+  <p class="note" style="margin:-2px 0 10px">${t("ruleNote")}</p>
+  ${bar(t("needs"),P.rule.need,50,"#6FA37B")}
+  ${bar(t("wants"),P.rule.want,30,"#C98A4B")}
+  ${bar(t("saveDebt"),P.rule.save,20,"#4E8FB5")}
+ </div>`}
+
+function debtCard(){
+ const cur=esc(st.currency),D=debtPlan();
+ if(!D)return "";
+ return `<div class="card"><div class="ch">💳${t("payoffPlan")}</div>
+  ${D.rows.map((x,i)=>`<div class="pr">
+   <span class="pico" style="background:${i===0?"var(--red)22":"var(--inset)"};color:${i===0?"var(--red)":"var(--sub)"}">${i+1}</span>
+   <span class="pmain"><b>${esc(x.d.name)}</b>
+    <i>${x.r.ok&&x.end?t("doneBy",mLab(x.end)):t("payMore")}</i></span>
+   <span class="pv">${fmt(x.d.balance)}</span></div>`).join("")}
+  ${D.first&&D.first.r.ok&&D.boost&&D.boost.ok&&D.boost.n<D.first.r.n
+   ?`<div class="ins good" style="margin-top:10px"><span class="ic">⚡</span><div>
+     <div class="t">${t("boostT",esc(D.first.d.name))}</div>
+     <div class="b">${t("boostB",D.boost.n,fmt(Math.round(D.first.r.interest-D.boost.interest)),cur)}</div>
+     <button class="ia" onclick="go('debt');setW('debt')">${t("boostA")}</button></div></div>`:""}
+ </div>`}
+
+function advCard(){
+ const ins=insights();
+ if(!ins.length)return `<div class="card wide"><div class="ch">${I.bulb}${t("advice")}</div>
+  <div class="empty">${I.spark}<div>${t("iEmpty")}</div></div></div>`;
+ const head=ins[0],rest=ins.slice(1);
+ const show=st.allIns?rest:rest.slice(0,4);
+ // The one thing worth doing now gets the room; the rest stay a glance.
+ return `<div class="card wide"><div class="ch">${I.bulb}${t("advice")}</div>
+  <div class="focus ${head.lv}">
+   <div class="fic">${head.ic}</div>
+   <div class="fbody"><div class="ft">${esc(head.t)}</div><div class="fb">${esc(head.b)}</div>
+   ${head.a?`<button class="fa" onclick="${head.a.f}">${esc(head.a.l)} ${I.cL}</button>`:""}</div>
+  </div>
+  <div class="inslist">
+  ${show.map(x=>`<div class="ins2 ${x.lv}"${x.a?` onclick="${x.a.f}"`:""}>
+   <span class="ic">${x.ic}</span>
+   <span class="i2m"><b>${esc(x.t)}</b><i>${esc(x.b)}</i></span>
+   ${x.a?`<span class="i2a">${I.cL}</span>`:""}</div>`).join("")}</div>
+  ${rest.length>4?`<button class="btn ghost" style="margin-top:10px" onclick="st.allIns=!st.allIns;paint()">${st.allIns?t("less"):t("moreIns",rest.length-4)}</button>`:""}
+ </div>`}
+
 function vHome(){
- const cur=esc(st.currency),inc=sum(incOf()),ex=sum(expOf()),bal=inc-ex;
- const cs=catSpend(),ins=insights(),D=daily(),F=fixedTotals();
- const plan=planOf(cs,inc).plan;
+ const cur=esc(st.currency),D=daily(),F=fixedTotals(),P=mPlan();
+ const inc=D.inc,ex=D.exAll,bal=inc-ex;
+ const cs=catSpend();
+ const plan=planOf(cs,sum(incOf())).plan;
  const pct=plan>0?(ex/plan)*100:0;
- const pie=cs.filter(c=>c.spent>0).sort((a,b)=>b.spent-a.spent).map(c=>({name:cNm(c),value:c.spent,color:c.color,emoji:c.emoji}));
- const act=cs.filter(c=>c.budget>0||c.spent>0).sort((a,b)=>b.pct-a.pct);
  const okDay=D.leftToday>=0;
- // The one number worth opening the app for: what today can take.
  const heroLead=D.isCur&&inc>0
   ?`<div class="hmeta"><div class="hlab">${t("today")}</div>
     <div class="hval" style="color:${okDay?"var(--acc)":"var(--red)"}">${okDay?"":"−"}${fmt(Math.abs(D.leftToday))} <small>${cur}</small></div>
-    <div class="hsub">${okDay?t("ofPerDay",fmt(D.perDay),cur):t("overPerDay",fmt(D.perDay),cur)}</div>
+    <div class="hsub">${okDay?t("ofPerDay",fmt(D.perDay),cur):t("overPerDay",fmt(D.perDay),cur)}${D.useC?" · "+t("tillPay",D.C.daysLeft):""}</div>
     <div class="hrow">
-     <div class="hcell"><div class="l">${t("leftMonth")}</div><div class="v" style="color:${D.pot>=0?"var(--grn)":"var(--red)"}">${fmt(D.pot)}</div></div>
+     <div class="hcell"><div class="l">${D.useC?t("leftCycle"):t("leftMonth")}</div><div class="v" style="color:${D.pot>=0?"var(--grn)":"var(--red)"}">${fmt(D.pot)}</div></div>
      <div class="hcell"><div class="l">${t("daysLeft")}</div><div class="v">${D.daysLeft}</div></div>
      <div class="hcell"><div class="l">${t("reserved")}</div><div class="v">${fmt(F.due)}</div></div>
     </div></div>`
@@ -1247,22 +1580,11 @@ function vHome(){
     </div></div>`;
  return `<div class="sec">
  <div class="hero">${heroLead}${plan>0?ring(pct,pct>100):""}</div>
- <div class="card wide adv"><div class="ch">${I.bulb}${t("advice")}</div>
-  ${ins.length?ins.map(x=>`<div class="ins ${x.lv}"><span class="ic">${x.ic}</span>
-   <div><div class="t">${esc(x.t)}</div><div class="b">${esc(x.b)}</div>
-   ${x.a?`<button class="ia" onclick="${x.a.f}">${esc(x.a.l)}</button>`:""}</div></div>`).join("")
-   :`<div class="empty">${I.spark}<div>${t("iEmpty")}</div></div>`}</div>
+ ${advCard()}
+ ${planCard()}
+ ${debtCard()}
  ${fixCard()}
- ${nwCard()}
- <div class="card"><div class="ch">${I.pie}${t("breakdown")}</div>
-  ${pie.length?donut(pie)+`<div class="lgd">${pie.slice(0,6).map(d=>`<span><i style="background:${d.color}"></i>${d.emoji} ${esc(d.name)}</span>`).join("")}</div>`
-   :`<div class="empty">${I.spark}<div>${t("noExp")}</div></div>`}</div>
- <div class="card"><div class="ch">${I.bars}${t("budgets")}</div>
-  ${act.length?act.map(c=>{const ov=c.budget>0&&c.spent>c.budget,p=Math.min(100,c.budget>0?c.pct:0);
-   return `<div class="brow"><div class="btop"><span class="bnm">${c.emoji} ${esc(cNm(c))}</span>
-   <span class="bamt" style="${ov?"color:var(--red)":""}">${fmt(c.spent)}${c.budget>0?" / "+fmt(c.budget):""}</span></div>
-   <div class="track"><div class="fill" style="width:${p}%;background:${ov?"var(--red)":c.color}"></div></div></div>`}).join("")
-   :`<div class="empty">${I.spark}<div>${t("noExp")}</div></div>`}</div></div>`}
+ ${nwCard()}</div>`}
 function vLog(){
  let rows=[];expOf().forEach(e=>rows.push({...e,kind:"e"}));incOf().forEach(r=>rows.push({...r,kind:"i"}));
  if(st.filter==="e")rows=rows.filter(r=>r.kind==="e");
@@ -1300,7 +1622,18 @@ function setF(f){st.filter=f;paint()}
 function vRep(){
  const d=trend(),cs=catSpend().filter(c=>c.spent>0).sort((a,b)=>b.spent-a.spent);
  const pm=mSft(st.month,-1),pcs=catSpend(pm);
+ const pie=cs.map(c=>({name:cNm(c),value:c.spent,color:c.color,emoji:c.emoji}));
+ const act=catSpend().filter(c=>c.budget>0||c.spent>0).sort((a,b)=>b.pct-a.pct);
  return `<div class="sec">
+ <div class="card"><div class="ch">${I.pie}${t("breakdown")}</div>
+  ${pie.length?donut(pie)+`<div class="lgd">${pie.slice(0,6).map(x=>`<span><i style="background:${x.color}"></i>${x.emoji} ${esc(x.name)}</span>`).join("")}</div>`
+   :`<div class="empty">${I.spark}<div>${t("noExp")}</div></div>`}</div>
+ <div class="card"><div class="ch">${I.bars}${t("budgets")}</div>
+  ${act.length?act.map(c=>{const ov=c.budget>0&&c.spent>c.budget,p=Math.min(100,c.budget>0?c.pct:0);
+   return `<div class="brow"><div class="btop"><span class="bnm">${c.emoji} ${esc(cNm(c))}</span>
+   <span class="bamt" style="${ov?"color:var(--red)":""}">${fmt(c.spent)}${c.budget>0?" / "+fmt(c.budget):""}</span></div>
+   <div class="track"><div class="fill" style="width:${p}%;background:${ov?"var(--red)":c.color}"></div></div></div>`}).join("")
+   :`<div class="empty">${I.spark}<div>${t("noExp")}</div></div>`}</div>
  <div class="card wide"><div class="ch">${I.bars}${t("last6")}</div>${bars(d)}
   <div class="lgd"><span><i style="background:var(--grn)"></i>${t("income")}</span><span><i style="background:var(--red)"></i>${t("expense")}</span></div></div>
  <div class="card"><div class="ch">${I.tag}${t("vs")}</div>
@@ -1448,7 +1781,7 @@ function wSavs(){
   <div class="frow"><div class="fld"><label class="fl">${t("savTarget")}</label><input id="sT" type="number" inputmode="decimal" placeholder="0"></div>
   <div class="fld"><label class="fl">${t("savNow")}</label><input id="sC" type="number" inputmode="decimal" placeholder="0"></div></div>
   <div class="fld"><label class="fl">${t("savMonthly")}</label><input id="sP" type="number" inputmode="decimal" placeholder="0"></div>
-  <div class="fld"><select id="sE">${EMO.map(e=>`<option value="${e}">${e}</option>`).join("")}</select></div>
+  <div class="fld"><label class="fl">${t("icon")}</label><select id="sE">${EMO.map(e=>`<option value="${e}">${e}</option>`).join("")}</select></div>
   <button class="btn" onclick="addSav()">${I.plus}${t("save")}</button></div>
 
  <div class="card"><div class="ch">${I.plus}${t("addGam")}</div>
@@ -1495,7 +1828,7 @@ function wInvs(){
   <div class="fld"><label class="fl">${t("invName")}</label><input id="iN" placeholder="${t("invPh")}"></div>
   <div class="frow"><div class="fld"><label class="fl">${t("invIn")}</label><input id="iA" type="number" inputmode="decimal" placeholder="0"></div>
   <div class="fld"><label class="fl">${t("invNow")}</label><input id="iV" type="number" inputmode="decimal" placeholder="0"></div></div>
-  <div class="fld"><select id="iE">${EMO.map(e=>`<option value="${e}"${e==="📈"?" selected":""}>${e}</option>`).join("")}</select></div>
+  <div class="fld"><label class="fl">${t("icon")}</label><select id="iE">${EMO.map(e=>`<option value="${e}"${e==="📈"?" selected":""}>${e}</option>`).join("")}</select></div>
   <label class="chk"><input type="checkbox" id="iL" checked><span>${t("liquidAsk")}</span></label>
   <button class="btn" onclick="addInv()">${I.plus}${t("save")}</button></div>`}
 function vSet(){
@@ -1543,7 +1876,7 @@ function vSet(){
   <div style="height:11px"></div>
   <div class="frow"><div class="fld"><input id="ncN" placeholder="${t("catName")}"></div>
   <div class="fld" style="max-width:118px"><input id="ncB" type="number" inputmode="decimal" placeholder="${t("budget")}"></div></div>
-  <div class="fld"><select id="ncE">${EMO.map(e=>`<option value="${e}">${e}</option>`).join("")}</select></div>
+  <div class="fld"><label class="fl">${t("icon")}</label><select id="ncE">${EMO.map(e=>`<option value="${e}">${e}</option>`).join("")}</select></div>
   <button class="btn ghost" onclick="addCat()">${I.plus}${t("addCat")}</button></div>
  <div class="card"><div class="ch">${I.dl}${t("data")}</div>
   <button class="btn ghost" onclick="expCSV()">${I.dl}${t("csv")}</button><div style="height:8px"></div>
@@ -1555,12 +1888,12 @@ function vSet(){
 /* ============ Add / Edit sheet ============ */
 const ad={kind:"e",amount:"",cat:null,note:"",date:null,source:"",editId:null,allCats:false};
 function openAdd(kind){
- ad.kind=kind||"e";ad.amount="";ad.note="";ad.source="";ad.editId=null;ad.allCats=false;
+ ad.kind=kind||"e";ad.amount="";ad.note="";ad.source="";ad.editId=null;ad.allCats=false;ad.g={};ad.touchedCat=false;
  ad.date=dKey();const f=freqCats();ad.cat=f[0]?f[0].id:null;sheet()}
 function editTx(kind,id){
  const r=(kind==="e"?st.data.expenses:st.data.incomes).find(x=>x.id===id);
  if(!r)return;
- ad.kind=kind;ad.editId=id;ad.allCats=false;ad.amount=String(r.amount||"");ad.note=r.note||"";
+ ad.kind=kind;ad.editId=id;ad.allCats=false;ad.g={};ad.touchedCat=true;ad.amount=String(r.amount||"");ad.note=r.note||"";
  ad.source=r.source||"";ad.date=txD(r);ad.cat=r.categoryId||freqCats()[0]?.id||null;sheet()}
 function closeAdd(){
  const s=document.getElementById("scrim"),h=document.getElementById("sheet");
@@ -1585,18 +1918,43 @@ function sheet(){
     return `<div class="chips">${show.map(c=>`<button class="chip${ad.cat===c.id?" on":""}" onclick="pickC('${c.id}')">
     <span class="e">${c.emoji}</span>${esc(cNm(c))}</button>`).join("")}
     ${!ad.allCats&&cats.length>show.length?`<button class="chip q" onclick="moreCats()">+${cats.length-show.length} ${t("more")}</button>`:""}</div>`})()
-   :`<div class="fld"><input id="srcI" placeholder="${t("srcPh")}" value="${esc(ad.source)}" oninput="ad.source=this.value"></div>`}
+   :`<div class="fld"><input id="srcI" placeholder="${t("srcPh")}" value="${esc(ad.source)}" oninput="typed(this.value)"></div>`}
+  <div id="ghint" class="ghint">${hintHTML()}</div>
   <div class="kp">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" onclick="kp('${n}')">${n}</button>`).join("")}
    <button class="key" onclick="kp('00')">00</button><button class="key" onclick="kp('0')">0</button>
    <button class="key" onclick="kp('del')">${I.back}</button></div>
-  <div class="fld"><input id="noteI" placeholder="${t("note")} (${t("optional")})" value="${esc(ad.note)}" oninput="ad.note=this.value"></div>
+  <div class="fld"><input id="noteI" placeholder="${t("notePh")}" value="${esc(ad.note)}" oninput="typed(this.value)"></div>
   <div class="fld"><label class="fl">${t("date")}</label><input type="date" value="${ad.date}" onchange="ad.date=this.value"></div>
   <button class="btn" onclick="saveTx()">${I.ok}${t("save")}</button></div>`;
  requestAnimationFrame(()=>{const s=document.getElementById("scrim"),h=document.getElementById("sheet");
   if(s)s.classList.add("on");if(h)h.classList.add("on")})}
+/* The app reads what you type. "قبض" files the salary and starts the cycle there;
+ * a gameya's name files that instalment — no second trip to another screen. */
+function hintHTML(){
+ const g=ad.g||{};
+ if(g.salary)return `<span class="gh ok">✓ ${t("hSalary")}</span>`;
+ if(g.gamId){const x=(st.data.gameyas||[]).find(y=>y.id===g.gamId);
+  if(x)return `<span class="gh ok">✓ ${t("hGam",esc(x.name),fmt(gamOf(x).amt))}</span>`}
+ if(g.fixedId){const f=(st.data.fixed||[]).find(y=>y.id===g.fixedId);
+  if(f)return `<span class="gh ok">✓ ${t("hFix",esc(f.name))}</span>`}
+ if(g.catId){const c=byId(g.catId);
+  if(c)return `<span class="gh">${c.emoji} ${t("hCat",esc(cNm(c)))}</span>`}
+ return "";
+}
+function typed(v){
+ if(ad.kind==="i")ad.source=v;else ad.note=v;
+ const g=guess(v,ad.kind);
+ const was=JSON.stringify(ad.g||{});
+ ad.g=g;
+ // A guessed category selects itself, but never over a category you picked.
+ if(g.catId&&!ad.touchedCat&&ad.cat!==g.catId){ad.cat=g.catId;
+  document.querySelectorAll("#sheet .chip").forEach(el=>{
+   el.classList.toggle("on",el.getAttribute("onclick")===`pickC('${g.catId}')`)})}
+ if(JSON.stringify(g)!==was){const h=document.getElementById("ghint");if(h)h.innerHTML=hintHTML()}
+}
 function moreCats(){ad.allCats=true;sheet()}
 function setKind(k){ad.kind=k;sheet()}
-function pickC(id){ad.cat=id;
+function pickC(id){ad.cat=id;ad.touchedCat=true;
  document.querySelectorAll("#sheet .chip").forEach(el=>el.classList.remove("on"));
  const b=[...document.querySelectorAll("#sheet .chip")].find(el=>el.getAttribute("onclick")===`pickC('${id}')`);
  if(b)b.classList.add("on")}
@@ -1616,13 +1974,19 @@ function saveTx(){
   const src=(ad.source||"").trim()||t("income");
   if(ad.editId){const r=st.data.incomes.find(x=>x.id===ad.editId);
    if(r){r.amount=amount;r.source=src;r.date=date;r.month=month}toast(t("upd"))}
-  else{st.data.incomes.push({id:uid("inc"),month,date,source:src,amount,createdAt:Date.now()});toast(t("svI"))}
+  else{const sal=!!(ad.g&&ad.g.salary);
+   st.data.incomes.push({id:uid("inc"),month,date,source:src,amount,salary:sal,createdAt:Date.now()});
+   toast(sal?t("svSal",date.slice(8,10)):t("svI"))}
  }else{
   if(!ad.cat){toast(t("needCat"),1);return}
   if(ad.editId){const r=st.data.expenses.find(x=>x.id===ad.editId);
    if(r){r.amount=amount;r.categoryId=ad.cat;r.note=(ad.note||"").trim();r.date=date;r.month=month}toast(t("upd"))}
   else{
-   st.data.expenses.push({id:uid("exp"),month,date,categoryId:ad.cat,amount,note:(ad.note||"").trim(),createdAt:Date.now()});
+   const g=ad.g||{};
+   const fid=g.gamId?"gam:"+g.gamId:(g.fixedId||null);
+   const taken=fid&&fixedOf().some(f=>f.id===fid&&f.paid);
+   st.data.expenses.push({id:uid("exp"),month,date,categoryId:ad.cat,amount,
+    note:(ad.note||"").trim(),fixedId:taken?null:fid,createdAt:Date.now()});
    const c=byId(ad.cat);
    const sp=st.data.expenses.filter(e=>e.month===month&&e.categoryId===ad.cat).reduce((s,e)=>s+Number(e.amount||0),0);
    if(c&&c.budget>0&&sp>c.budget)toast(t("ovr",cNm(c)),1);else toast(t("sv"));
@@ -1703,7 +2067,7 @@ function editEnt(kind,id){
  const o=cfg.arr().find(x=>x.id===id);if(!o)return;
  const fld=f=>{const v=o[f.k],fid="ef_"+f.k;
   if(f.t==="bool")return `<label class="chk"><input type="checkbox" id="${fid}"${v!==false?" checked":""}><span>${t(f.l)}</span></label>`;
-  if(f.t==="emoji")return `<div class="fld"><label class="fl">${t("emoji")}</label><select id="${fid}">${EMO.map(e=>`<option value="${e}"${e===v?" selected":""}>${e}</option>`).join("")}</select></div>`;
+  if(f.t==="emoji")return `<div class="fld"><label class="fl">${t("icon")}</label><select id="${fid}">${EMO.map(e=>`<option value="${e}"${e===v?" selected":""}>${e}</option>`).join("")}</select></div>`;
   if(f.t==="goal")return `<div class="fld"><label class="fl">${t(f.l)}</label><select id="${fid}"><option value="">${t("noGoal")}</option>${(st.data.savings||[]).map(x=>`<option value="${x.id}"${x.id===v?" selected":""}>${esc(x.name)}</option>`).join("")}</select></div>`;
   const ty=f.t==="month"?"month":f.t==="text"?"text":"number";
   return `<div class="fld"><label class="fl">${t(f.l)}</label><input id="${fid}" type="${ty}"${ty==="number"?' inputmode="decimal" step="any"':""} value="${esc(String(v==null?"":v))}"></div>`};
@@ -1737,7 +2101,7 @@ function newFixed(){
   <div class="fld"><label class="fl">${t("fixName")}</label><input id="fx_n" placeholder="${t("fixPh")}"></div>
   <div class="fld"><label class="fl">${t("fixAmt")}</label><input id="fx_a" type="number" inputmode="decimal" placeholder="0"></div>
   <div class="fld"><label class="fl">${t("cat")}</label><select id="fx_c">${cats.map(c=>`<option value="${c.id}">${c.emoji} ${esc(cNm(c))}</option>`).join("")}</select></div>
-  <div class="fld"><select id="fx_e">${EMO.map(e=>`<option value="${e}"${e==="📌"?" selected":""}>${e}</option>`).join("")}</select></div>
+  <div class="fld"><label class="fl">${t("icon")}</label><select id="fx_e">${EMO.map(e=>`<option value="${e}"${e==="📌"?" selected":""}>${e}</option>`).join("")}</select></div>
   <button class="btn" onclick="addFixed()">${I.plus}${t("save")}</button>`)}
 function addFixed(){
  const n=(document.getElementById("fx_n")||{}).value,a=Number((document.getElementById("fx_a")||{}).value)||0;
