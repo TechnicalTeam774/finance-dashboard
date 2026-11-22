@@ -223,6 +223,27 @@ font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all
 .nwlist{margin-top:4px}
 .nwr{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2)}
 .nwr:last-child{border-bottom:none;padding-bottom:0}
+.hsub{font-size:11px;color:var(--sub);margin-top:3px}
+.ia{margin-top:8px;background:var(--inset);border:1px solid var(--line2);color:var(--txt);
+ font:inherit;font-size:11.5px;font-weight:600;border-radius:9px;padding:6px 12px;cursor:pointer}
+.ia:hover{border-color:var(--acc);color:var(--acc)}
+.chn{margin-inline-start:auto;font-size:11px;font-weight:600;color:var(--sub);
+ font-family:'JetBrains Mono',monospace}
+.fixlist{margin-top:6px}
+.fixr{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line2);font-size:13px}
+.fixr:last-child{border-bottom:none}
+.fixr.done{opacity:.5}
+.fixr.done .rt{text-decoration:line-through}
+.fixr .rmain{flex:1;min-width:0}
+.fixr .rt{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fixr .ra{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600}
+.fixr .okm{color:var(--grn);display:flex;width:30px;justify-content:center}
+.fixr .okm svg{width:16px;height:16px}
+.ib.go{color:var(--acc)}
+.track{position:relative}
+.soonbar{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(135deg,
+ color-mix(in srgb,#4E8FB5 55%,transparent) 0 5px,transparent 5px 10px)}
+.soon{font-style:normal;color:#4E8FB5;font-size:10px}
 .upd-notes{margin:4px 0 14px;padding-inline-start:18px;font-size:12.5px;line-height:1.75;color:var(--sub)}
 .upd-notes li{margin-bottom:3px}
 .upd-ic{font-size:34px;text-align:center;margin-bottom:4px}
@@ -331,6 +352,10 @@ transition:opacity .22s,transform .22s}
  .hero .hcell .v{font-size:16px}
 
  .nwgrid{gap:10px}
+ .card.adv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;align-content:start}
+ .card.adv>.ch{grid-column:1/-1}
+ .card.adv>.ins{margin:0}
+ .card.adv>.empty{grid-column:1/-1}
  .sheet{max-width:560px;border-radius:20px;inset-inline:auto;inset-inline-start:50%;bottom:50%;
   transform:translate(-50%,50%) scale(.96);opacity:0}
  html[dir="rtl"] .sheet{transform:translate(50%,50%) scale(.96)}
@@ -358,8 +383,18 @@ appId:"1:147347678300:web:b3fd9d3fc8640d11483299"};
 const FB_ON=firebaseConfig.apiKey!=="YOUR_API_KEY";
 const K={data:"mizan_data_v1",lang:"mizan_lang",theme:"mizan_theme",cur:"mizan_currency",sync:"mizan_sync_code"};
 /* Keep APP_VER equal to version.json — the Android workflow fails the build if they drift. */
-const APP_VER="1.3.0";
-const CHANGES={"1.3.0":[
+const APP_VER="1.4.0";
+const CHANGES={"1.4.0":[
+ "الشاشة الرئيسية بقت تجاوب على سؤال واحد: متاح تصرف كام النهاردة",
+ "«الثوابت»: الإيجار والنت والجيم وأقساط الجمعيات — بتتحجز الأول، وبتسجّلها بضغطة",
+ "قسط الجمعية بقى بيظهر في الثوابت لوحده من غير ما تضيفه",
+ "النصايح بقى فيها زرار تنفيذ: عدّل الميزانية، سجّل الثابت، حوّل الجمعية للهدف",
+ "تنبيه لما تصنيف يعلى عن معدّله هو شخصيًا، مش عن ميزانية مفروضة",
+ "التطبيق بيكتشف المصروف اللي بيتكرر كل شهر ويقترح تخليه ثابت",
+ "عدّاد الأيام المتتالية اللي قعدت فيها تحت حدّك اليومي",
+ "شريط الهدف بيوريك نصيب الجمعية الجاي عليه",
+ "ترتيب الكروت على اللاب اتظبط تاني"
+],"1.3.0":[
  "زرار قلم على كل حاجة: المصروف، الدخل، الدين، الجمعية، هدف الادخار، الاستثمار",
  "الجمعية بقت تحت «ادخار» وبتترب بهدف — تقبضها تحوّلها للهدف بضغطة",
  "اللي لسه عليك من أقساط الجمعية بقى يتحسب دين، مش رصيد ليك",
@@ -470,6 +505,30 @@ updTitle:"في تحديث جديد 🎉",updVer:v=>`الإصدار ${v}`,later:"
 updGetApk:"نزّل التحديث",updApkHint:"هتتفتح صفحة التنزيل. ثبّت الملف فوق القديم من غير ما تمسح حاجة.",
 newIn:v=>`الجديد في ${v}`,letsGo:"يلا بينا",netErr:"مفيش اتصال بالنت",
 exitAsk:"اضغط رجوع تاني للخروج",
+today:"متاح تصرفه النهاردة",ofPerDay:(v,c)=>`من ${v} ${c} نصيب اليوم`,
+overPerDay:(v,c)=>`عدّيت نصيب اليوم (${v} ${c})`,
+leftMonth:"فاضل للشهر",daysLeft:"أيام فاضلة",reserved:"محجوز",
+fixed:"الثوابت",addFixed:"إضافة ثابت",noFixed:"مفيش ثوابت مسجلة",
+fixedHint:"الإيجار، النت، الجيم، أقساط الجمعيات — أي حاجة بتطلع كل شهر مهما حصل. بنحجزها الأول عشان رقم «متاح تصرفه» يبقى صادق.",
+fixName:"الاسم",fixPh:"إيجار، نت، جيم…",fixAmt:"المبلغ الشهري",
+fixPaid:(a,b)=>`اتدفع ${a} من ${b}`,fixLog:"سجّلها",fixDone:n=>`${n} اتسجلت`,
+iFixT:n=>n===1?"ثابت واحد لسه ما اتسجلش":`${n} ثوابت لسه ما اتسجلتش`,
+iFixB:(v,c)=>`${v} ${c} محجوزين ومتخصومين من المتاح. سجّلهم أول ما تدفعهم.`,iFixA:"شوف الثوابت",
+iDayOkT:(v,c)=>`لسه قدامك ${v} ${c} النهاردة`,
+iDayOverT:(v,c)=>`عدّيت نصيب النهاردة بـ ${v} ${c}`,
+iDayB:(v,c,n)=>`نصيب اليوم ${v} ${c} على ${n} يوم فاضلين.`,
+iStreakT:n=>`${n} يوم ورا بعض تحت حدّك`,iStreakB:"كمّل كده.",
+iSpikeT:(c,d)=>`${c} أعلى من المعتاد بـ ${d}%`,
+iSpikeB:(now,avg,c,ex)=>`صرفت ${now} ${c} الشهر ده، ومتوسطك ${avg}. يعني ${ex} زيادة.`,
+iRecT:(c,v,cu)=>`${c} بـ ${v} ${cu} بيتكرر كل شهر`,
+iRecB:"يبان إنه التزام ثابت مش مصروف عادي.",iRecA:"خليه ثابت",
+iGamT:n=>`دورك في «${n}» الشهر ده`,iGamB:(v,c)=>`هتقبض ${v} ${c}.`,iGamA:"حوّلها للهدف",
+iGamNextT:n=>`دورك في «${n}» الشهر الجاي`,iGamNextB:(v,c)=>`استعد لـ ${v} ${c}.`,
+iGoalHitT:n=>`«${n}» هيتحقق بالجمعية`,
+iGoalHitB:(g,v,c)=>`${g} هتضيف ${v} ${c} وتكمّل الهدف.`,
+iEmT:n=>n>=1?`صندوق الطوارئ يغطي ${n} شهر بس`:"صندوق الطوارئ أقل من شهر",
+iEmB:(v,c)=>`محتاج ${v} ${c} كمان توصل لتغطية ٣ شهور.`,
+iOverA:"عدّل الميزانيات",
 edit:"تعديل",saveEdit:"حفظ التعديل",emoji:"الأيقونة",
 monthlyDue:"التزاماتك الشهرية",monthlyDueHint:v=>`بتطلع من دخلك ${v} كل شهر قبل أي مصروف تاني.`,
 covers:n=>`يكفيك ${n} شهور`,coversLong:n=>n>0?`يغطي مصاريف ${n} شهور`:"أقل من شهر",
@@ -585,6 +644,30 @@ updTitle:"Update available 🎉",updVer:v=>`Version ${v}`,later:"Later",updNow:"
 updGetApk:"Download update",updApkHint:"This opens the download page. Install the new file over the old one — nothing is lost.",
 newIn:v=>`What's new in ${v}`,letsGo:"Let's go",netErr:"No internet connection",
 exitAsk:"Press back again to exit",
+today:"Free to spend today",ofPerDay:(v,c)=>`of today's ${v} ${c} share`,
+overPerDay:(v,c)=>`Past today's share (${v} ${c})`,
+leftMonth:"Left this month",daysLeft:"Days left",reserved:"Reserved",
+fixed:"Fixed commitments",addFixed:"Add commitment",noFixed:"No fixed commitments yet",
+fixedHint:"Rent, internet, the gym, gameya instalments — anything that leaves every month no matter what. Reserving them first is what keeps the daily figure honest.",
+fixName:"Name",fixPh:"Rent, internet, gym…",fixAmt:"Monthly amount",
+fixPaid:(a,b)=>`${a} of ${b} paid`,fixLog:"Log it",fixDone:n=>`${n} logged`,
+iFixT:n=>n===1?"One commitment not logged yet":`${n} commitments not logged yet`,
+iFixB:(v,c)=>`${v} ${c} is reserved and already taken off what you can spend. Log each one when you pay it.`,iFixA:"See commitments",
+iDayOkT:(v,c)=>`${v} ${c} left for today`,
+iDayOverT:(v,c)=>`${v} ${c} past today's share`,
+iDayB:(v,c,n)=>`Today's share is ${v} ${c}, over ${n} ${n===1?"day":"days"} left.`,
+iStreakT:n=>`${n} days in a row under your limit`,iStreakB:"Keep it going.",
+iSpikeT:(c,d)=>`${c} is ${d}% above its normal`,
+iSpikeB:(now,avg,c,ex)=>`${now} ${c} this month against your usual ${avg} — ${ex} more.`,
+iRecT:(c,v,cu)=>`${c} at ${v} ${cu} repeats every month`,
+iRecB:"That reads like a fixed commitment rather than ordinary spending.",iRecA:"Make it fixed",
+iGamT:n=>`Your turn in "${n}" is this month`,iGamB:(v,c)=>`You collect ${v} ${c}.`,iGamA:"Move it to the goal",
+iGamNextT:n=>`Your turn in "${n}" is next month`,iGamNextB:(v,c)=>`${v} ${c} is coming.`,
+iGoalHitT:n=>`"${n}" will be reached by the gameya`,
+iGoalHitB:(g,v,c)=>`${g} adds ${v} ${c} and completes the goal.`,
+iEmT:n=>n>=1?`Emergency fund covers only ${n} ${n===1?"month":"months"}`:"Emergency fund covers under a month",
+iEmB:(v,c)=>`${v} ${c} more gets you to three months.`,
+iOverA:"Adjust budgets",
 edit:"Edit",saveEdit:"Save changes",emoji:"Icon",
 monthlyDue:"Monthly commitments",monthlyDueHint:v=>`${v} leaves your income every month before anything else.`,
 covers:n=>`${n} months of cover`,coversLong:n=>n>0?`Covers ${n} ${n===1?"month":"months"} of spending`:"Under a month",
@@ -706,6 +789,7 @@ function normalize(d){
  d.categories=d.categories||[];d.incomes=d.incomes||[];d.expenses=d.expenses||[];d.debts=d.debts||[];
  // Added in 1.1.0 — an older backup or an older device's cloud copy has none of these.
  d.gameyas=d.gameyas||[];d.savings=d.savings||[];d.invests=d.invests||[];
+ d.fixed=d.fixed||[]; // 1.4.0
  const RM={cat_food:"c_food",cat_transport:"c_transport",cat_housing:"c_housing",cat_health:"c_health",
   cat_investment:"c_invest",cat_subscriptions:"c_subs",cat_entertainment:"c_fun",cat_shopping:"c_shop",
   cat_education:"c_edu",cat_family:"c_family",cat_other:"c_other"};
@@ -719,7 +803,7 @@ function normalize(d){
 }
 function loadData(){
  try{const raw=localStorage.getItem(K.data);if(raw)return normalize(JSON.parse(raw))}catch(e){}
- return {categories:JSON.parse(JSON.stringify(DEF)),incomes:[],expenses:[],debts:[],gameyas:[],savings:[],invests:[]};
+ return {categories:JSON.parse(JSON.stringify(DEF)),incomes:[],expenses:[],debts:[],gameyas:[],savings:[],invests:[],fixed:[]};
 }
 
 /* ============ State ============ */
@@ -859,12 +943,145 @@ function netWorth(){
   coverMonths:spend>0?liquid/spend:null,
   any:debts>0||gamOwed>0||sav>0||inv>0};
 }
+/* ============ Fixed commitments & the daily number ============
+ * Everything that leaves the income whatever happens — rent, internet, a debt
+ * payment, a gameya instalment — is reserved before any "you can spend X" figure
+ * is shown. A budget that ignores them lies to you on the 3rd of the month. */
+function fixedList(){
+ const own=(st.data.fixed||[]).filter(f=>f.active!==false)
+  .map(f=>({id:f.id,name:f.name,amount:Number(f.amount)||0,emoji:f.emoji||"📌",
+   categoryId:f.categoryId||"c_bills",own:true}));
+ // A gameya instalment is a fixed commitment by nature, so it appears here too
+ // rather than being something to remember separately.
+ const gam=(st.data.gameyas||[]).filter(g=>!gamOf(g).done)
+  .map(g=>({id:"gam:"+g.id,name:g.name,amount:gamOf(g).amt,emoji:"🤝",
+   categoryId:"c_savings",own:false}));
+ return own.concat(gam);
+}
+function fixedOf(m){
+ m=m||st.month;
+ const ex=expOf(m);
+ return fixedList().map(f=>{
+  const hit=ex.find(e=>e.fixedId===f.id);
+  return Object.assign({},f,{paid:!!hit,paidAmount:hit?Number(hit.amount)||0:0,expId:hit?hit.id:null});
+ });
+}
+function fixedTotals(m){
+ const list=fixedOf(m);
+ return{list,
+  total:list.reduce((s,f)=>s+f.amount,0),
+  paid:list.filter(f=>f.paid).reduce((s,f)=>s+f.paidAmount,0),
+  due:list.filter(f=>!f.paid).reduce((s,f)=>s+f.amount,0),
+  dueCount:list.filter(f=>!f.paid).length};
+}
+// What is actually free to spend, per remaining day, with today's spending
+// measured against today's share rather than buried in the month's total.
+function daily(){
+ const inc=sum(incOf()),exAll=sum(expOf());
+ const isCur=st.month===mKey(),dim=dIn(st.month);
+ const day=isCur?Math.min(dim,new Date().getDate()):dim;
+ const daysLeft=Math.max(1,dim-day+1);
+ const today=isCur?expOf().filter(e=>txD(e)===dKey()).reduce((s,e)=>s+Number(e.amount||0),0):0;
+ const due=fixedTotals().due;
+ const potStart=inc-(exAll-today)-due;
+ const perDay=potStart/daysLeft;
+ return{inc,exAll,today,due,daysLeft,day,dim,isCur,perDay,
+  leftToday:perDay-today,pot:potStart-today};
+}
+// Days with something logged that stayed inside the daily share, counting back from
+// yesterday — today is still in progress, so a streak you can still lose isn't one.
+// A day with nothing logged is no evidence of restraint, so it neither counts nor
+// breaks the run; counting empty days would turn "I forgot to log" into a streak.
+function streak(){
+ const d=daily();if(!(d.perDay>0))return 0;
+ const by={};(st.data.expenses||[]).forEach(e=>{const k=txD(e);by[k]=(by[k]||0)+(Number(e.amount)||0)});
+ const first=Object.keys(by).sort()[0];if(!first)return 0;
+ let n=0;const now=new Date();
+ for(let i=1;i<=90;i++){
+  const dt=new Date(now);dt.setDate(now.getDate()-i);
+  const k=dKey(dt);
+  if(k<first)break;
+  if(by[k]===undefined)continue;
+  if(by[k]<=d.perDay)n++;else break;
+ }
+ return n;
+}
+// A category well above its own recent normal — the thing worth knowing before
+// the month ends, as opposed to a budget it was never given.
+function spikes(){
+ const m=st.month,prev=[mSft(m,-1),mSft(m,-2),mSft(m,-3)];
+ const now=catSpend(m);
+ return now.map(c=>{
+  const hist=prev.map(p=>(expOf(p).filter(e=>e.categoryId===c.id)
+   .reduce((s,e)=>s+Number(e.amount||0),0)));
+  const seen=hist.filter(v=>v>0);
+  if(seen.length<2||c.spent<=0)return null;
+  const avg=seen.reduce((a,b)=>a+b,0)/seen.length;
+  const d=((c.spent-avg)/avg)*100;
+  return d>=40&&c.spent-avg>=100?{c,avg,d:Math.round(d),extra:c.spent-avg}:null;
+ }).filter(Boolean).sort((a,b)=>b.extra-a.extra);
+}
+// Same category, close to the same amount, two months running: that is a
+// subscription or a bill, and it belongs in the fixed list.
+function recurringHints(){
+ const m=st.month,p1=mSft(m,-1),p2=mSft(m,-2);
+ const known=new Set(fixedList().map(f=>f.categoryId+"|"+Math.round(f.amount/50)));
+ const groups={};
+ [m,p1,p2].forEach(mm=>{
+  expOf(mm).forEach(e=>{
+   const k=e.categoryId+"|"+Math.round(Number(e.amount||0)/50);
+   (groups[k]=groups[k]||{months:new Set(),amt:Number(e.amount)||0,cat:e.categoryId}).months.add(mm);
+  });
+ });
+ return Object.keys(groups).filter(k=>groups[k].months.size>=2&&!known.has(k)&&groups[k].amt>=100)
+  .map(k=>groups[k]).sort((a,b)=>b.amt-a.amt).slice(0,1);
+}
+
 /* ============ Insights ============ */
 function insights(){
  const out=[],cur=st.currency,now=new Date(),isCur=st.month===mKey();
  const ex=expOf(),inc=incOf(),tE=sum(ex),tI=sum(inc);
  const dim=dIn(st.month),day=isCur?now.getDate():dim;
  const cs=catSpend(),P=planOf(cs,tI),plan=P.plan;
+
+ const D=daily(),F=fixedTotals();
+
+ // Unlogged fixed commitments make every other number optimistic, so this leads.
+ if(isCur&&F.dueCount>0)out.push({lv:"warn",ic:"📌",t:t("iFixT",F.dueCount),
+  b:t("iFixB",fmt(F.due),cur),a:{l:t("iFixA"),f:"go('home')"}});
+
+ if(isCur&&D.perDay>0){
+  const over=D.today>D.perDay;
+  out.push({lv:over?"warn":"good",ic:over?"🫰":"🟢",
+   t:over?t("iDayOverT",fmt(D.today-D.perDay),cur):t("iDayOkT",fmt(Math.max(0,D.leftToday)),cur),
+   b:t("iDayB",fmt(D.perDay),cur,D.daysLeft)});
+ }
+ if(isCur){const sk=streak();
+  if(sk>=3)out.push({lv:"good",ic:"🔥",t:t("iStreakT",sk),b:t("iStreakB")});}
+
+ spikes().slice(0,2).forEach(sp=>out.push({lv:"warn",ic:sp.c.emoji,
+  t:t("iSpikeT",cNm(sp.c),sp.d),b:t("iSpikeB",fmt(sp.c.spent),fmt(Math.round(sp.avg)),cur,fmt(Math.round(sp.extra)))}));
+
+ recurringHints().forEach(h=>{const c=byId(h.cat);if(!c)return;
+  out.push({lv:"info",ic:"🔁",t:t("iRecT",cNm(c),fmt(h.amt),cur),b:t("iRecB"),
+   a:{l:t("iRecA"),f:`addFixedFrom('${h.cat}',${h.amt})`}})});
+
+ (st.data.gameyas||[]).forEach(g=>{const o=gamOf(g);
+  if(o.turnIn===0&&!o.banked)out.push({lv:"good",ic:"🎉",t:t("iGamT",esc(g.name)),
+   b:t("iGamB",fmt(o.payout),cur),a:{l:t("iGamA"),f:`bankGam('${g.id}')`}});
+  else if(o.turnIn===1)out.push({lv:"info",ic:"📆",t:t("iGamNextT",esc(g.name)),b:t("iGamNextB",fmt(o.payout),cur)})});
+
+ (st.data.savings||[]).forEach(sv=>{const o=savOf(sv);
+  const feed=(st.data.gameyas||[]).filter(g=>g.goalId===sv.id&&!gamOf(g).banked);
+  if(!feed.length||o.done)return;
+  const add=feed.reduce((a,g)=>a+gamOf(g).payout,0);
+  const after=o.now+add;
+  if(after>=o.target)out.push({lv:"good",ic:"🤝",t:t("iGoalHitT",esc(sv.name)),
+   b:t("iGoalHitB",esc(feed[0].name),fmt(add),cur)});});
+
+ const NW=netWorth();
+ if(NW.liquid>0&&NW.coverMonths!==null&&NW.coverMonths<3)
+  out.push({lv:"warn",ic:"🛟",t:t("iEmT",Math.max(0,Math.floor(NW.coverMonths))),b:t("iEmB",fmt(Math.round(avgSpend()*3-NW.liquid)),cur)});
 
  if(isCur){
   const td=dKey(now),ts=ex.filter(e=>txD(e)===td).reduce((s,e)=>s+Number(e.amount||0),0);
@@ -881,14 +1098,14 @@ function insights(){
    b:t("iPaceBadB",fmt(plan),fmt(pr-plan),fmt((pr-plan)/Math.max(1,dim-day)))});
   else if(pr<plan*.85)out.push({lv:"good",ic:"🎯",t:t("iPaceGoodT"),b:t("iPaceGoodB",fmt(pr),fmt(plan),fmt(plan-pr))});
  }
- if(plan>0&&isCur&&day<dim){const left=plan-tE,pd=left/(dim-day+1);
-  if(left>0)out.push({lv:"info",ic:"🧮",t:t("iDailyT",fmt(pd),cur),b:t("iDailyB",fmt(left),dim-day+1)});
-  else out.push({lv:"danger",ic:"⛔",t:t("iBustT"),b:t("iBustB",fmt(-left),cur,dim-day+1)});
- }
+ // The per-day figure lives in the hero now; only the blown-budget case is news.
+ if(plan>0&&isCur&&day<dim&&plan-tE<=0)
+  out.push({lv:"danger",ic:"⛔",t:t("iBustT"),b:t("iBustB",fmt(tE-plan),cur,dim-day+1)});
  const over=cs.filter(c=>c.budget>0&&c.spent>c.budget).sort((a,b)=>(b.spent-b.budget)-(a.spent-a.budget));
  const near=cs.filter(c=>c.budget>0&&c.spent<=c.budget&&c.pct>=80);
  if(over.length)out.push({lv:"danger",ic:"⚠️",t:t("iOverT",plN(over.length,"cat")),
-  b:over.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${fmt(c.spent)} / ${fmt(c.budget)}`).join(" · ")});
+  b:over.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${fmt(c.spent)} / ${fmt(c.budget)}`).join(" · "),
+  a:{l:t("iOverA"),f:"go('set')"}});
  if(near.length)out.push({lv:"warn",ic:"🔔",t:t("iNearT",plN(near.length,"cat")),
   b:near.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${Math.round(c.pct)}%`).join(" · ")});
  const top=cs.filter(c=>c.spent>0).sort((a,b)=>b.spent-a.spent)[0];
@@ -981,28 +1198,62 @@ function go(id){st.tab=id;render();const m=document.getElementById("main");if(m)
 function shiftM(d){st.month=mSft(st.month,d);render()}
 function paint(){document.getElementById("main").innerHTML=({home:vHome,log:vLog,rep:vRep,debt:vDebt,set:vSet})[st.tab]()}
 
+function fixCard(){
+ const cur=esc(st.currency),F=fixedTotals();
+ if(!F.list.length)return `<div class="card"><div class="ch">📌${t("fixed")}</div>
+  <div class="empty">${I.spark}<div>${t("noFixed")}<br><span style="font-size:11px">${t("fixedHint")}</span></div></div>
+  <button class="btn ghost" onclick="newFixed()">${I.plus}${t("addFixed")}</button></div>`;
+ const pct=F.total>0?(F.paid/F.total)*100:0;
+ return `<div class="card"><div class="ch">📌${t("fixed")}
+   <span class="chn">${F.list.length-F.dueCount}/${F.list.length}</span></div>
+  <div class="brow"><div class="btop">
+   <span class="bnm">${t("fixPaid",fmt(F.paid),fmt(F.total))} ${cur}</span>
+   <span class="bamt">${Math.round(pct)}%</span></div>
+   <div class="track"><div class="fill" style="width:${pct}%;background:var(--acc)"></div></div></div>
+  <div class="fixlist">
+  ${F.list.map(f=>`<div class="fixr${f.paid?" done":""}">
+   <span class="rico">${esc(f.emoji)}</span>
+   <span class="rmain"><span class="rt">${esc(f.name)}</span></span>
+   <span class="ra">${fmt(f.amount)}</span>
+   ${f.paid?`<span class="okm">${I.ok}</span>`
+    :`<button class="ib go" onclick="logFixed('${f.id}')" aria-label="${t("fixLog")}">${I.plus}</button>`}
+   ${f.own?`<button class="ib" onclick="delFixed('${f.id}')" aria-label="${t("del")}">${I.del}</button>`:""}
+  </div>`).join("")}</div>
+  <button class="btn ghost" style="margin-top:10px" onclick="newFixed()">${I.plus}${t("addFixed")}</button></div>`}
+
 function vHome(){
  const cur=esc(st.currency),inc=sum(incOf()),ex=sum(expOf()),bal=inc-ex;
- const cs=catSpend(),ins=insights();
+ const cs=catSpend(),ins=insights(),D=daily(),F=fixedTotals();
  const plan=planOf(cs,inc).plan;
  const pct=plan>0?(ex/plan)*100:0;
  const pie=cs.filter(c=>c.spent>0).sort((a,b)=>b.spent-a.spent).map(c=>({name:cNm(c),value:c.spent,color:c.color,emoji:c.emoji}));
  const act=cs.filter(c=>c.budget>0||c.spent>0).sort((a,b)=>b.pct-a.pct);
+ const okDay=D.leftToday>=0;
+ // The one number worth opening the app for: what today can take.
+ const heroLead=D.isCur&&inc>0
+  ?`<div class="hmeta"><div class="hlab">${t("today")}</div>
+    <div class="hval" style="color:${okDay?"var(--acc)":"var(--red)"}">${okDay?"":"−"}${fmt(Math.abs(D.leftToday))} <small>${cur}</small></div>
+    <div class="hsub">${okDay?t("ofPerDay",fmt(D.perDay),cur):t("overPerDay",fmt(D.perDay),cur)}</div>
+    <div class="hrow">
+     <div class="hcell"><div class="l">${t("leftMonth")}</div><div class="v" style="color:${D.pot>=0?"var(--grn)":"var(--red)"}">${fmt(D.pot)}</div></div>
+     <div class="hcell"><div class="l">${t("daysLeft")}</div><div class="v">${D.daysLeft}</div></div>
+     <div class="hcell"><div class="l">${t("reserved")}</div><div class="v">${fmt(F.due)}</div></div>
+    </div></div>`
+  :`<div class="hmeta"><div class="hlab">${t("left")}</div>
+    <div class="hval" style="color:${bal>=0?"var(--acc)":"var(--red)"}">${fmt(bal)} <small>${cur}</small></div>
+    <div class="hrow">
+     <div class="hcell"><div class="l">${I.up}${t("income")}</div><div class="v" style="color:var(--grn)">${fmt(inc)}</div></div>
+     <div class="hcell"><div class="l">${I.dn}${t("expense")}</div><div class="v" style="color:var(--red)">${fmt(ex)}</div></div>
+    </div></div>`;
  return `<div class="sec">
- <div class="hero">
-  <div class="hmeta"><div class="hlab">${t("left")}</div>
-   <div class="hval" style="color:${bal>=0?"var(--acc)":"var(--red)"}">${fmt(bal)} <small>${cur}</small></div>
-   <div class="hrow">
-    <div class="hcell"><div class="l">${I.up}${t("income")}</div><div class="v" style="color:var(--grn)">${fmt(inc)}</div></div>
-    <div class="hcell"><div class="l">${I.dn}${t("expense")}</div><div class="v" style="color:var(--red)">${fmt(ex)}</div></div>
-   </div></div>
-  ${plan>0?ring(pct,pct>100):""}
- </div>
- ${nwCard()}
- <div class="card wide"><div class="ch">${I.bulb}${t("advice")}</div>
+ <div class="hero">${heroLead}${plan>0?ring(pct,pct>100):""}</div>
+ <div class="card wide adv"><div class="ch">${I.bulb}${t("advice")}</div>
   ${ins.length?ins.map(x=>`<div class="ins ${x.lv}"><span class="ic">${x.ic}</span>
-   <div><div class="t">${esc(x.t)}</div><div class="b">${esc(x.b)}</div></div></div>`).join("")
+   <div><div class="t">${esc(x.t)}</div><div class="b">${esc(x.b)}</div>
+   ${x.a?`<button class="ia" onclick="${x.a.f}">${esc(x.a.l)}</button>`:""}</div></div>`).join("")
    :`<div class="empty">${I.spark}<div>${t("iEmpty")}</div></div>`}</div>
+ ${fixCard()}
+ ${nwCard()}
  <div class="card"><div class="ch">${I.pie}${t("breakdown")}</div>
   ${pie.length?donut(pie)+`<div class="lgd">${pie.slice(0,6).map(d=>`<span><i style="background:${d.color}"></i>${d.emoji} ${esc(d.name)}</span>`).join("")}</div>`
    :`<div class="empty">${I.spark}<div>${t("noExp")}</div></div>`}</div>
@@ -1012,7 +1263,6 @@ function vHome(){
    <span class="bamt" style="${ov?"color:var(--red)":""}">${fmt(c.spent)}${c.budget>0?" / "+fmt(c.budget):""}</span></div>
    <div class="track"><div class="fill" style="width:${p}%;background:${ov?"var(--red)":c.color}"></div></div></div>`}).join("")
    :`<div class="empty">${I.spark}<div>${t("noExp")}</div></div>`}</div></div>`}
-
 function vLog(){
  let rows=[];expOf().forEach(e=>rows.push({...e,kind:"e"}));incOf().forEach(r=>rows.push({...r,kind:"i"}));
  if(st.filter==="e")rows=rows.filter(r=>r.kind==="e");
@@ -1155,10 +1405,13 @@ function wSavs(){
     <div class="ra" style="color:var(--grn)">${fmt(o.now)}</div>
     <button class="ib" onclick="editEnt('sav','${s.id}')" aria-label="${t("edit")}">${I.pen}</button>
     <button class="ib" onclick="delSav('${s.id}')" aria-label="${t("del")}">${I.del}</button></div>
-   <div class="brow" style="margin-top:9px"><div class="btop">
-    <span class="bnm">${fmt(o.now)} / ${fmt(o.target)} ${cur}</span>
-    <span class="bamt">${Math.round(o.pct)}%</span></div>
-    <div class="track"><div class="fill" style="width:${o.pct}%;background:${o.done?"var(--grn)":"#4E8FB5"}"></div></div></div>
+   ${(()=>{const add=feed.reduce((a,g)=>a+gamOf(g).payout,0);
+     const incPct=o.target>0?Math.min(100-o.pct,(add/o.target)*100):0;
+     return `<div class="brow" style="margin-top:9px"><div class="btop">
+      <span class="bnm">${fmt(o.now)} / ${fmt(o.target)} ${cur}</span>
+      <span class="bamt">${Math.round(o.pct)}%${incPct>0?` <i class="soon">+${Math.round(incPct)}%</i>`:""}</span></div>
+      <div class="track"><div class="fill" style="width:${o.pct}%;background:${o.done?"var(--grn)":"#4E8FB5"}"></div>
+      ${incPct>0?`<div class="fill soonbar" style="width:${incPct}%;inset-inline-start:${o.pct}%"></div>`:""}</div></div>`})()}
    ${feed.length?`<div class="ins info" style="margin-top:9px"><span class="ic">🤝</span>
     <div><div class="t">${t("fedBy",feed.map(g=>esc(g.name)).join("، "))}</div>
     <div class="b">${t("willAdd",fmt(feed.reduce((a,g)=>a+gamOf(g).payout,0))+" "+cur)}</div></div></div>`:""}
@@ -1476,6 +1729,36 @@ function bankGam(id){
  goal.saved=(Number(goal.saved)||0)+o.payout;
  g.banked=true;save();paint();
  toast(t("movedToGoal",fmt(o.payout)+" "+st.currency))}
+/* ---- fixed commitments ---- */
+function newFixed(){
+ const cats=(st.data.categories||[]);
+ modal(`<div class="stitle"><span>📌 ${t("addFixed")}</span><button class="xb" onclick="closeModal()">${I.x}</button></div>
+  <p class="note" style="margin-bottom:12px">${t("fixedHint")}</p>
+  <div class="fld"><label class="fl">${t("fixName")}</label><input id="fx_n" placeholder="${t("fixPh")}"></div>
+  <div class="fld"><label class="fl">${t("fixAmt")}</label><input id="fx_a" type="number" inputmode="decimal" placeholder="0"></div>
+  <div class="fld"><label class="fl">${t("cat")}</label><select id="fx_c">${cats.map(c=>`<option value="${c.id}">${c.emoji} ${esc(cNm(c))}</option>`).join("")}</select></div>
+  <div class="fld"><select id="fx_e">${EMO.map(e=>`<option value="${e}"${e==="📌"?" selected":""}>${e}</option>`).join("")}</select></div>
+  <button class="btn" onclick="addFixed()">${I.plus}${t("save")}</button>`)}
+function addFixed(){
+ const n=(document.getElementById("fx_n")||{}).value,a=Number((document.getElementById("fx_a")||{}).value)||0;
+ if(!n||!n.trim()){toast(t("fixName"),1);return}
+ st.data.fixed.push({id:uid("fix"),name:n.trim(),amount:a,
+  categoryId:(document.getElementById("fx_c")||{}).value||"c_bills",
+  emoji:(document.getElementById("fx_e")||{}).value||"📌",active:true,createdAt:Date.now()});
+ save();closeModal();paint();toast(t("sv"))}
+function addFixedFrom(cat,amt){
+ const c=byId(cat);
+ st.data.fixed.push({id:uid("fix"),name:c?cNm(c):t("fixed"),amount:amt,categoryId:cat,
+  emoji:c?c.emoji:"📌",active:true,createdAt:Date.now()});
+ save();paint();toast(t("sv"))}
+function delFixed(id){st.data.fixed=(st.data.fixed||[]).filter(f=>f.id!==id);save();paint();toast(t("del"))}
+// One tap turns a due commitment into a real expense, tagged so it is not asked for twice.
+function logFixed(id){
+ const f=fixedOf().find(x=>x.id===id);if(!f||f.paid)return;
+ const date=st.month===mKey()?dKey():st.month+"-01";
+ st.data.expenses.push({id:uid("exp"),month:st.month,date,categoryId:f.categoryId,
+  amount:f.amount,note:f.name,fixedId:f.id,createdAt:Date.now()});
+ save();paint();toast(t("fixDone",esc(f.name)))}
 function setTheme(id){st.theme=id;lsS(K.theme,id);document.getElementById("root").setAttribute("data-theme",id);
  const m=document.querySelector('meta[name="theme-color"]');
  if(m)m.setAttribute("content",getComputedStyle(document.body).backgroundColor);paint()}
@@ -1511,7 +1794,7 @@ function impJSON(inp){const f=inp.files&&inp.files[0];if(!f)return;
   catch(e){alert(t("tBadFile"))}inp.value=""};
  r.readAsText(f)}
 function resetAll(){if(!confirm(t("resetAsk")))return;
- st.data={categories:JSON.parse(JSON.stringify(DEF)),incomes:[],expenses:[],debts:[],gameyas:[],savings:[],invests:[]};
+ st.data={categories:JSON.parse(JSON.stringify(DEF)),incomes:[],expenses:[],debts:[],gameyas:[],savings:[],invests:[],fixed:[]};
  persist();render();toast(t("del"))}
 
 /* ============ Sync / Auth ============ */
@@ -1642,7 +1925,7 @@ Object.assign(window,{closeModal,updLater,updGo});
 Object.assign(window,{go,shiftM,openAdd,closeAdd,setKind,moreCats,pickC,useC,kp,saveTx,editTx,setF,
  delExp,delInc,delCat,addCat,editB,addDebt,delDebt,setTheme,setLang,setCur,
  expCSV,expJSON,impJSON,resetAll,mkCode,joinCode,offCode,gIn,gOut,doInstall,ad,
- setW,addGam,delGam,addSav,delSav,addToSav,addInv,delInv,updInv,checkUpdate,editEnt,saveEnt,bankGam});
+ setW,addGam,delGam,addSav,delSav,addToSav,addInv,delInv,updInv,checkUpdate,editEnt,saveEnt,bankGam,newFixed,addFixed,addFixedFrom,delFixed,logFixed});
 
 /* ============ Boot ============ */
 (function boot(){
