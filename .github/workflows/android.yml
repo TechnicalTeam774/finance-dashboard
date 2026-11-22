@@ -1,11 +1,19 @@
 # ميزان: بيبني أبلكيشن أندرويد موقّع (APK) ويحطه في Releases.
-# بيشتغل من Actions > Build Mizan APK > Run workflow.
+# بيشتغل لوحده أول ما رقم النسخة في version.json يتغيّر على main،
+# أو يدويًا من Actions > Build Mizan APK > Run workflow.
 # محتاج مرة واحدة 3 أسرار في Settings > Secrets and variables > Actions:
 #   KEYSTORE_B64 و KEYSTORE_PASSWORD (مفتاح التوقيع)، و GOOGLE_SERVICES_JSON (دخول جوجل).
 name: Build Mizan APK
 
 on:
   workflow_dispatch:
+  # A version bump is the signal that a release is wanted, so nobody has to
+  # remember to press a button — and a change to this file rebuilds to prove it.
+  push:
+    branches: [main]
+    paths:
+      - version.json
+      - .github/workflows/android.yml
 
 concurrency:
   group: apk-${{ github.ref }}
