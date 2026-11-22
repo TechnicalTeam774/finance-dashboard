@@ -202,7 +202,27 @@ color:var(--text);display:flex;align-items:center;justify-content:center;cursor:
 .seg button{flex:1;border:none;background:transparent;color:var(--sub);border-radius:9px;padding:9px;
 font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
 .seg button.on{background:linear-gradient(145deg,var(--acc),var(--acc2));color:var(--ink)}
-.seg.four button{font-size:12px;padding:9px 2px}
+.seg.wide button{font-size:12.5px;padding:10px 4px}
+.item{padding:12px 0;border-bottom:1px solid var(--line2)}
+.item:last-child{border-bottom:none;padding-bottom:2px}
+.sub-h{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.3px;
+ margin:14px 0 2px;padding-top:12px;border-top:1px solid var(--line2)}
+.tagl{font-size:9.5px;font-weight:600;color:var(--grn);background:color-mix(in srgb,var(--grn) 14%,transparent);
+ border-radius:5px;padding:1px 5px;margin-inline-start:5px;vertical-align:1px}
+.chk{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--sub);
+ padding:10px 0;cursor:pointer}
+.chk input{width:17px;height:17px;accent-color:var(--acc);flex-shrink:0}
+.nwtop{margin-bottom:12px}
+.nwbig{font-family:'JetBrains Mono',monospace;font-size:27px;font-weight:700;letter-spacing:-.8px;line-height:1.2}
+.nwbig small{font-size:12px;font-weight:400;color:var(--sub);letter-spacing:0}
+.nwsub{font-size:11px;color:var(--sub);margin-top:2px}
+.nwgrid{display:flex;gap:8px;margin-bottom:4px}
+.nwcell{flex:1;background:var(--inset);border:1px solid var(--line2);border-radius:11px;padding:8px 10px;min-width:0}
+.nwcell .l{font-size:9.5px;color:var(--sub)}
+.nwcell .v{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-top:2px;white-space:nowrap}
+.nwlist{margin-top:4px}
+.nwr{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2)}
+.nwr:last-child{border-bottom:none;padding-bottom:0}
 .upd-notes{margin:4px 0 14px;padding-inline-start:18px;font-size:12.5px;line-height:1.75;color:var(--sub)}
 .upd-notes li{margin-bottom:3px}
 .upd-ic{font-size:34px;text-align:center;margin-bottom:4px}
@@ -274,30 +294,52 @@ transition:opacity .22s,transform .22s}
 
 @media(min-width:900px){
  body{display:flex;align-items:center;justify-content:center;padding:26px}
- #app{max-width:1360px;width:96vw;height:min(93vh,920px);border-radius:24px;overflow:hidden;
-  flex-direction:row;box-shadow:0 30px 90px rgba(0,0,0,.5),0 0 0 1px var(--line)}
- header{width:248px;flex-shrink:0;border-inline-end:1px solid var(--line);border-bottom:none;
-  display:flex;flex-direction:column;padding:24px 17px 18px;position:static;backdrop-filter:none}
+ #app{max-width:1400px;width:97vw;height:min(94vh,960px);border-radius:24px;overflow:hidden;
+  display:grid;grid-template-columns:252px minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;
+  box-shadow:0 30px 90px rgba(0,0,0,.5),0 0 0 1px var(--line)}
+ header{grid-column:1;grid-row:1;min-width:0;border-inline-end:1px solid var(--line);border-bottom:none;
+  display:flex;flex-direction:column;padding:24px 16px 14px;position:static;backdrop-filter:none}
+ main{grid-column:2;grid-row:1/-1}
  .htop{flex-direction:column;align-items:stretch;gap:16px}
  .msw{width:100%;justify-content:space-between}.ml{flex:1}
  .ptitle{display:none}
- main{padding:28px 32px 32px}
- .sec{display:flex;flex-flow:row wrap;gap:17px;align-items:flex-start}
- .sec>.hero,.sec>.wide{flex:1 1 100%}
- .sec>.card{flex:1 1 410px;min-width:0}
- nav.tb{position:static;flex-direction:column;border-top:none;padding:0;margin-top:auto;
-  background:transparent;backdrop-filter:none;gap:2px;max-width:none}
+ main{padding:26px 30px 34px}
+ /* The nav sits in the sidebar here, so it must not stay pinned to the window. */
+ nav.tb{grid-column:1;grid-row:2;position:static;flex-direction:column;border-top:none;
+  border-inline-end:1px solid var(--line);padding:0 16px 18px;margin:0;
+  max-width:none;background:transparent;backdrop-filter:none;gap:2px;width:auto}
  .tab{flex:none;flex-direction:row;justify-content:flex-start;gap:12px;padding:10px 12px;border-radius:11px;min-height:auto}
  .tab .l{font-size:13px}
  .tab.on{background:color-mix(in srgb,var(--acc) 11%,transparent)}
  .tab.on::before{display:none}
  .tab:active{transform:none}
- .fab{inset-inline-end:36px;bottom:32px}
- .sheet{max-width:540px;border-radius:20px;inset-inline:auto;inset-inline-start:50%;bottom:50%;
+ .fab{inset-inline-end:34px;bottom:30px}
+
+ /* Two even columns, three on very wide screens. Full-width rows span them all,
+    so nothing is left stretched across an empty half. */
+ .sec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;
+  align-items:start;align-content:start;grid-auto-flow:row dense}
+ .sec>.hero,.sec>.seg,.sec>.wide{grid-column:1/-1}
+
+ /* The hero fills its width instead of huddling at one end. */
+ .hero{display:flex;align-items:center;gap:26px}
+ .hero .ring{flex:none}
+ .hero .hmeta{display:flex;align-items:center;gap:30px;flex:1;min-width:0}
+ .hero .hval{margin:0;white-space:nowrap}
+ .hero .hrow{flex:1;min-width:0}
+ .hero .hcell{padding:11px 14px}
+ .hero .hcell .v{font-size:16px}
+
+ .nwgrid{gap:10px}
+ .sheet{max-width:560px;border-radius:20px;inset-inline:auto;inset-inline-start:50%;bottom:50%;
   transform:translate(-50%,50%) scale(.96);opacity:0}
  html[dir="rtl"] .sheet{transform:translate(50%,50%) scale(.96)}
  .sheet.on{opacity:1;transform:translate(-50%,50%) scale(1)}
  html[dir="rtl"] .sheet.on{transform:translate(50%,50%) scale(1)}
+}
+@media(min-width:1480px){
+ .sec{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .sec>.wide{grid-column:span 2}
 }
 </style>
 </head>
@@ -316,8 +358,16 @@ appId:"1:147347678300:web:b3fd9d3fc8640d11483299"};
 const FB_ON=firebaseConfig.apiKey!=="YOUR_API_KEY";
 const K={data:"mizan_data_v1",lang:"mizan_lang",theme:"mizan_theme",cur:"mizan_currency",sync:"mizan_sync_code"};
 /* Keep APP_VER equal to version.json — the Android workflow fails the build if they drift. */
-const APP_VER="1.2.0";
-const CHANGES={"1.2.0":[
+const APP_VER="1.3.0";
+const CHANGES={"1.3.0":[
+ "زرار قلم على كل حاجة: المصروف، الدخل، الدين، الجمعية، هدف الادخار، الاستثمار",
+ "الجمعية بقت تحت «ادخار» وبتترب بهدف — تقبضها تحوّلها للهدف بضغطة",
+ "اللي لسه عليك من أقساط الجمعية بقى يتحسب دين، مش رصيد ليك",
+ "كارت «التزاماتك الشهرية»: أقساط الديون والجمعيات والادخار في رقم واحد",
+ "الاستثمار بقى صندوق طوارئ: بيقولك فلوسك تغطي مصاريف كام شهر",
+ "نسخة الويب على اللاب اتعمل تخطيطها من أول وجديد",
+ "التبويبات كانت بتتحط في النص على اللاب وزرار الإضافة فوقها — اتظبطوا"
+],"1.2.0":[
  "ميزان بقى أبلكيشن أندرويد حقيقي، مش صفحة في المتصفح",
  "تبويب «المحفظة» الجديد: ديون وجمعيات وادخار واستثمار، كل واحد لوحده",
  "الجمعيات: بيحسبلك دفعت كام ولسه كام ودورك إمتى وصافي موقفك",
@@ -332,6 +382,7 @@ const CHANGES={"1.2.0":[
 
 /* ============ Icons ============ */
 const I={
+pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
 home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>',
 list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>',
 chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m7 14 3.5-3.5 3 3L20 7"/></svg>',
@@ -419,6 +470,22 @@ updTitle:"في تحديث جديد 🎉",updVer:v=>`الإصدار ${v}`,later:"
 updGetApk:"نزّل التحديث",updApkHint:"هتتفتح صفحة التنزيل. ثبّت الملف فوق القديم من غير ما تمسح حاجة.",
 newIn:v=>`الجديد في ${v}`,letsGo:"يلا بينا",netErr:"مفيش اتصال بالنت",
 exitAsk:"اضغط رجوع تاني للخروج",
+edit:"تعديل",saveEdit:"حفظ التعديل",emoji:"الأيقونة",
+monthlyDue:"التزاماتك الشهرية",monthlyDueHint:v=>`بتطلع من دخلك ${v} كل شهر قبل أي مصروف تاني.`,
+covers:n=>`يكفيك ${n} شهور`,coversLong:n=>n>0?`يغطي مصاريف ${n} شهور`:"أقل من شهر",
+perMonth:v=>`متوسط صرفك ${v} في الشهر`,
+gamAsDebt:"أقساط جمعيات لسه عليك",gamLeftN:n=>`فاضل ${n} قسط`,
+gamOwedHint:"الأقساط اللي لسه عليك",
+gamIsDebt:"الجمعية مش ادخار: القسط بيطلع من دخلك، واللي لسه عليك بيتحسب دين — لحد ما تقبض وتخلص أقساطها.",
+gamTookN:v=>`قبضت ${v}`,gamStillOwe:v=>`لسه عليك ${v}`,
+gamBank:v=>`قبضتها — حوّل ${v} للهدف`,gamGoal:"هتستعملها في إيه؟",noGoal:"من غير هدف",
+forGoal:g=>`لـ ${g}`,fedBy:g=>`جمعية ${g} هتصبّ هنا`,willAdd:v=>`هتضيف ${v} أول ما تقبضها`,
+gamNoGoal:"الجمعية دي مش مربوطة بهدف",pickGoal:"اختار هدف",movedToGoal:v=>`اتضافوا ${v} للهدف`,
+emFund:"صندوق الطوارئ",emGood:"تغطية كويسة. اللي أكتر من ٣ شهور بيديك مساحة تتصرف.",
+emLow:"حاول توصل لتغطية ٣ شهور على الأقل قبل ما تزوّد أي مخاطرة.",
+emNoData:"سجّل مصاريف شهر كامل عشان أحسبلك التغطية.",
+invVar:"العائد هنا متغير مش ثابت — القيمة بتطلع وتنزل.",
+liquid:"متاح للسحب",liquidAsk:"أقدر أسحب منه لو اتزنقت",
 left:"المتبقي الشهر ده",income:"دخل",expense:"مصروف",today:"النهاردة",used:"اتصرف",
 advice:"نصايح وتنبيهات",budgets:"الميزانيات",noExp:"مفيش مصروفات الشهر ده",breakdown:"توزيع المصروفات",
 addExp:"تسجيل مصروف",addInc:"تسجيل دخل",editExp:"تعديل المصروف",editInc:"تعديل الدخل",
@@ -518,6 +585,22 @@ updTitle:"Update available 🎉",updVer:v=>`Version ${v}`,later:"Later",updNow:"
 updGetApk:"Download update",updApkHint:"This opens the download page. Install the new file over the old one — nothing is lost.",
 newIn:v=>`What's new in ${v}`,letsGo:"Let's go",netErr:"No internet connection",
 exitAsk:"Press back again to exit",
+edit:"Edit",saveEdit:"Save changes",emoji:"Icon",
+monthlyDue:"Monthly commitments",monthlyDueHint:v=>`${v} leaves your income every month before anything else.`,
+covers:n=>`${n} months of cover`,coversLong:n=>n>0?`Covers ${n} ${n===1?"month":"months"} of spending`:"Under a month",
+perMonth:v=>`You spend about ${v} a month`,
+gamAsDebt:"Gameya instalments still due",gamLeftN:n=>`${n} ${n===1?"instalment":"instalments"} left`,
+gamOwedHint:"Instalments still due",
+gamIsDebt:"A gameya is not savings: the instalment leaves your income, and what is still due counts as a debt until you have collected and finished paying.",
+gamTookN:v=>`Collected ${v}`,gamStillOwe:v=>`${v} still due`,
+gamBank:v=>`Collected — move ${v} to the goal`,gamGoal:"What is it for?",noGoal:"No goal",
+forGoal:g=>`for ${g}`,fedBy:g=>`${g} pays into this`,willAdd:v=>`Adds ${v} when you collect`,
+gamNoGoal:"This gameya is not linked to a goal",pickGoal:"Pick a goal",movedToGoal:v=>`${v} added to the goal`,
+emFund:"Emergency fund",emGood:"Good cover. Past three months you have room to move.",
+emLow:"Aim for three months of cover before taking on more risk.",
+emNoData:"Log a full month of spending and this works itself out.",
+invVar:"The return here is variable, not fixed — the value moves both ways.",
+liquid:"withdrawable",liquidAsk:"I can withdraw from this if I am stuck",
 left:"Left this month",income:"Income",expense:"Expense",today:"Today",used:"used",
 advice:"Insights & Alerts",budgets:"Budgets",noExp:"No expenses this month",breakdown:"Expense breakdown",
 addExp:"Add Expense",addInc:"Add Income",editExp:"Edit Expense",editInc:"Edit Income",
@@ -725,11 +808,17 @@ function gamOf(g){
  const start=g.start||mKey();
  const elapsed=mDiff(start,mKey());
  const paidN=Math.max(0,Math.min(members,elapsed+1));
- const paid=amt*paidN,total=amt*members;
+ const leftN=members-paidN;
  const turnIn=(turn-1)-elapsed;
- const took=turnIn<0;
- return{members,amt,turn,start,paidN,paid,total,turnIn,took,
-  done:paidN>=members&&took,net:paid-(took?total:0)};
+ return{members,amt,turn,start,paidN,leftN,
+  paid:amt*paidN,
+  // What you still owe the circle. This is the number that belongs in your debts:
+  // the instalments are due whether or not you have taken your payout yet.
+  owed:amt*leftN,
+  payout:amt*members,
+  turnIn,took:turnIn<0,done:leftN<=0,
+  // Only true once he confirms the money landed and it has been moved to a goal.
+  banked:!!g.banked};
 }
 function savOf(s){
  const target=Number(s.target)||0,now=Number(s.saved)||0,per=Number(s.monthly)||0;
@@ -739,19 +828,37 @@ function savOf(s){
 }
 function invOf(i){
  const put=Number(i.amount)||0,now=Number(i.value)||0,diff=now-put;
- return{put,now,diff,pct:put>0?(diff/put)*100:0};
+ return{put,now,diff,pct:put>0?(diff/put)*100:0,liquid:i.liquid!==false};
+}
+// Average monthly spend over the last 3 months that have any, so the emergency-fund
+// figure doesn't swing on a quiet month.
+function avgSpend(){
+ const by={};
+ (st.data.expenses||[]).forEach(e=>{by[e.month]=(by[e.month]||0)+(Number(e.amount)||0)});
+ const ms=Object.keys(by).sort().slice(-3);
+ if(!ms.length)return 0;
+ return ms.reduce((s,m)=>s+by[m],0)/ms.length;
 }
 function netWorth(){
  const d=st.data;
  const debts=(d.debts||[]).reduce((s,x)=>s+(Number(x.balance)||0),0);
- const gam=(d.gameyas||[]).reduce((s,g)=>s+gamOf(g).net,0);
+ // A gameya is a commitment, not a holding: what is left to pay is a debt, and the
+ // payout only becomes money once it is collected and put into a goal.
+ const gamOwed=(d.gameyas||[]).reduce((s,g)=>s+gamOf(g).owed,0);
+ const gamMonthly=(d.gameyas||[]).reduce((s,g)=>{const o=gamOf(g);return s+(o.done?0:o.amt)},0);
  const sav=(d.savings||[]).reduce((s,x)=>s+(Number(x.saved)||0),0);
  const inv=(d.invests||[]).reduce((s,x)=>s+(Number(x.value)||0),0);
- const assets=sav+inv+Math.max(0,gam),liab=debts+Math.max(0,-gam);
- return{debts,gam,sav,inv,assets,liab,net:assets-liab,
-  any:debts>0||gam!==0||sav>0||inv>0};
+ const liquid=(d.invests||[]).reduce((s,x)=>s+(invOf(x).liquid?invOf(x).now:0),0);
+ const debtMonthly=(d.debts||[]).reduce((s,x)=>s+(Number(x.monthlyPay)||0),0);
+ const savMonthly=(d.savings||[]).reduce((s,x)=>s+(savOf(x).done?0:Number(x.monthly)||0),0);
+ const assets=sav+inv,liab=debts+gamOwed;
+ const spend=avgSpend();
+ return{debts,gamOwed,gamMonthly,sav,inv,liquid,debtMonthly,savMonthly,
+  monthly:debtMonthly+gamMonthly+savMonthly,
+  assets,liab,net:assets-liab,
+  coverMonths:spend>0?liquid/spend:null,
+  any:debts>0||gamOwed>0||sav>0||inv>0};
 }
-
 /* ============ Insights ============ */
 function insights(){
  const out=[],cur=st.currency,now=new Date(),isCur=st.month===mKey();
@@ -862,11 +969,10 @@ function render(){
     <button class="mb" onclick="shiftM(-1)">${st.lang==="ar"?I.cR:I.cL}</button>
     <span class="ml">${mLab(st.month)}</span>
     <button class="mb" onclick="shiftM(1)">${st.lang==="ar"?I.cL:I.cR}</button></div>
-  <div class="ptitle">${t(ti[st.tab])}</div><nav class="tb dk"></nav></header>
+  <div class="ptitle">${t(ti[st.tab])}</div></header>
  <main id="main"></main>
  <nav class="tb">${tb("home",I.home,t("tHome"))}${tb("log",I.list,t("tLog"))}
  ${tb("rep",I.chart,t("tRep"))}${tb("debt",I.debt,t("tDebt"))}${tb("set",I.gear,t("tSet"))}</nav>`;
- const dk=document.querySelector(".tb.dk");if(dk)dk.remove();
  paint();badge();
  document.getElementById("fab").innerHTML=I.plus;
 }
@@ -928,13 +1034,15 @@ function vLog(){
      <div class="rico">💰</div>
      <div class="rmain"><div class="rt">${esc(r.source)}</div><div class="rs">${t("income")}</div></div>
      <div class="ra" style="color:var(--grn)">+${fmt(r.amount)}</div>
-     <button class="ib" onclick="event.stopPropagation();delInc('${r.id}')">${I.del}</button></div>`;
+     <button class="ib" onclick="event.stopPropagation();editTx('i','${r.id}')" aria-label="${t("edit")}">${I.pen}</button>
+     <button class="ib" onclick="event.stopPropagation();delInc('${r.id}')" aria-label="${t("del")}">${I.del}</button></div>`;
     const c=byId(r.categoryId);
     return `<div class="row tap" style="--tone:${c?c.color:"var(--sub)"}" onclick="editTx('e','${r.id}')">
      <div class="rico">${c?c.emoji:"🏷️"}</div>
      <div class="rmain"><div class="rt">${c?esc(cNm(c)):"—"}</div>${r.note?`<div class="rs">${esc(r.note)}</div>`:""}</div>
      <div class="ra" style="color:var(--red)">−${fmt(r.amount)}</div>
-     <button class="ib" onclick="event.stopPropagation();delExp('${r.id}')">${I.del}</button></div>`}).join("")}).join("")
+     <button class="ib" onclick="event.stopPropagation();editTx('e','${r.id}')" aria-label="${t("edit")}">${I.pen}</button>
+     <button class="ib" onclick="event.stopPropagation();delExp('${r.id}')" aria-label="${t("del")}">${I.del}</button></div>`}).join("")}).join("")
   :`<div class="empty">${I.spark}<div>${t("noTx")}</div></div>`}</div>
  <button class="btn ghost" onclick="expCSV()">${I.dl}${t("csv")}</button></div>`}
 function setF(f){st.filter=f;paint()}
@@ -960,114 +1068,148 @@ function vRep(){
 
 /* ============ Wallet ============ */
 function setW(x){st.wtab=x;paint();const m=document.getElementById("main");if(m)m.scrollTop=0}
-function nwCard(link){
+function nwCard(){
  const cur=esc(st.currency),n=netWorth();
  if(!n.any)return "";
- const line=(lab,val,tone,to)=>`<div class="row${to?" tap":""}" style="--tone:${tone}"${to?` onclick="go('debt');setW('${to}')"`:""}>
-  <div class="rico">${({debt:"💳",gam:"🤝",sav:"🏦",inv:"📈"})[to]||"•"}</div>
-  <div class="rmain"><div class="rt">${lab}</div></div>
+ const line=(ico,lab,val,tone,to,sub)=>`<div class="nwr tap" onclick="go('debt');setW('${to}')">
+  <div class="rico">${ico}</div>
+  <div class="rmain"><div class="rt">${lab}</div>${sub?`<div class="rs">${sub}</div>`:""}</div>
   <div class="ra" style="color:${tone}">${val<0?"−":""}${fmt(Math.abs(val))}</div></div>`;
- return `<div class="hero" style="display:block">
-  <div class="hmeta"><div class="hlab">${t("netw")}</div>
-   <div class="hval" style="color:${n.net>=0?"var(--grn)":"var(--red)"};margin-bottom:2px">${n.net<0?"−":""}${fmt(Math.abs(n.net))} <small>${cur}</small></div>
-   <div class="hlab" style="opacity:.75">${t("netwHint")}</div></div>
-  <div style="margin-top:12px;border-top:1px solid var(--line2)">
-  ${n.sav>0?line(t("wSav"),n.sav,"var(--grn)","sav"):""}
-  ${n.inv>0?line(t("wInv"),n.inv,"var(--grn)","inv"):""}
-  ${n.gam!==0?line(t("wGam"),n.gam,n.gam>=0?"var(--grn)":"var(--red)","gam"):""}
-  ${n.debts>0?line(t("wDebt"),-n.debts,"var(--red)","debt"):""}
+ return `<div class="card nw"><div class="ch">${I.scale}${t("netw")}</div>
+  <div class="nwtop">
+   <div class="nwbig" style="color:${n.net>=0?"var(--grn)":"var(--red)"}">${n.net<0?"−":""}${fmt(Math.abs(n.net))} <small>${cur}</small></div>
+   <div class="nwsub">${t("netwHint")}</div>
+  </div>
+  <div class="nwgrid">
+   <div class="nwcell"><div class="l">${t("assets")}</div><div class="v" style="color:var(--grn)">${fmt(n.assets)}</div></div>
+   <div class="nwcell"><div class="l">${t("liab")}</div><div class="v" style="color:var(--red)">${fmt(n.liab)}</div></div>
+   <div class="nwcell"><div class="l">${t("monthlyDue")}</div><div class="v">${fmt(n.monthly)}</div></div>
+  </div>
+  <div class="nwlist">
+  ${n.sav>0?line("🏦",t("wSav"),n.sav,"var(--grn)","sav"):""}
+  ${n.inv>0?line("📈",t("wInv"),n.inv,"var(--grn)","inv",n.coverMonths!==null&&n.liquid>0?t("covers",Math.floor(n.coverMonths)):""):""}
+  ${n.gamOwed>0?line("🤝",t("wGam"),-n.gamOwed,"var(--red)","sav",t("gamOwedHint")):""}
+  ${n.debts>0?line("💳",t("wDebt"),-n.debts,"var(--red)","debt"):""}
   </div></div>`;
 }
 function vDebt(){
- const body=({debt:wDebts,gam:wGams,sav:wSavs,inv:wInvs})[st.wtab]||wDebts;
+ const body=({debt:wDebts,sav:wSavs,inv:wInvs})[st.wtab]||wDebts;
  const b=(id,l)=>`<button class="${st.wtab===id?"on":""}" onclick="setW('${id}')">${l}</button>`;
  return `<div class="sec">
- <div class="seg four">${b("debt",t("wDebt"))}${b("gam",t("wGam"))}${b("sav",t("wSav"))}${b("inv",t("wInv"))}</div>
+ <div class="seg wide">${b("debt",t("wDebt"))}${b("sav",t("wSav"))}${b("inv",t("wInv"))}</div>
  ${nwCard()}${body()}</div>`;
 }
 
 function wDebts(){
- const cur=esc(st.currency),ds=st.data.debts||[];
+ const cur=esc(st.currency),ds=st.data.debts||[],n=netWorth();
+ const gs=(st.data.gameyas||[]).filter(g=>gamOf(g).owed>0);
  return `
  <div class="card wide"><div class="ch">${I.debt}${t("debts")}</div>
  ${ds.length?ds.map(d=>{const r=payoff(d.balance,(Number(d.rate)||0)/100,d.monthlyPay);
   const ex=payoff(d.balance,(Number(d.rate)||0)/100,(Number(d.monthlyPay)||0)+500);
-  return `<div style="padding:12px 0;border-bottom:1px solid var(--line2)">
+  return `<div class="item">
    <div class="row" style="--tone:var(--red);padding:0;border:none"><div class="rico">💳</div>
     <div class="rmain"><div class="rt">${esc(d.name)}</div>
     <div class="rs">${t("dMonthly",fmt(d.monthlyPay),cur,d.rate||0)}</div></div>
     <div class="ra" style="color:var(--red)">${fmt(d.balance)}</div>
-    <button class="ib" onclick="delDebt('${d.id}')">${I.del}</button></div>
+    <button class="ib" onclick="editEnt('debt','${d.id}')" aria-label="${t("edit")}">${I.pen}</button>
+    <button class="ib" onclick="delDebt('${d.id}')" aria-label="${t("del")}">${I.del}</button></div>
    <div class="ins ${r.ok?"info":"danger"}" style="margin-top:9px"><span class="ic">${r.ok?"📆":"🆘"}</span>
     <div>${r.ok?`<div class="t">${t("payIn")} ${r.n} ${t("months")}</div>
      <div class="b">${t("totInt")}: ${fmt(r.interest)} ${cur}.${ex.ok&&ex.n<r.n?t("dBoost",ex.n,fmt(r.interest-ex.interest)):""}</div>`
     :`<div class="t">${t("never")}</div><div class="b">${t("dRaise")}</div>`}</div></div></div>`}).join("")
-  :`<div class="empty">${I.spark}<div>${t("noDebts")}<br><span style="font-size:11px">${t("debtHint")}</span></div></div>`}</div>
+  :`<div class="empty">${I.spark}<div>${t("noDebts")}<br><span style="font-size:11px">${t("debtHint")}</span></div></div>`}
+ ${gs.length?`<div class="sub-h">${t("gamAsDebt")}</div>
+  ${gs.map(g=>{const o=gamOf(g);
+   return `<div class="row" style="--tone:var(--red)"><div class="rico">🤝</div>
+    <div class="rmain"><div class="rt">${esc(g.name)}</div>
+    <div class="rs">${t("gamLeftN",o.leftN)} × ${fmt(o.amt)} ${cur}</div></div>
+    <div class="ra" style="color:var(--red)">${fmt(o.owed)}</div>
+    <button class="ib" onclick="go('debt');setW('sav')" aria-label="${t("wSav")}">${I.cL}</button></div>`}).join("")}`:""}
+ </div>
+ ${n.monthly>0?`<div class="card"><div class="ch">📆${t("monthlyDue")}</div>
+  <div class="hrow">
+   <div class="hcell"><div class="l">${t("wDebt")}</div><div class="v">${fmt(n.debtMonthly)}</div></div>
+   <div class="hcell"><div class="l">${t("wGam")}</div><div class="v">${fmt(n.gamMonthly)}</div></div>
+   <div class="hcell"><div class="l">${t("wSav")}</div><div class="v">${fmt(n.savMonthly)}</div></div>
+  </div>
+  <p class="note" style="margin-top:10px">${t("monthlyDueHint",fmt(n.monthly)+" "+cur)}</p></div>`:""}
  <div class="card"><div class="ch">${I.plus}${t("addDebt")}</div>
   <div class="fld"><label class="fl">${t("debtName")}</label><input id="dN" placeholder="${t('catPh')}"></div>
   <div class="frow"><div class="fld"><label class="fl">${t("balance")}</label><input id="dB" type="number" inputmode="decimal" placeholder="0"></div>
   <div class="fld"><label class="fl">${t("rate")}</label><input id="dR" type="number" inputmode="decimal" placeholder="2.5" step="any"></div></div>
   <div class="fld"><label class="fl">${t("mpay")}</label><input id="dP" type="number" inputmode="decimal" placeholder="0"></div>
   <button class="btn" onclick="addDebt()">${I.plus}${t("save")}</button></div>`}
-
-function wGams(){
- const cur=esc(st.currency),gs=st.data.gameyas||[];
- return `
- <div class="card wide"><div class="ch">🤝${t("gams")}</div>
- ${gs.length?gs.map(g=>{const o=gamOf(g);
-  const when=o.done?t("gamDone"):o.turnIn===0?t("gamNow"):o.turnIn===1?t("gamNext"):o.turnIn>1?t("gamIn",o.turnIn):(o.took?t("gamTook")+" "+fmt(o.total)+" "+cur:"");
-  const lv=o.done?"info":o.turnIn===0?"good":o.took?"warn":"info";
-  return `<div style="padding:12px 0;border-bottom:1px solid var(--line2)">
-   <div class="row" style="--tone:#5CA5A5;padding:0;border:none"><div class="rico">🤝</div>
-    <div class="rmain"><div class="rt">${esc(g.name)}</div>
-    <div class="rs">${t("gamOf",fmt(o.amt)+" "+cur,plN(o.members,"mem"))}</div></div>
-    <div class="ra" style="color:${o.net>=0?"var(--grn)":"var(--red)"}">${o.net<0?"−":""}${fmt(Math.abs(o.net))}</div>
-    <button class="ib" onclick="delGam('${g.id}')">${I.del}</button></div>
-   <div class="brow" style="margin-top:9px"><div class="btop">
-    <span class="bnm">${t("gamPaid",fmt(o.paid),fmt(o.total))}</span>
-    <span class="bamt">${o.paidN}/${o.members}</span></div>
-    <div class="track"><div class="fill" style="width:${Math.min(100,(o.paidN/o.members)*100)}%;background:#5CA5A5"></div></div></div>
-   ${when?`<div class="ins ${lv}" style="margin-top:9px"><span class="ic">${o.done?"✅":o.took?"💳":"📆"}</span>
-    <div><div class="t">${when}</div><div class="b">${t("gamTurnN",o.turn)} · ${o.took?`${t("gamNet")}: ${o.net<0?"−":""}${fmt(Math.abs(o.net))} ${cur}`:`${t("gamTake")} ${fmt(o.total)} ${cur}`}</div></div></div>`:""}
-   </div>`}).join("")
-  :`<div class="empty">${I.spark}<div>${t("noGams")}<br><span style="font-size:11px">${t("gamHint")}</span></div></div>`}</div>
- <div class="card"><div class="ch">${I.plus}${t("addGam")}</div>
-  <div class="fld"><label class="fl">${t("gamName")}</label><input id="gN" placeholder="${t("gamPh")}"></div>
-  <div class="frow"><div class="fld"><label class="fl">${t("gamAmt")}</label><input id="gA" type="number" inputmode="decimal" placeholder="0"></div>
-  <div class="fld"><label class="fl">${t("gamMembers")}</label><input id="gM" type="number" inputmode="numeric" placeholder="10"></div></div>
-  <div class="frow"><div class="fld"><label class="fl">${t("gamTurn")}</label><input id="gT" type="number" inputmode="numeric" placeholder="1"></div>
-  <div class="fld"><label class="fl">${t("gamStart")}</label><input id="gS" type="month" value="${mKey()}"></div></div>
-  <button class="btn" onclick="addGam()">${I.plus}${t("save")}</button></div>`}
-
 function wSavs(){
- const cur=esc(st.currency),ss=st.data.savings||[];
+ const cur=esc(st.currency),ss=st.data.savings||[],gs=st.data.gameyas||[];
+ const goalOpts=sel=>ss.map(s=>`<option value="${s.id}"${sel===s.id?" selected":""}>${esc(s.name)}</option>`).join("");
  return `
  <div class="card wide"><div class="ch">🏦${t("savs")}</div>
  ${ss.length?ss.map(s=>{const o=savOf(s);
   const when=o.done?t("savDone"):o.months!==null?t("savIn",o.months):t("savNoPace");
-  return `<div style="padding:12px 0;border-bottom:1px solid var(--line2)">
+  const feed=gs.filter(g=>g.goalId===s.id&&!gamOf(g).banked);
+  return `<div class="item">
    <div class="row" style="--tone:#4E8FB5;padding:0;border:none"><div class="rico">${esc(s.emoji||"🏦")}</div>
     <div class="rmain"><div class="rt">${esc(s.name)}</div>
-    <div class="rs">${o.done?t("savDone"):`${fmt(o.left)} ${cur} ${t("savLeft")} · ${when}`}</div></div>
+    <div class="rs">${o.done?t("savDone"):when}</div></div>
     <div class="ra" style="color:var(--grn)">${fmt(o.now)}</div>
-    <button class="ib" onclick="delSav('${s.id}')">${I.del}</button></div>
+    <button class="ib" onclick="editEnt('sav','${s.id}')" aria-label="${t("edit")}">${I.pen}</button>
+    <button class="ib" onclick="delSav('${s.id}')" aria-label="${t("del")}">${I.del}</button></div>
    <div class="brow" style="margin-top:9px"><div class="btop">
     <span class="bnm">${fmt(o.now)} / ${fmt(o.target)} ${cur}</span>
     <span class="bamt">${Math.round(o.pct)}%</span></div>
     <div class="track"><div class="fill" style="width:${o.pct}%;background:${o.done?"var(--grn)":"#4E8FB5"}"></div></div></div>
+   ${feed.length?`<div class="ins info" style="margin-top:9px"><span class="ic">🤝</span>
+    <div><div class="t">${t("fedBy",feed.map(g=>esc(g.name)).join("، "))}</div>
+    <div class="b">${t("willAdd",fmt(feed.reduce((a,g)=>a+gamOf(g).payout,0))+" "+cur)}</div></div></div>`:""}
    <button class="btn ghost" style="margin-top:9px" onclick="addToSav('${s.id}')">${I.plus}${t("addAmt")}</button>
    </div>`}).join("")
   :`<div class="empty">${I.spark}<div>${t("noSavs")}<br><span style="font-size:11px">${t("savHint")}</span></div></div>`}</div>
+
+ <div class="card wide"><div class="ch">🤝${t("gams")}</div>
+ <p class="note" style="margin:-4px 0 12px">${t("gamIsDebt")}</p>
+ ${gs.length?gs.map(g=>{const o=gamOf(g);
+  const goal=ss.find(x=>x.id===g.goalId);
+  const when=o.done&&o.took?t("gamDone"):o.turnIn===0?t("gamNow"):o.turnIn===1?t("gamNext"):o.turnIn>1?t("gamIn",o.turnIn):t("gamTookN",fmt(o.payout)+" "+cur);
+  const lv=o.turnIn===0?"good":o.took&&!o.done?"warn":"info";
+  return `<div class="item">
+   <div class="row" style="--tone:#C99A2E;padding:0;border:none"><div class="rico">🤝</div>
+    <div class="rmain"><div class="rt">${esc(g.name)}</div>
+    <div class="rs">${t("gamOf",fmt(o.amt)+" "+cur,plN(o.members,"mem"))}${goal?" · "+t("forGoal",esc(goal.name)):""}</div></div>
+    <div class="ra" style="color:var(--red)">${o.owed>0?"−"+fmt(o.owed):"✓"}</div>
+    <button class="ib" onclick="editEnt('gam','${g.id}')" aria-label="${t("edit")}">${I.pen}</button>
+    <button class="ib" onclick="delGam('${g.id}')" aria-label="${t("del")}">${I.del}</button></div>
+   <div class="brow" style="margin-top:9px"><div class="btop">
+    <span class="bnm">${t("gamPaid",fmt(o.paid),fmt(o.payout))}</span>
+    <span class="bamt">${o.paidN}/${o.members}</span></div>
+    <div class="track"><div class="fill" style="width:${Math.min(100,(o.paidN/o.members)*100)}%;background:#C99A2E"></div></div></div>
+   <div class="ins ${lv}" style="margin-top:9px"><span class="ic">${o.done&&o.took?"✅":o.turnIn===0?"🎉":o.took?"💳":"📆"}</span>
+    <div><div class="t">${when}</div>
+    <div class="b">${t("gamTurnN",o.turn)}${o.owed>0?` · ${t("gamStillOwe",fmt(o.owed)+" "+cur)}`:""}</div></div></div>
+   ${o.took&&!o.banked?`<button class="btn" style="margin-top:9px" onclick="bankGam('${g.id}')">${I.dl}${t("gamBank",fmt(o.payout)+" "+cur)}</button>`:""}
+   </div>`}).join("")
+  :`<div class="empty">${I.spark}<div>${t("noGams")}<br><span style="font-size:11px">${t("gamHint")}</span></div></div>`}</div>
+
  <div class="card"><div class="ch">${I.plus}${t("addSav")}</div>
   <div class="fld"><label class="fl">${t("savName")}</label><input id="sN" placeholder="${t("savPh")}"></div>
   <div class="frow"><div class="fld"><label class="fl">${t("savTarget")}</label><input id="sT" type="number" inputmode="decimal" placeholder="0"></div>
   <div class="fld"><label class="fl">${t("savNow")}</label><input id="sC" type="number" inputmode="decimal" placeholder="0"></div></div>
   <div class="fld"><label class="fl">${t("savMonthly")}</label><input id="sP" type="number" inputmode="decimal" placeholder="0"></div>
   <div class="fld"><select id="sE">${EMO.map(e=>`<option value="${e}">${e}</option>`).join("")}</select></div>
-  <button class="btn" onclick="addSav()">${I.plus}${t("save")}</button></div>`}
+  <button class="btn" onclick="addSav()">${I.plus}${t("save")}</button></div>
+
+ <div class="card"><div class="ch">${I.plus}${t("addGam")}</div>
+  <div class="fld"><label class="fl">${t("gamName")}</label><input id="gN" placeholder="${t("gamPh")}"></div>
+  <div class="frow"><div class="fld"><label class="fl">${t("gamAmt")}</label><input id="gA" type="number" inputmode="decimal" placeholder="0"></div>
+  <div class="fld"><label class="fl">${t("gamMembers")}</label><input id="gM" type="number" inputmode="numeric" placeholder="10"></div></div>
+  <div class="frow"><div class="fld"><label class="fl">${t("gamTurn")}</label><input id="gT" type="number" inputmode="numeric" placeholder="1"></div>
+  <div class="fld"><label class="fl">${t("gamStart")}</label><input id="gS" type="month" value="${mKey()}"></div></div>
+  <div class="fld"><label class="fl">${t("gamGoal")}</label>
+   <select id="gG"><option value="">${t("noGoal")}</option>${goalOpts("")}</select></div>
+  <button class="btn" onclick="addGam()">${I.plus}${t("save")}</button></div>`}
 
 function wInvs(){
- const cur=esc(st.currency),is=st.data.invests||[];
+ const cur=esc(st.currency),is=st.data.invests||[],n=netWorth();
  const tot=is.reduce((a,i)=>a+invOf(i).now,0),put=is.reduce((a,i)=>a+invOf(i).put,0);
  const d=tot-put;
  return `
@@ -1076,24 +1218,33 @@ function wInvs(){
    <div class="hcell"><div class="l">${t("invNow")}</div><div class="v">${fmt(tot)}</div></div>
    <div class="hcell"><div class="l">${d>=0?t("profit"):t("loss")}</div>
     <div class="v" style="color:${d>=0?"var(--grn)":"var(--red)"}">${d<0?"−":"+"}${fmt(Math.abs(d))}${put>0?` <small>${d>=0?"+":"−"}${Math.abs(Math.round((d/put)*100))}%</small>`:""}</div></div>
-  </div></div>`:""}
+  </div>
+  <p class="note" style="margin-top:10px">${t("invVar")}</p></div>
+  ${n.liquid>0?`<div class="card"><div class="ch">🛟${t("emFund")}</div>
+   <div class="nwbig" style="font-size:24px;color:var(--grn)">${fmt(n.liquid)} <small>${cur}</small></div>
+   ${n.coverMonths!==null?`<div class="brow" style="margin-top:10px"><div class="btop">
+     <span class="bnm">${t("coversLong",Math.floor(n.coverMonths))}</span>
+     <span class="bamt">${t("perMonth",fmt(Math.round(avgSpend()))+" "+cur)}</span></div>
+     <div class="track"><div class="fill" style="width:${Math.min(100,(n.coverMonths/6)*100)}%;background:${n.coverMonths>=3?"var(--grn)":"var(--amb)"}"></div></div></div>
+    <p class="note" style="margin-top:9px">${n.coverMonths>=3?t("emGood"):t("emLow")}</p>`
+   :`<p class="note" style="margin-top:9px">${t("emNoData")}</p>`}</div>`:""}`:""}
  <div class="card wide"><div class="ch">📈${t("invs")}</div>
  ${is.length?is.map(i=>{const o=invOf(i);
   return `<div class="row" style="--tone:#5CA5A5"><div class="rico">${esc(i.emoji||"📈")}</div>
-   <div class="rmain"><div class="rt">${esc(i.name)}</div>
+   <div class="rmain"><div class="rt">${esc(i.name)}${o.liquid?` <span class="tagl">${t("liquid")}</span>`:""}</div>
    <div class="rs">${t("invIn")}: ${fmt(o.put)} ${cur}</div></div>
    <div class="ra"><div>${fmt(o.now)}</div>
     <div style="font-size:11px;color:${o.diff>=0?"var(--grn)":"var(--red)"}">${o.diff>=0?"▲":"▼"}${Math.abs(Math.round(o.pct))}%</div></div>
-   <button class="ib" onclick="updInv('${i.id}')" title="${t("updVal")}">${I.up}</button>
-   <button class="ib" onclick="delInv('${i.id}')">${I.del}</button></div>`}).join("")
+   <button class="ib" onclick="editEnt('inv','${i.id}')" aria-label="${t("edit")}">${I.pen}</button>
+   <button class="ib" onclick="delInv('${i.id}')" aria-label="${t("del")}">${I.del}</button></div>`}).join("")
   :`<div class="empty">${I.spark}<div>${t("noInvs")}<br><span style="font-size:11px">${t("invHint")}</span></div></div>`}</div>
  <div class="card"><div class="ch">${I.plus}${t("addInv")}</div>
   <div class="fld"><label class="fl">${t("invName")}</label><input id="iN" placeholder="${t("invPh")}"></div>
   <div class="frow"><div class="fld"><label class="fl">${t("invIn")}</label><input id="iA" type="number" inputmode="decimal" placeholder="0"></div>
   <div class="fld"><label class="fl">${t("invNow")}</label><input id="iV" type="number" inputmode="decimal" placeholder="0"></div></div>
   <div class="fld"><select id="iE">${EMO.map(e=>`<option value="${e}"${e==="📈"?" selected":""}>${e}</option>`).join("")}</select></div>
+  <label class="chk"><input type="checkbox" id="iL" checked><span>${t("liquidAsk")}</span></label>
   <button class="btn" onclick="addInv()">${I.plus}${t("save")}</button></div>`}
-
 function vSet(){
  const on=sync.status==="on",u=sync.user;
  const inst=(()=>{try{return(window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches)||window.navigator.standalone===true}catch(e){return false}})();
@@ -1248,7 +1399,7 @@ function addGam(){const n=fStr("gN");if(!n){toast(t("gamName"),1);return}
  const members=Math.max(1,Math.round(fNum("gM")||1));
  st.data.gameyas.push({id:uid("gam"),name:n,amount:fNum("gA"),members,
   turn:Math.min(members,Math.max(1,Math.round(fNum("gT")||1))),
-  start:fStr("gS")||mKey(),createdAt:Date.now()});
+  start:fStr("gS")||mKey(),goalId:fStr("gG"),banked:false,createdAt:Date.now()});
  save();paint();toast(t("sv"))}
 function delGam(id){st.data.gameyas=st.data.gameyas.filter(x=>x.id!==id);save();paint()}
 function addSav(){const n=fStr("sN");if(!n){toast(t("savName"),1);return}
@@ -1266,12 +1417,65 @@ function addInv(){const n=fStr("iN");if(!n){toast(t("invName"),1);return}
  const e=document.getElementById("iE"),put=fNum("iA"),vEl=document.getElementById("iV");
  // An investment with no value typed yet is simply worth what went into it.
  const val=vEl&&vEl.value!==""?Number(vEl.value)||0:put;
- st.data.invests.push({id:uid("inv"),name:n,amount:put,value:val,emoji:e?e.value:"📈",createdAt:Date.now()});
+ const lq=document.getElementById("iL");
+ st.data.invests.push({id:uid("inv"),name:n,amount:put,value:val,emoji:e?e.value:"📈",
+  liquid:lq?lq.checked:true,createdAt:Date.now()});
  save();paint();toast(t("sv"))}
 function delInv(id){st.data.invests=st.data.invests.filter(x=>x.id!==id);save();paint()}
 function updInv(id){const i=st.data.invests.find(x=>x.id===id);if(!i)return;
  const v=prompt(t("invNow"),String(i.value||0));if(v===null)return;
  const n=Number(v);if(isNaN(n)||n<0)return;i.value=n;save();paint();toast(t("upd"))}
+/* ============ Editing ============
+ * One small form per record type, so every list row can be corrected rather than
+ * deleted and retyped. */
+const ENT={
+ debt:{arr:()=>st.data.debts,ico:"💳",
+  f:[{k:"name",l:"debtName",t:"text"},{k:"balance",l:"balance",t:"num"},
+     {k:"rate",l:"rate",t:"num"},{k:"monthlyPay",l:"mpay",t:"num"}]},
+ gam:{arr:()=>st.data.gameyas,ico:"🤝",
+  f:[{k:"name",l:"gamName",t:"text"},{k:"amount",l:"gamAmt",t:"num"},
+     {k:"members",l:"gamMembers",t:"int"},{k:"turn",l:"gamTurn",t:"int"},
+     {k:"start",l:"gamStart",t:"month"},{k:"goalId",l:"gamGoal",t:"goal"}]},
+ sav:{arr:()=>st.data.savings,ico:"🏦",
+  f:[{k:"name",l:"savName",t:"text"},{k:"target",l:"savTarget",t:"num"},
+     {k:"saved",l:"savNow",t:"num"},{k:"monthly",l:"savMonthly",t:"num"},
+     {k:"emoji",l:"emoji",t:"emoji"}]},
+ inv:{arr:()=>st.data.invests,ico:"📈",
+  f:[{k:"name",l:"invName",t:"text"},{k:"amount",l:"invIn",t:"num"},
+     {k:"value",l:"invNow",t:"num"},{k:"emoji",l:"emoji",t:"emoji"},
+     {k:"liquid",l:"liquidAsk",t:"bool"}]}
+};
+function editEnt(kind,id){
+ const cfg=ENT[kind];if(!cfg)return;
+ const o=cfg.arr().find(x=>x.id===id);if(!o)return;
+ const fld=f=>{const v=o[f.k],fid="ef_"+f.k;
+  if(f.t==="bool")return `<label class="chk"><input type="checkbox" id="${fid}"${v!==false?" checked":""}><span>${t(f.l)}</span></label>`;
+  if(f.t==="emoji")return `<div class="fld"><label class="fl">${t("emoji")}</label><select id="${fid}">${EMO.map(e=>`<option value="${e}"${e===v?" selected":""}>${e}</option>`).join("")}</select></div>`;
+  if(f.t==="goal")return `<div class="fld"><label class="fl">${t(f.l)}</label><select id="${fid}"><option value="">${t("noGoal")}</option>${(st.data.savings||[]).map(x=>`<option value="${x.id}"${x.id===v?" selected":""}>${esc(x.name)}</option>`).join("")}</select></div>`;
+  const ty=f.t==="month"?"month":f.t==="text"?"text":"number";
+  return `<div class="fld"><label class="fl">${t(f.l)}</label><input id="${fid}" type="${ty}"${ty==="number"?' inputmode="decimal" step="any"':""} value="${esc(String(v==null?"":v))}"></div>`};
+ modal(`<div class="stitle"><span>${cfg.ico} ${t("edit")}</span><button class="xb" onclick="closeModal()">${I.x}</button></div>
+  ${cfg.f.map(fld).join("")}
+  <button class="btn" onclick="saveEnt('${kind}','${id}')">${I.ok}${t("saveEdit")}</button>`)}
+function saveEnt(kind,id){
+ const cfg=ENT[kind];if(!cfg)return;
+ const o=cfg.arr().find(x=>x.id===id);if(!o)return;
+ cfg.f.forEach(f=>{const el=document.getElementById("ef_"+f.k);if(!el)return;
+  if(f.t==="bool")o[f.k]=el.checked;
+  else if(f.t==="num")o[f.k]=Number(el.value)||0;
+  else if(f.t==="int")o[f.k]=Math.max(1,Math.round(Number(el.value)||1));
+  else o[f.k]=el.value});
+ if(kind==="gam")o.turn=Math.min(o.members,Math.max(1,o.turn));
+ save();closeModal();paint();toast(t("upd"))}
+// Collecting a gameya turns the pot into real money, so it lands in the goal it was for.
+function bankGam(id){
+ const g=(st.data.gameyas||[]).find(x=>x.id===id);if(!g)return;
+ const goal=(st.data.savings||[]).find(x=>x.id===g.goalId);
+ if(!goal){toast(t("gamNoGoal"),1);editEnt("gam",id);return}
+ const o=gamOf(g);
+ goal.saved=(Number(goal.saved)||0)+o.payout;
+ g.banked=true;save();paint();
+ toast(t("movedToGoal",fmt(o.payout)+" "+st.currency))}
 function setTheme(id){st.theme=id;lsS(K.theme,id);document.getElementById("root").setAttribute("data-theme",id);
  const m=document.querySelector('meta[name="theme-color"]');
  if(m)m.setAttribute("content",getComputedStyle(document.body).backgroundColor);paint()}
@@ -1438,7 +1642,7 @@ Object.assign(window,{closeModal,updLater,updGo});
 Object.assign(window,{go,shiftM,openAdd,closeAdd,setKind,moreCats,pickC,useC,kp,saveTx,editTx,setF,
  delExp,delInc,delCat,addCat,editB,addDebt,delDebt,setTheme,setLang,setCur,
  expCSV,expJSON,impJSON,resetAll,mkCode,joinCode,offCode,gIn,gOut,doInstall,ad,
- setW,addGam,delGam,addSav,delSav,addToSav,addInv,delInv,updInv,checkUpdate});
+ setW,addGam,delGam,addSav,delSav,addToSav,addInv,delInv,updInv,checkUpdate,editEnt,saveEnt,bankGam});
 
 /* ============ Boot ============ */
 (function boot(){
