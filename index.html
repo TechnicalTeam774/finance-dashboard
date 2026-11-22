@@ -267,19 +267,18 @@ font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all
 
 /* the rest, at a glance */
 .inslist{display:flex;flex-direction:column;gap:2px}
-.ins2{display:flex;align-items:center;gap:11px;padding:11px 10px;border-radius:11px;
+.ins2{display:flex;align-items:flex-start;gap:11px;padding:12px 11px;border-radius:11px;
  border-inline-start:3px solid var(--line2);background:var(--inset)}
 .ins2[onclick]{cursor:pointer}
 .ins2[onclick]:hover{background:color-mix(in srgb,var(--acc) 7%,var(--inset))}
 .ins2.danger{border-inline-start-color:var(--red)}
 .ins2.warn{border-inline-start-color:#C98A4B}
 .ins2.good{border-inline-start-color:var(--grn)}
-.ins2 .ic{font-size:17px;flex:none}
+.ins2 .ic{font-size:17px;flex:none;line-height:1.3}
 .i2m{flex:1;min-width:0;display:block}
 .i2m b{display:block;font-size:12.5px;font-weight:600;line-height:1.4}
-.i2m i{display:block;font-style:normal;font-size:11px;color:var(--sub);margin-top:2px;
- overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.i2a{color:var(--sub);flex:none;display:flex}
+.i2m i{display:block;font-style:normal;font-size:11px;color:var(--sub);margin-top:3px;line-height:1.55}
+.i2a{color:var(--sub);flex:none;display:flex;align-self:center}
 .i2a svg{width:14px;height:14px}
 
 /* the plan */
@@ -322,6 +321,10 @@ font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all
 .gh{display:inline-block;font-size:11.5px;color:var(--sub);background:var(--inset);
  border:1px solid var(--line2);border-radius:9px;padding:6px 11px}
 .gh.ok{color:var(--grn);border-color:color-mix(in srgb,var(--grn) 34%,var(--line2))}
+.cfchip{display:inline-flex;align-items:center;gap:7px;background:var(--inset);color:var(--txt);
+ border:1px solid var(--acc);border-radius:10px;padding:7px 12px;font:inherit;font-size:12px;
+ font-weight:600;cursor:pointer;margin-bottom:-4px}
+.cfchip span{display:flex;color:var(--sub)}.cfchip svg{width:13px;height:13px}
 .upd-notes{margin:4px 0 14px;padding-inline-start:18px;font-size:12.5px;line-height:1.75;color:var(--sub)}
 .upd-notes li{margin-bottom:3px}
 .upd-ic{font-size:34px;text-align:center;margin-bottom:4px}
@@ -461,8 +464,13 @@ appId:"1:147347678300:web:b3fd9d3fc8640d11483299"};
 const FB_ON=firebaseConfig.apiKey!=="YOUR_API_KEY";
 const K={data:"mizan_data_v1",lang:"mizan_lang",theme:"mizan_theme",cur:"mizan_currency",sync:"mizan_sync_code"};
 /* Keep APP_VER equal to version.json — the Android workflow fails the build if they drift. */
-const APP_VER="1.5.0";
-const CHANGES={"1.5.0":[
+const APP_VER="1.5.1";
+const CHANGES={"1.5.1":[
+ "كل نصيحة بقت تفتح المكان بتاعها لما تدوس عليها",
+ "نص النصيحة مبقاش مقصوص — بيبان كامل",
+ "نصيحة عن بند معيّن بتوديك للسجل مفلتر على البند ده",
+ "تحويلات الادخار والاستثمار مبقتش تتحسب «أكبر مصروف» — دي مش مصاريف"
+],"1.5.0":[
  "اكتب «قبض» وانت بتسجّل دخلك — التطبيق يعرف يوم قبضك ويحسب من اليوم ده، مش من أول الشهر",
  "اكتب «جمعية» أو اسم الجمعية وهو يسجّلها قسط لوحده، من غير ما تروح لقسم تاني",
  "بيلقط كمان الإيجار والنت والبنزين والأكل من اللي بتكتبه ويختار التصنيف",
@@ -634,7 +642,9 @@ iGoalHitT:n=>`«${n}» هيتحقق بالجمعية`,
 iGoalHitB:(g,v,c)=>`${g} هتضيف ${v} ${c} وتكمّل الهدف.`,
 iEmT:n=>n>=1?`صندوق الطوارئ يغطي ${n} شهر بس`:"صندوق الطوارئ أقل من شهر",
 iEmB:(v,c)=>`محتاج ${v} ${c} كمان توصل لتغطية ٣ شهور.`,
-iOverA:"عدّل الميزانيات",
+iOverA:"شوف الميزانيات",
+aLog:"شوف الحركات",aRep:"شوف التقرير",aCat:"شوف البند",aSav:"شوف الادخار",
+aInv:"شوف الاستثمار",aDebt:"شوف الديون",aBud:"عدّل الميزانيات",aGam:"شوف الجمعية",
 edit:"تعديل",saveEdit:"حفظ التعديل",emoji:"الأيقونة",
 monthlyDue:"التزاماتك الشهرية",monthlyDueHint:v=>`بتطلع من دخلك ${v} كل شهر قبل أي مصروف تاني.`,
 covers:n=>`يكفيك ${n} شهور`,coversLong:n=>n>0?`يغطي مصاريف ${n} شهور`:"أقل من شهر",
@@ -791,7 +801,9 @@ iGoalHitT:n=>`"${n}" will be reached by the gameya`,
 iGoalHitB:(g,v,c)=>`${g} adds ${v} ${c} and completes the goal.`,
 iEmT:n=>n>=1?`Emergency fund covers only ${n} ${n===1?"month":"months"}`:"Emergency fund covers under a month",
 iEmB:(v,c)=>`${v} ${c} more gets you to three months.`,
-iOverA:"Adjust budgets",
+iOverA:"See budgets",
+aLog:"See transactions",aRep:"See the report",aCat:"See this category",aSav:"See savings",
+aInv:"See investing",aDebt:"See debts",aBud:"Adjust budgets",aGam:"See the gameya",
 edit:"Edit",saveEdit:"Save changes",emoji:"Icon",
 monthlyDue:"Monthly commitments",monthlyDueHint:v=>`${v} leaves your income every month before anything else.`,
 covers:n=>`${n} months of cover`,coversLong:n=>n>0?`Covers ${n} ${n===1?"month":"months"} of spending`:"Under a month",
@@ -934,7 +946,7 @@ function loadData(){
 /* ============ State ============ */
 const st={data:loadData(),month:mKey(),tab:"home",
  lang:lsG(K.lang,"ar")==="en"?"en":"ar",theme:lsG(K.theme,"midnight"),currency:lsG(K.cur,""),
- filter:"all",wtab:"debt",allIns:false,booted:false};
+ filter:"all",cf:null,wtab:"debt",allIns:false,booted:false};
 if(!st.currency)st.currency=st.lang==="ar"?"ج.م":"EGP";
 
 let db=null,auth=null,unsub=null,remote=false,timer=null,prompt_=null;
@@ -1295,27 +1307,32 @@ function recurringHints(){
 /* ============ Insights ============ */
 function insights(){
  const out=[],cur=st.currency,now=new Date(),isCur=st.month===mKey();
- const ex=expOf(),inc=incOf(),tE=sum(ex),tI=sum(inc);
+ const exAll=expOf(),inc=incOf(),tI=sum(inc);
+ // Money moved into savings or onto a debt is not spending; letting it compete for
+ // "biggest expense" buries the real one and scolds you for doing the right thing.
+ const ex=exAll.filter(e=>{const k=kindOf(byId(e.categoryId));return k!=="s"&&k!=="d"});
+ const tE=sum(ex);
  const dim=dIn(st.month),day=isCur?now.getDate():dim;
- const cs=catSpend(),P=planOf(cs,tI),plan=P.plan;
+ const csAll=catSpend(),P=planOf(csAll,tI),plan=P.plan;
+ const cs=csAll.filter(c=>{const k=kindOf(c);return k!=="s"&&k!=="d"});
 
  const D=daily(),F=fixedTotals();
 
  // Unlogged fixed commitments make every other number optimistic, so this leads.
  if(isCur&&F.dueCount>0)out.push({lv:"warn",ic:"📌",t:t("iFixT",F.dueCount),
-  b:t("iFixB",fmt(F.due),cur),a:{l:t("iFixA"),f:"go('home')"}});
+  b:t("iFixB",fmt(F.due),cur),a:{l:t("iFixA"),f:"go('home');setTimeout(()=>{const e=document.querySelector('.fixlist');if(e)e.scrollIntoView({behavior:'smooth',block:'center'})},120)"}});
 
  if(isCur&&D.perDay>0){
   const over=D.today>D.perDay;
   out.push({lv:over?"warn":"good",ic:over?"🫰":"🟢",
    t:over?t("iDayOverT",fmt(D.today-D.perDay),cur):t("iDayOkT",fmt(Math.max(0,D.leftToday)),cur),
-   b:t("iDayB",fmt(D.perDay),cur,D.daysLeft)});
+   b:t("iDayB",fmt(D.perDay),cur,D.daysLeft),a:{l:t("aLog"),f:"st.cf=null;go('log')"}});
  }
  if(isCur){const sk=streak();
-  if(sk>=3)out.push({lv:"good",ic:"🔥",t:t("iStreakT",sk),b:t("iStreakB")});}
+  if(sk>=3)out.push({lv:"good",ic:"🔥",t:t("iStreakT",sk),b:t("iStreakB"),a:{l:t("aLog"),f:"st.cf=null;go('log')"}});}
 
- spikes().slice(0,2).forEach(sp=>out.push({lv:"warn",ic:sp.c.emoji,
-  t:t("iSpikeT",cNm(sp.c),sp.d),b:t("iSpikeB",fmt(sp.c.spent),fmt(Math.round(sp.avg)),cur,fmt(Math.round(sp.extra)))}));
+ spikes().filter(sp=>{const k=kindOf(sp.c);return k!=='s'&&k!=='d'}).slice(0,2).forEach(sp=>out.push({lv:"warn",ic:sp.c.emoji,
+  t:t("iSpikeT",cNm(sp.c),sp.d),b:t("iSpikeB",fmt(sp.c.spent),fmt(Math.round(sp.avg)),cur,fmt(Math.round(sp.extra))),a:{l:t("aCat"),f:`seeCat('${sp.c.id}')`}}));
 
  recurringHints().forEach(h=>{const c=byId(h.cat);if(!c)return;
   out.push({lv:"info",ic:"🔁",t:t("iRecT",cNm(c),fmt(h.amt),cur),b:t("iRecB"),
@@ -1324,7 +1341,7 @@ function insights(){
  (st.data.gameyas||[]).forEach(g=>{const o=gamOf(g);
   if(o.turnIn===0&&!o.banked)out.push({lv:"good",ic:"🎉",t:t("iGamT",esc(g.name)),
    b:t("iGamB",fmt(o.payout),cur),a:{l:t("iGamA"),f:`bankGam('${g.id}')`}});
-  else if(o.turnIn===1)out.push({lv:"info",ic:"📆",t:t("iGamNextT",esc(g.name)),b:t("iGamNextB",fmt(o.payout),cur)})});
+  else if(o.turnIn===1)out.push({lv:"info",ic:"📆",t:t("iGamNextT",esc(g.name)),b:t("iGamNextB",fmt(o.payout),cur),a:{l:t("aGam"),f:"go('debt');setW('sav')"}})});
 
  (st.data.savings||[]).forEach(sv=>{const o=savOf(sv);
   const feed=(st.data.gameyas||[]).filter(g=>g.goalId===sv.id&&!gamOf(g).banked);
@@ -1332,63 +1349,63 @@ function insights(){
   const add=feed.reduce((a,g)=>a+gamOf(g).payout,0);
   const after=o.now+add;
   if(after>=o.target)out.push({lv:"good",ic:"🤝",t:t("iGoalHitT",esc(sv.name)),
-   b:t("iGoalHitB",esc(feed[0].name),fmt(add),cur)});});
+   b:t("iGoalHitB",esc(feed[0].name),fmt(add),cur),a:{l:t("aSav"),f:"go('debt');setW('sav')"}});});
 
  const NW=netWorth();
  if(NW.liquid>0&&NW.coverMonths!==null&&NW.coverMonths<3)
-  out.push({lv:"warn",ic:"🛟",t:t("iEmT",Math.max(0,Math.floor(NW.coverMonths))),b:t("iEmB",fmt(Math.round(avgSpend()*3-NW.liquid)),cur)});
+  out.push({lv:"warn",ic:"🛟",t:t("iEmT",Math.max(0,Math.floor(NW.coverMonths))),b:t("iEmB",fmt(Math.round(avgSpend()*3-NW.liquid)),cur),a:{l:t("aInv"),f:"go('debt');setW('inv')"}});
 
  if(isCur){
   const td=dKey(now),ts=ex.filter(e=>txD(e)===td).reduce((s,e)=>s+Number(e.amount||0),0);
   const past=ex.filter(e=>txD(e)<td),ds=new Set(past.map(txD));
   const avg=ds.size?past.reduce((s,e)=>s+Number(e.amount||0),0)/ds.size:0;
   if(ts>0&&avg>0){const d=((ts-avg)/avg)*100;
-   if(d>=50)out.push({lv:"danger",ic:"🔥",t:t("iSpentToday",fmt(ts),cur),b:t("iAboveAvg",fmt(avg),Math.round(d))});
-   else if(d<=-40)out.push({lv:"good",ic:"👏",t:t("iFrugalT",fmt(ts),cur),b:t("iFrugalB",Math.round(-d))});
-   else out.push({lv:"info",ic:"📅",t:t("iSpentToday",fmt(ts),cur),b:t("iNormalB",fmt(avg))});
+   if(d>=50)out.push({lv:"danger",ic:"🔥",t:t("iSpentToday",fmt(ts),cur),b:t("iAboveAvg",fmt(avg),Math.round(d)),a:{l:t("aLog"),f:"st.cf=null;go('log')"}});
+   else if(d<=-40)out.push({lv:"good",ic:"👏",t:t("iFrugalT",fmt(ts),cur),b:t("iFrugalB",Math.round(-d)),a:{l:t("aLog"),f:"st.cf=null;go('log')"}});
+   else out.push({lv:"info",ic:"📅",t:t("iSpentToday",fmt(ts),cur),b:t("iNormalB",fmt(avg)),a:{l:t("aLog"),f:"st.cf=null;go('log')"}});
   }else if(ts===0&&day>1)out.push({lv:"good",ic:"✨",t:t("iZeroT"),b:t("iZeroB")});
  }
  if(plan>0&&day>2&&tE>0){const pr=(tE/day)*dim;
   if(pr>plan*1.1)out.push({lv:"danger",ic:"📈",t:t("iPaceBadT",fmt(pr),cur),
-   b:t("iPaceBadB",fmt(plan),fmt(pr-plan),fmt((pr-plan)/Math.max(1,dim-day)))});
-  else if(pr<plan*.85)out.push({lv:"good",ic:"🎯",t:t("iPaceGoodT"),b:t("iPaceGoodB",fmt(pr),fmt(plan),fmt(plan-pr))});
+   b:t("iPaceBadB",fmt(plan),fmt(pr-plan),fmt((pr-plan)/Math.max(1,dim-day))),a:{l:t("aRep"),f:"go('rep')"}});
+  else if(pr<plan*.85)out.push({lv:"good",ic:"🎯",t:t("iPaceGoodT"),b:t("iPaceGoodB",fmt(pr),fmt(plan),fmt(plan-pr)),a:{l:t("aRep"),f:"go('rep')"}});
  }
  // The per-day figure lives in the hero now; only the blown-budget case is news.
  if(plan>0&&isCur&&day<dim&&plan-tE<=0)
-  out.push({lv:"danger",ic:"⛔",t:t("iBustT"),b:t("iBustB",fmt(tE-plan),cur,dim-day+1)});
+  out.push({lv:"danger",ic:"⛔",t:t("iBustT"),b:t("iBustB",fmt(tE-plan),cur,dim-day+1),a:{l:t("aRep"),f:"go('rep')"}});
  const over=cs.filter(c=>c.budget>0&&c.spent>c.budget).sort((a,b)=>(b.spent-b.budget)-(a.spent-a.budget));
  const near=cs.filter(c=>c.budget>0&&c.spent<=c.budget&&c.pct>=80);
  if(over.length)out.push({lv:"danger",ic:"⚠️",t:t("iOverT",plN(over.length,"cat")),
   b:over.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${fmt(c.spent)} / ${fmt(c.budget)}`).join(" · "),
-  a:{l:t("iOverA"),f:"go('set')"}});
+  a:{l:t("iOverA"),f:"go('rep')"}});
  if(near.length)out.push({lv:"warn",ic:"🔔",t:t("iNearT",plN(near.length,"cat")),
-  b:near.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${Math.round(c.pct)}%`).join(" · ")});
+  b:near.slice(0,3).map(c=>`${c.emoji} ${cNm(c)}: ${Math.round(c.pct)}%`).join(" · "),a:{l:t("aRep"),f:"go('rep')"}});
  const top=cs.filter(c=>c.spent>0).sort((a,b)=>b.spent-a.spent)[0];
  if(top&&tE>0){const sh=Math.round((top.spent/tE)*100);
-  out.push({lv:sh>45?"warn":"info",ic:top.emoji,t:t("iTopT",cNm(top),fmt(top.spent),cur),b:t("iTopB",sh,sh>45)})}
+  out.push({lv:sh>45?"warn":"info",ic:top.emoji,t:t("iTopT",cNm(top),fmt(top.spent),cur),b:t("iTopB",sh,sh>45),a:{l:t("aCat"),f:`seeCat('${top.id}')`}})}
  const big=[...ex].sort((a,b)=>b.amount-a.amount)[0];
  if(big&&tE>0&&big.amount>tE*.25){const c=byId(big.categoryId);
   const meta=`${c?c.emoji+" "+cNm(c):""}${big.note?" — "+big.note:""}`;
-  out.push({lv:"info",ic:"💸",t:t("iBigT",fmt(big.amount),cur),b:t("iBigB",meta,Math.round(big.amount/tE*100))})}
+  out.push({lv:"info",ic:"💸",t:t("iBigT",fmt(big.amount),cur),b:t("iBigB",meta,Math.round(big.amount/tE*100)),a:{l:t("aLog"),f:`seeCat('${big.categoryId}')`}})}
  const pm=mSft(st.month,-1),pe=sum(expOf(pm));
  if(pe>0&&tE>0){const d=((tE-pe)/pe)*100;
   if(Math.abs(d)>=12)out.push({lv:d>0?"warn":"good",ic:d>0?"⬆️":"⬇️",
-   t:t("iVsT",d>0,mLab(pm),Math.abs(Math.round(d))),b:t("iVsB",fmt(tE),fmt(pe),cur)})}
+   t:t("iVsT",d>0,mLab(pm),Math.abs(Math.round(d))),b:t("iVsB",fmt(tE),fmt(pe),cur),a:{l:t("aRep"),f:"go('rep')"}})}
  const pcs=catSpend(pm),drop=pcs.filter(p=>p.spent>0&&!cs.find(c=>c.id===p.id&&c.spent>0));
  if(drop.length)out.push({lv:"good",ic:"🚫",t:t("iDropT",plN(drop.length,"item")),
-  b:drop.slice(0,4).map(c=>`${c.emoji} ${cNm(c)} ${t("iWas",fmt(c.spent))}`).join(" · ")});
+  b:drop.slice(0,4).map(c=>`${c.emoji} ${cNm(c)} ${t("iWas",fmt(c.spent))}`).join(" · "),a:{l:t("aRep"),f:"go('rep')"}});
  if(tI>0){const r=((tI-tE)/tI)*100;
-  if(r<0)out.push({lv:"danger",ic:"🩸",t:t("iDefT"),b:t("iDefB",fmt(tE-tI),cur)});
-  else if(r>=25)out.push({lv:"good",ic:"🏆",t:t("iSaveHiT",Math.round(r)),b:t("iSaveHiB",fmt(tI-tE),cur)});
-  else if(r<10)out.push({lv:"warn",ic:"📉",t:t("iSaveLoT",Math.round(r)),b:t("iSaveLoB",fmt(tI-tE),cur)})}
- if(P.unrealistic)out.push({lv:"warn",ic:"🧾",t:t("iBudT"),b:t("iBudB",fmt(P.bt),fmt(tI),cur,fmt(P.bt-tI))});
+  if(r<0)out.push({lv:"danger",ic:"🩸",t:t("iDefT"),b:t("iDefB",fmt(tE-tI),cur),a:{l:t("aRep"),f:"go('rep')"}});
+  else if(r>=25)out.push({lv:"good",ic:"🏆",t:t("iSaveHiT",Math.round(r)),b:t("iSaveHiB",fmt(tI-tE),cur),a:{l:t("aSav"),f:"go('debt');setW('sav')"}});
+  else if(r<10)out.push({lv:"warn",ic:"📉",t:t("iSaveLoT",Math.round(r)),b:t("iSaveLoB",fmt(tI-tE),cur),a:{l:t("aSav"),f:"go('debt');setW('sav')"}})}
+ if(P.unrealistic)out.push({lv:"warn",ic:"🧾",t:t("iBudT"),b:t("iBudB",fmt(P.bt),fmt(tI),cur,fmt(P.bt-tI)),a:{l:t("aBud"),f:"go('set')"}});
  const ds2=st.data.debts||[];
  if(ds2.length){const tb=ds2.reduce((s,d)=>s+Number(d.balance||0),0);
   const w=ds2.map(d=>({...d,r:payoff(d.balance,(Number(d.rate)||0)/100,d.monthlyPay)}))
    .sort((a,b)=>(Number(b.rate)||0)-(Number(a.rate)||0))[0];
-  if(w&&!w.r.ok)out.push({lv:"danger",ic:"🆘",t:t("iDebtUpT",w.name),b:t("iDebtUpB")});
+  if(w&&!w.r.ok)out.push({lv:"danger",ic:"🆘",t:t("iDebtUpT",w.name),b:t("iDebtUpB"),a:{l:t("aDebt"),f:"go('debt');setW('debt')"}});
   else if(w&&isFinite(w.r.n)&&w.r.n>0)out.push({lv:"info",ic:"💳",t:t("iDebtT",fmt(tb),cur),
-   b:t("iDebtB",w.name,w.r.n,fmt(w.r.interest))})}
+   b:t("iDebtB",w.name,w.r.n,fmt(w.r.interest)),a:{l:t("aDebt"),f:"go('debt');setW('debt')"}})}
  const ord={danger:0,warn:1,good:2,info:3};
  return out.sort((a,b)=>ord[a.lv]-ord[b.lv]);
 }
@@ -1589,6 +1606,8 @@ function vLog(){
  let rows=[];expOf().forEach(e=>rows.push({...e,kind:"e"}));incOf().forEach(r=>rows.push({...r,kind:"i"}));
  if(st.filter==="e")rows=rows.filter(r=>r.kind==="e");
  if(st.filter==="i")rows=rows.filter(r=>r.kind==="i");
+ const cf=st.cf?byId(st.cf):null;
+ if(cf)rows=rows.filter(r=>r.categoryId===st.cf);
  rows.sort((a,b)=>{const d=txD(b).localeCompare(txD(a));return d!==0?d:(b.createdAt||0)-(a.createdAt||0)});
  const by={};rows.forEach(r=>{(by[txD(r)]=by[txD(r)]||[]).push(r)});
  const days=Object.keys(by).sort().reverse();
@@ -1596,6 +1615,7 @@ function vLog(){
  <div class="seg"><button class="${st.filter==="all"?"on":""}" onclick="setF('all')">${t("all")}</button>
  <button class="${st.filter==="e"?"on":""}" onclick="setF('e')">${t("expenses")}</button>
  <button class="${st.filter==="i"?"on":""}" onclick="setF('i')">${t("incomes")}</button></div>
+ ${cf?`<button class="cfchip" onclick="st.cf=null;paint()">${cf.emoji} ${esc(cNm(cf))} <span>${I.x}</span></button>`:""}
  <div class="card wide">
  ${days.length?days.map(d=>{const list=by[d],de=list.filter(r=>r.kind==="e").reduce((s,r)=>s+Number(r.amount||0),0);
   const dt=new Date(d+"T00:00:00");
@@ -1618,6 +1638,8 @@ function vLog(){
   :`<div class="empty">${I.spark}<div>${t("noTx")}</div></div>`}</div>
  <button class="btn ghost" onclick="expCSV()">${I.dl}${t("csv")}</button></div>`}
 function setF(f){st.filter=f;paint()}
+// An insight about one category lands in the log already filtered to it.
+function seeCat(id){st.cf=id;st.filter="e";go("log")}
 
 function vRep(){
  const d=trend(),cs=catSpend().filter(c=>c.spent>0).sort((a,b)=>b.spent-a.spent);
@@ -2289,7 +2311,7 @@ Object.assign(window,{closeModal,updLater,updGo});
 Object.assign(window,{go,shiftM,openAdd,closeAdd,setKind,moreCats,pickC,useC,kp,saveTx,editTx,setF,
  delExp,delInc,delCat,addCat,editB,addDebt,delDebt,setTheme,setLang,setCur,
  expCSV,expJSON,impJSON,resetAll,mkCode,joinCode,offCode,gIn,gOut,doInstall,ad,
- setW,addGam,delGam,addSav,delSav,addToSav,addInv,delInv,updInv,checkUpdate,editEnt,saveEnt,bankGam,newFixed,addFixed,addFixedFrom,delFixed,logFixed});
+ setW,seeCat,addGam,delGam,addSav,delSav,addToSav,addInv,delInv,updInv,checkUpdate,editEnt,saveEnt,bankGam,newFixed,addFixed,addFixedFrom,delFixed,logFixed});
 
 /* ============ Boot ============ */
 (function boot(){
